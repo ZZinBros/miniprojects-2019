@@ -3,8 +3,8 @@
 
 # Ignore Gradle build output directory
 build
-.idea/
-gradle/
-out/
+.idea
+gradle
+out
 .DS_Store
 
