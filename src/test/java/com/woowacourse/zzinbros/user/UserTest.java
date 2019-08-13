@@ -6,9 +6,9 @@ import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.*;
 
 public class UserTest {
-    private static final String BASE_NAME = "테스트";
-    private static final String BASE_EMAIL = "test@test.com";
-    private static final String BASE_PASSWORD = "123qweASD!";
+    public static final String BASE_NAME = "테스트";
+    public static final String BASE_EMAIL = "test@test.com";
+    public static final String BASE_PASSWORD = "123qweASD!";
 
     @Test
     @DisplayName("유저 이름이 제한길이를 초과했을때 예외를 던진다")
@@ -40,5 +40,21 @@ public class UserTest {
         final String invalidEmail = "test";
         assertThatThrownBy(() ->
                 new User(BASE_NAME, invalidEmail, BASE_PASSWORD)).isInstanceOf(IllegalUserArgumentException.class);
+    }
+
+    @Test
+    @DisplayName("유저를 업데이트한다")
+    public void update() {
+        User user = new User(BASE_NAME, BASE_EMAIL, BASE_PASSWORD);
+        final String updatedName = "새 이름";
+        final String updatedPassword = "newPassword!@";
+        final String updatedEmail = "updated@test.com";
+
+        User updatedUser = new User(updatedName, updatedEmail, updatedPassword);
+        user.update(updatedUser);
+
+        assertThat(user.getName()).isEqualTo(updatedName);
+        assertThat(user.getEmail()).isEqualTo(updatedEmail);
+        assertThat(user.getPassword()).isEqualTo(updatedPassword);
     }
 }
