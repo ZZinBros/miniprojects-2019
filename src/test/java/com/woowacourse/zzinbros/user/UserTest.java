@@ -1,9 +1,12 @@
 package com.woowacourse.zzinbros.user;
 
+import com.woowacourse.zzinbros.user.domain.User;
+import com.woowacourse.zzinbros.user.exception.IllegalUserArgumentException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class UserTest {
     public static final String BASE_NAME = "테스트";

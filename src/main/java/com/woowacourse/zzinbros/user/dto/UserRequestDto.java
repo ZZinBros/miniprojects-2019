@@ -1,20 +1,20 @@
 package com.woowacourse.zzinbros.user.dto;
 
-import com.woowacourse.zzinbros.user.User;
+import com.woowacourse.zzinbros.user.domain.User;
 
 public class UserRequestDto {
 
-    private final String baseName;
-    private final String baseEmail;
-    private final String basePassword;
+    private final String name;
+    private final String email;
+    private final String password;
 
-    public UserRequestDto(String baseName, String baseEmail, String basePassword) {
-        this.baseName = baseName;
-        this.baseEmail = baseEmail;
-        this.basePassword = basePassword;
+    public UserRequestDto(String name, String email, String password) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
     }
 
     public User toEntity() {
-        return new User(baseName, baseEmail, basePassword);
+        return new User(name, email, password);
     }
 }
