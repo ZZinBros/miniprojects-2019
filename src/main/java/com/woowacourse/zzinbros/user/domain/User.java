@@ -68,7 +68,7 @@ public class User {
     }
 
     private boolean matchLength(String input, int min, int max) {
-        return (input.length() > min && input.length() < max);
+        return (input.length() >= min && input.length() < max);
     }
 
     private boolean matchRegex(String input, String regex) {
