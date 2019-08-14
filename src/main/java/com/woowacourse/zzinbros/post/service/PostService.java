@@ -30,11 +30,11 @@ public class PostService {
         return postRepository.findById(postId).orElseThrow(PostNotFoundException::new);
     }
 
-    public void delete(long postId, User user) {
+    public boolean delete(long postId, User user) {
         Post post = postRepository.findById(postId).orElseThrow(PostNotFoundException::new);
         if (post.matchAuthor(user)) {
             postRepository.delete(post);
-            return;
+            return true;
         }
         throw new UnAuthorizedException("작성자만 삭제할 수 있습니다.");
     }
