@@ -2,7 +2,8 @@
     min-width: 992px;
 }
 
-header ul.nav-right li, header ul.nav-left li {
+header ul.nav-right li,
+header ul.nav-left li {
     height: 43px;
 }
 
@@ -30,9 +31,11 @@ header ul.nav-right li, header ul.nav-left li {
     top: 9px;
 }
 
-.header .header-container .nav-left>li>a, .header .header-container .nav-right>li>a {
+.header .header-container .nav-left>li>a,
+.header .header-container .nav-right>li>a {
     min-height: 43px;
 }
+
 .search-container {
     position: absolute;
     top: 1px;
@@ -43,6 +46,7 @@ header ul.nav-right li, header ul.nav-left li {
     border-radius: 3px;
     background: white;
 }
+
 .searchbox {
     width: 400px;
     height: 18px;
@@ -57,6 +61,7 @@ header ul.nav-right li, header ul.nav-left li {
     font-size: 10pt;
     outline-style: none;
 }
+
 .search-btn {
     width: 27px;
     height: 17px;
@@ -94,7 +99,9 @@ header ul.nav-right li, header ul.nav-left li {
     background-position: -175px -329px;
 }
 
-.friend-btn, .message-btn, .notification-btn {
+.friend-btn,
+.message-btn,
+.notification-btn {
     background-image: url('../images/default/icons.png');
     background-repeat: no-repeat;
     height: 24px;
@@ -114,33 +121,36 @@ header ul.nav-right li, header ul.nav-left li {
     flex-grow: 1;
 }
 
-
-.left{
+.left {
     position: relative;
     display: block;
     float: left;
     word-wrap: break-word;
 }
-.left-profile{
+
+.left-profile {
     display: block;
     height: 25px;
     word-wrap: break-word;
 }
-.left-photo{
+
+.left-photo {
     height: 38px !important;
     width: 38px !important;
     margin-right: 8px;
     border-radius: 4px;
     border: 1px solid rgba(0, 0, 0, 0.1);
 }
-.left-name-edit{
+
+.left-name-edit {
     width: 130px;
     float: right;
     clear: left;
     display: block;
     padding-top: 4px;
 }
-.left-name{
+
+.left-name {
     height: 17px;
     width: 112px;
     font-size: 13px;
@@ -149,39 +159,46 @@ header ul.nav-right li, header ul.nav-left li {
     text-decoration: none;
     display: block;
 }
-.left-name:hover{
+
+.left-name:hover {
     font-weight: bold;
     text-decoration: underline;
     display: block;
 }
-.left-edit{
+
+.left-edit {
     height: 17px;
     width: 112px;
     display: block;
 }
-.left-edit:hover{
+
+.left-edit:hover {
     height: 17px;
     width: 112px;
     text-decoration: underline;
     display: block;
 }
-.left-sub-menus{
+
+.left-sub-menus {
     height: 100px;
     width: 164px;
     margin: 12px 0;
     padding: 0;
     list-style-type: none;
 }
-.left-sub-sub-menus{
+
+.left-sub-sub-menus {
     height: 24px;
     width: 164px;
 }
-.left-sub-sub-menus:hover{
+
+.left-sub-sub-menus:hover {
     height: 24px;
     width: 164px;
     font-weight: bold;
-    background-color: rgba(203,204,207,0.4);
+    background-color: rgba(203, 204, 207, 0.4);
 }
+
 .icons {
     height: 20px;
     width: 20px;
@@ -191,6 +208,7 @@ header ul.nav-right li, header ul.nav-left li {
     background-image: url('../images/default/icons2.png');
     background-repeat: no-repeat;
 }
+
 .icon-name {
     vertical-align: middle;
 }
@@ -230,7 +248,7 @@ header ul.nav-right li, header ul.nav-left li {
     background-size: 37px 1608px;
 }
 
-.left-group-title{
+.left-group-title {
     font-weight: bold;
     color: #616770;
 }
@@ -253,7 +271,8 @@ header ul.nav-right li, header ul.nav-left li {
     float: none !important;
 }
 
-.header .header-container .nav-left>li>a, .header .header-container .nav-right>li>a {
+.header .header-container .nav-left>li>a,
+.header .header-container .nav-right>li>a {
     line-height: 43px;
     min-height: 43px;
 }

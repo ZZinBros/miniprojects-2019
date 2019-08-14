@@ -1,5 +1,7 @@
 package com.woowacourse.zzinbros.post.domain;
 
+import com.woowacourse.zzinbros.post.exception.UnAuthorizedException;
+import com.woowacourse.zzinbros.user.domain.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -8,34 +10,40 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 public class PostTest {
-    private User user;
+    public static final String DEFAULT_CONTENT = "some content";
+    public static final String NEW_CONTENT = "newPost";
+    public static final String DEFAULT_NAME = "john";
+    public static final String DEFAULT_EMAIL = "john123@example.com";
+    public static final String DEFAULT_PASSWORD = "123456789";
+
+    private User defaultUser;
+    private Post defaultPost;
 
     @BeforeEach
     void setUp() {
-        user = new User(999L);
+        defaultUser = new User(DEFAULT_NAME, DEFAULT_EMAIL, DEFAULT_PASSWORD);
+        defaultPost = new Post(DEFAULT_CONTENT, defaultUser);
     }
 
     @Test
     void 생성자_테스트() {
-        assertDoesNotThrow(() -> new Post("some contents", user));
+        assertDoesNotThrow(() -> defaultPost);
     }
 
     @Test
     void 게시글_작성자가_게시글_수정_테스트() {
-        Post oldPost = new Post("oldPost", user);
-        Post newPost = new Post("newPost", user);
-        assertThat((oldPost.update(newPost)).getContents()).isEqualTo("newPost");
+        Post newPost = new Post(NEW_CONTENT, defaultUser);
+        assertThat((defaultPost.update(newPost)).getContents()).isEqualTo(NEW_CONTENT);
     }
 
     @Test
     void 게시글_작성자가_아닌_회원이_게시글_수정_테스트() {
-        Post oldPost = new Post("oldPost", user);
-        Post newPost = new Post("newPost", new User(1000L));
+        Post newPost = new Post("newPost", new User(DEFAULT_NAME, DEFAULT_EMAIL, DEFAULT_PASSWORD));
         assertThatExceptionOfType(UnAuthorizedException.class)
-                .isThrownBy(() -> oldPost.update(newPost));
+                .isThrownBy(() -> defaultPost.update(newPost));
 
         assertThatExceptionOfType(UnAuthorizedException.class)
-                .isThrownBy(() -> newPost.update(oldPost));
+                .isThrownBy(() -> newPost.update(defaultPost));
 
     }
 }
