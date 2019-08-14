@@ -7,5 +7,4 @@ build
 gradle
 out
 .DS_Store
-*images
-
+*images/
