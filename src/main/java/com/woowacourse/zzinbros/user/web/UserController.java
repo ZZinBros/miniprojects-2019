@@ -3,7 +3,6 @@ package com.woowacourse.zzinbros.user.web;
 import com.woowacourse.zzinbros.user.domain.User;
 import com.woowacourse.zzinbros.user.domain.UserSession;
 import com.woowacourse.zzinbros.user.dto.UserRequestDto;
-import com.woowacourse.zzinbros.user.exception.UserDuplicatedException;
 import com.woowacourse.zzinbros.user.exception.UserException;
 import com.woowacourse.zzinbros.user.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -37,16 +36,21 @@ public class UserController {
         try {
             User user = userService.register(userRequestDto);
             return new ResponseEntity<>(user, HttpStatus.OK);
-        } catch (UserDuplicatedException e) {
+        } catch (UserException e) {
             return new ResponseEntity<>(null, HttpStatus.ACCEPTED);
         }
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(
-            @PathVariable Long id, @RequestBody UserRequestDto userRequestDto, UserSession userSession) {
+    public ResponseEntity<User> modify(
+            @PathVariable Long id,
+            @RequestBody UserRequestDto userRequestDto,
+            UserSession userSession,
+            HttpSession session) {
         try {
-            User user = userService.modify(id, userRequestDto);
+            User user = userService.modify(id, userRequestDto, userSession);
+            UserSession newUserSession = new UserSession(user.getName(), user.getEmail());
+            session.setAttribute(UserSession.LOGIN_USER, newUserSession);
             return new ResponseEntity<>(user, HttpStatus.OK);
         } catch (UserException e) {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
@@ -54,8 +58,8 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<User> deleteUser(@PathVariable Long id, UserSession userSession, HttpSession session) {
-        userService.resign(id);
+    public ResponseEntity<User> resign(@PathVariable Long id, UserSession userSession, HttpSession session) {
+        userService.resign(id, userSession);
         session.removeAttribute(UserSession.LOGIN_USER);
         return new ResponseEntity<>(null, HttpStatus.OK);
     }
