@@ -10,13 +10,11 @@ import com.woowacourse.zzinbros.user.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -28,7 +26,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@RunWith(SpringRunner.class)
 @AutoConfigureMockMvc
 @SpringBootTest
 class UserControllerTest {
@@ -55,7 +52,7 @@ class UserControllerTest {
     @Test
     @DisplayName("정상적으로 회원가입")
     void postTest() throws Exception {
-        given(userService.add(userRequestDto))
+        given(userService.register(userRequestDto))
                 .willReturn(user);
         
         mockMvc.perform(post("/users")
@@ -68,7 +65,7 @@ class UserControllerTest {
     @Test
     @DisplayName("중복된 이메일이 존재해서 회원가입 실패")
     void postWhenUserExistsTest() throws Exception {
-        given(userService.add(userRequestDto))
+        given(userService.register(userRequestDto))
                 .willThrow(UserDuplicatedException.class);
 
         mockMvc.perform(post("/users")
@@ -81,7 +78,7 @@ class UserControllerTest {
     @Test
     @DisplayName("정상적으로 회원 정보 변경")
     void putTest() throws Exception {
-        given(userService.update(BASE_ID, userRequestDto))
+        given(userService.modify(BASE_ID, userRequestDto))
                 .willReturn(user);
 
         mockMvc.perform(MockMvcRequestBuilders.put("/users/" + BASE_ID)
@@ -94,7 +91,7 @@ class UserControllerTest {
     @Test
     @DisplayName("회원 정보가 없을 떄 회원 정보 변경 실패")
     void putWhenUserNotFoundTest() throws Exception {
-        given(userService.update(BASE_ID, userRequestDto))
+        given(userService.modify(BASE_ID, userRequestDto))
                 .willThrow(UserNotFoundException.class);
 
         mockMvc.perform(MockMvcRequestBuilders.put("/users/" + BASE_ID)
@@ -139,6 +136,6 @@ class UserControllerTest {
                 .andExpect(status().isOk())
                 .andDo(print());
 
-        verify(userService, times(1)).delete(BASE_ID);
+        verify(userService, times(1)).resign(BASE_ID);
     }
 }

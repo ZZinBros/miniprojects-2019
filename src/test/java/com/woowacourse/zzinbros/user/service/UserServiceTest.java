@@ -49,7 +49,7 @@ class UserServiceTest {
                 .willReturn(false);
         given(userRepository.save(user)).willReturn(user);
 
-        User savedUser = userService.add(userRequestDto);
+        User savedUser = userService.register(userRequestDto);
         verify(userRepository, times(1)).save(savedUser);
     }
 
@@ -60,7 +60,7 @@ class UserServiceTest {
                 .willReturn(true);
 
         assertThatThrownBy(() ->
-                userService.add(userRequestDto)).isInstanceOf(UserDuplicatedException.class);
+                userService.register(userRequestDto)).isInstanceOf(UserDuplicatedException.class);
     }
 
     @Test
@@ -68,7 +68,7 @@ class UserServiceTest {
     void updateUser() {
         given(userRepository.findById(1L)).willReturn(Optional.ofNullable(user));
 
-        User updatedUser = userService.update(1L, userRequestDto);
+        User updatedUser = userService.modify(1L, userRequestDto);
         assertThat(updatedUser).isEqualTo(user);
     }
 
@@ -83,7 +83,7 @@ class UserServiceTest {
     @Test
     @DisplayName("회원 정보 ID로 삭제")
     void deleteUser() {
-        userService.delete(1L);
+        userService.resign(1L);
         verify(userRepository, times(1)).deleteById(1L);
     }
 }
