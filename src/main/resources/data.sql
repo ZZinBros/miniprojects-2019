@@ -2,11 +2,3 @@ insert into User(id, name , email, password) values (999, 'john', 'john123@examp
 insert into User(id, name , email, password) values (1000, 'paul', 'paul123@example.com', '123456789');
 insert into Post(id, contents, author_id) values (999, 'ex1', 999);
 insert into Post(id, contents, author_id) values (1000, 'ex2', 1000);
-insert into Post(id, contents, author_id) values (1001, 'ex3', 999);
-insert into Post(id, contents, author_id) values (1002, 'ex4', 999);
-insert into Post(id, contents, author_id) values (1003, 'ex5', 999);
-insert into Post(id, contents, author_id) values (1004, 'ex6', 999);
-insert into Post(id, contents, author_id) values (1005, 'ex7', 999);
-insert into Post(id, contents, author_id) values (1006, 'ex8', 999);
-insert into Post(id, contents, author_id) values (1007, 'ex9', 999);
-insert into Post(id, contents, author_id) values (1008, 'ex10', 999);
