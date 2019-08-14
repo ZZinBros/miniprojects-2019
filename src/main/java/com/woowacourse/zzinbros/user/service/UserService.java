@@ -31,16 +31,18 @@ public class UserService {
 
     public User modify(Long id, UserRequestDto userRequestDto, UserSession userSession) {
         User user = findUser(id);
-        if (userSession.matchEmail(user)) {
+        User loggedInUser = findUserByEmail(userSession.getEmail());
+        if (loggedInUser.isAuthor(user)) {
             user.update(userRequestDto.toEntity());
             return user;
         }
         throw new NotValidUserException("수정할 수 없습니다");
     }
 
-    public void resign(Long id, UserSession userSession) {
+    public void delete(Long id, UserSession userSession) {
         User user = findUser(id);
-        if (userSession.matchEmail(user)) {
+        User loggedInUser = findUserByEmail(userSession.getEmail());
+        if (loggedInUser.isAuthor(user)) {
             userRepository.deleteById(id);
             return;
         }

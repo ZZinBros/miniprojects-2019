@@ -60,7 +60,7 @@ public class UserController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<User> resign(@PathVariable Long id, UserSession userSession, HttpSession session) {
-        userService.resign(id, userSession);
+        userService.delete(id, userSession);
         session.removeAttribute(UserSession.LOGIN_USER);
         return new ResponseEntity<>(null, HttpStatus.OK);
     }

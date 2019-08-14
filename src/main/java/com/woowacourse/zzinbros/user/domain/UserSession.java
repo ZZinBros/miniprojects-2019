@@ -13,10 +13,6 @@ public class UserSession {
         this.email = email;
     }
 
-    public boolean matchEmail(User user) {
-        return this.email.equals(user.getEmail());
-    }
-
     public String getName() {
         return name;
     }

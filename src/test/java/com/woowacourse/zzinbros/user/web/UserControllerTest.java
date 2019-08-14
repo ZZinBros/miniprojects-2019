@@ -75,7 +75,7 @@ class UserControllerTest {
         mockMvc.perform(post("/users")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(new ObjectMapper().writeValueAsString(userRequestDto)))
-                .andExpect(status().isAccepted())
+                .andExpect(status().isOk())
                 .andDo(print());
     }
 
@@ -140,6 +140,6 @@ class UserControllerTest {
                 .andExpect(status().isOk())
                 .andDo(print());
 
-        verify(userService, times(1)).resign(BASE_ID, userSession);
+        verify(userService, times(1)).delete(BASE_ID, userSession);
     }
 }
