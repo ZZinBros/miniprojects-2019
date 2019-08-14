@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.woowacourse.zzinbros.user.domain.User;
 import com.woowacourse.zzinbros.user.domain.UserTest;
 import com.woowacourse.zzinbros.user.dto.UserRequestDto;
+import com.woowacourse.zzinbros.user.exception.UserDuplicatedException;
 import com.woowacourse.zzinbros.user.exception.UserNotFoundException;
 import com.woowacourse.zzinbros.user.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
@@ -61,6 +62,19 @@ class UserControllerTest {
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(new ObjectMapper().writeValueAsString(userRequestDto)))
                 .andExpect(status().isOk())
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName("중복된 이메일이 존재해서 회원가입 실패")
+    void postWhenUserExistsTest() throws Exception {
+        given(userService.add(userRequestDto))
+                .willThrow(UserDuplicatedException.class);
+
+        mockMvc.perform(post("/users")
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .content(new ObjectMapper().writeValueAsString(userRequestDto)))
+                .andExpect(status().isAccepted())
                 .andDo(print());
     }
 

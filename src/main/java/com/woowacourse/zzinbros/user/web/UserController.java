@@ -2,6 +2,7 @@ package com.woowacourse.zzinbros.user.web;
 
 import com.woowacourse.zzinbros.user.domain.User;
 import com.woowacourse.zzinbros.user.dto.UserRequestDto;
+import com.woowacourse.zzinbros.user.exception.UserDuplicatedException;
 import com.woowacourse.zzinbros.user.exception.UserException;
 import com.woowacourse.zzinbros.user.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -30,9 +31,13 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<User> addUser(@RequestBody UserRequestDto userRequestDto) {
-        User user = userService.add(userRequestDto);
-        return new ResponseEntity<>(user, HttpStatus.OK);
+    public ResponseEntity<User> register(@RequestBody UserRequestDto userRequestDto) {
+        try {
+            User user = userService.add(userRequestDto);
+            return new ResponseEntity<>(user, HttpStatus.OK);
+        } catch (UserDuplicatedException e) {
+            return new ResponseEntity<>(null, HttpStatus.ACCEPTED);
+        }
     }
 
     @PutMapping("/{id}")

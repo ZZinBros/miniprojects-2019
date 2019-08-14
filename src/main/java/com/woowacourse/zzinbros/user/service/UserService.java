@@ -3,6 +3,7 @@ package com.woowacourse.zzinbros.user.service;
 import com.woowacourse.zzinbros.user.domain.User;
 import com.woowacourse.zzinbros.user.domain.UserRepository;
 import com.woowacourse.zzinbros.user.dto.UserRequestDto;
+import com.woowacourse.zzinbros.user.exception.UserDuplicatedException;
 import com.woowacourse.zzinbros.user.exception.UserNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,7 +18,10 @@ public class UserService {
     }
 
     public User add(UserRequestDto userRequestDto) {
-        return userRepository.save(userRequestDto.toEntity());
+        if (!userRepository.existsUserByEmail(userRequestDto.getEmail())) {
+            return userRepository.save(userRequestDto.toEntity());
+        }
+        throw new UserDuplicatedException();
     }
 
     public User update(Long id, UserRequestDto userRequestDto) {
