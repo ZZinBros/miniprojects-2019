@@ -2,6 +2,8 @@ package com.woowacourse.zzinbros.user.dto;
 
 import com.woowacourse.zzinbros.user.domain.User;
 
+import java.util.Objects;
+
 public class UserRequestDto {
 
     private String name;
@@ -20,6 +22,21 @@ public class UserRequestDto {
 
     public User toEntity() {
         return new User(name, email, password);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof UserRequestDto)) return false;
+        UserRequestDto that = (UserRequestDto) o;
+        return Objects.equals(name, that.name) &&
+                Objects.equals(email, that.email) &&
+                Objects.equals(password, that.password);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, email, password);
     }
 
     public String getName() {

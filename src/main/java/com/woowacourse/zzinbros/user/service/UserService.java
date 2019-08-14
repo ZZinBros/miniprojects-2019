@@ -21,7 +21,7 @@ public class UserService {
     }
 
     public User update(Long id, UserRequestDto userRequestDto) {
-        User user = userRepository.findById(id).orElseThrow(UserNotFoundException::new);
+        User user = findUser(id);
         user.update(userRequestDto.toEntity());
         return user;
     }
@@ -31,6 +31,11 @@ public class UserService {
     }
 
     public User findUserById(long id) {
-        return userRepository.findById(id).orElseThrow(UserNotFoundException::new);
+        return findUser(id);
+    }
+
+    private User findUser(long id) {
+        return userRepository.findById(id)
+                .orElseThrow(UserNotFoundException::new);
     }
 }
