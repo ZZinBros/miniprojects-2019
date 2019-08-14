@@ -17,20 +17,20 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public User add(UserRequestDto userRequestDto) {
+    public User register(UserRequestDto userRequestDto) {
         if (!userRepository.existsUserByEmail(userRequestDto.getEmail())) {
             return userRepository.save(userRequestDto.toEntity());
         }
         throw new UserDuplicatedException();
     }
 
-    public User update(Long id, UserRequestDto userRequestDto) {
+    public User modify(Long id, UserRequestDto userRequestDto) {
         User user = findUser(id);
         user.update(userRequestDto.toEntity());
         return user;
     }
 
-    public void delete(long id) {
+    public void resign(long id) {
         userRepository.deleteById(id);
     }
 
