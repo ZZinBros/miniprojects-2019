@@ -2,8 +2,10 @@ package com.woowacourse.zzinbros.user.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.woowacourse.zzinbros.user.domain.User;
+import com.woowacourse.zzinbros.user.domain.UserSession;
 import com.woowacourse.zzinbros.user.domain.UserTest;
 import com.woowacourse.zzinbros.user.dto.UserRequestDto;
+import com.woowacourse.zzinbros.user.exception.NotValidUserException;
 import com.woowacourse.zzinbros.user.exception.UserDuplicatedException;
 import com.woowacourse.zzinbros.user.exception.UserNotFoundException;
 import com.woowacourse.zzinbros.user.service.UserService;
@@ -39,14 +41,16 @@ class UserControllerTest {
     @InjectMocks
     UserController userController;
 
-    User user;
-    UserRequestDto userRequestDto;
+    private User user;
+    private UserRequestDto userRequestDto;
+    private UserSession userSession;
 
     @BeforeEach
     void setUp() {
         mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
         userRequestDto = new UserRequestDto(UserTest.BASE_NAME, UserTest.BASE_EMAIL, UserTest.BASE_PASSWORD);
         user = new User(UserTest.BASE_NAME, UserTest.BASE_EMAIL, UserTest.BASE_PASSWORD);
+        userSession = new UserSession(null, null);
     }
 
     @Test
@@ -54,7 +58,7 @@ class UserControllerTest {
     void postTest() throws Exception {
         given(userService.register(userRequestDto))
                 .willReturn(user);
-        
+
         mockMvc.perform(post("/users")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(new ObjectMapper().writeValueAsString(userRequestDto)))
@@ -78,7 +82,7 @@ class UserControllerTest {
     @Test
     @DisplayName("정상적으로 회원 정보 변경")
     void putTest() throws Exception {
-        given(userService.modify(BASE_ID, userRequestDto))
+        given(userService.modify(BASE_ID, userRequestDto, userSession))
                 .willReturn(user);
 
         mockMvc.perform(MockMvcRequestBuilders.put("/users/" + BASE_ID)
@@ -91,8 +95,8 @@ class UserControllerTest {
     @Test
     @DisplayName("회원 정보가 없을 떄 회원 정보 변경 실패")
     void putWhenUserNotFoundTest() throws Exception {
-        given(userService.modify(BASE_ID, userRequestDto))
-                .willThrow(UserNotFoundException.class);
+        given(userService.modify(BASE_ID, userRequestDto, userSession))
+                .willThrow(NotValidUserException.class);
 
         mockMvc.perform(MockMvcRequestBuilders.put("/users/" + BASE_ID)
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
@@ -136,6 +140,6 @@ class UserControllerTest {
                 .andExpect(status().isOk())
                 .andDo(print());
 
-        verify(userService, times(1)).resign(BASE_ID);
+        verify(userService, times(1)).resign(BASE_ID, userSession);
     }
 }

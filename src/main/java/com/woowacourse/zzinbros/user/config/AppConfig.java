@@ -1,4 +1,4 @@
-package com.woowacourse.zzinbros.user.util;
+package com.woowacourse.zzinbros.user.config;
 
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;

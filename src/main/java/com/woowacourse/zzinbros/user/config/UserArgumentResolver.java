@@ -1,7 +1,7 @@
-package com.woowacourse.zzinbros.user.util;
+package com.woowacourse.zzinbros.user.config;
 
 import com.woowacourse.zzinbros.user.domain.UserSession;
-import com.woowacourse.zzinbros.user.exception.UserException;
+import com.woowacourse.zzinbros.user.exception.UserNotLoggedInException;
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
@@ -25,6 +25,6 @@ public class UserArgumentResolver implements HandlerMethodArgumentResolver {
         HttpSession session = httpServletRequest.getSession();
         Optional<UserSession> userSession
                 = Optional.ofNullable((UserSession) session.getAttribute(UserSession.LOGIN_USER));
-        return userSession.orElseThrow(() -> new UserException("로그인 실패"));
+        return userSession.orElseThrow(() -> new UserNotLoggedInException("로그인 실패"));
     }
 }
