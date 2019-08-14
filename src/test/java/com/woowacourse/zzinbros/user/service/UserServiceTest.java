@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Optional;
@@ -55,8 +56,6 @@ class UserServiceTest {
     @Test
     @DisplayName("회원 가입 테스트")
     void addUser() {
-        given(userRepository.existsUserByEmail(UserTest.BASE_EMAIL))
-                .willReturn(false);
         given(userRepository.save(user)).willReturn(user);
 
         User savedUser = userService.register(userRequestDto);
@@ -66,9 +65,7 @@ class UserServiceTest {
     @Test
     @DisplayName("이미 이메일이 존재할 때 가입 실패")
     void failAddUserWhenUserExists() {
-        given(userRepository.existsUserByEmail(UserTest.BASE_EMAIL))
-                .willReturn(true);
-
+        given(userRepository.save(userRequestDto.toEntity())).willThrow(UserDuplicatedException.class);
         assertThatThrownBy(() ->
                 userService.register(userRequestDto)).isInstanceOf(UserDuplicatedException.class);
     }

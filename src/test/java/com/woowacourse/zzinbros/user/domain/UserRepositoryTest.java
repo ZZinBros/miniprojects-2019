@@ -23,11 +23,6 @@ class UserRepositoryTest {
     }
 
     @Test
-    void existsUserByEmail() {
-        assertTrue(userRepository.existsUserByEmail(UserTest.BASE_EMAIL));
-    }
-
-    @Test
     void findByEmail() {
         User actual = userRepository.findByEmail(user.getEmail()).orElseThrow(IllegalArgumentException::new);
         assertEquals(user, actual);

@@ -8,6 +8,7 @@ import com.woowacourse.zzinbros.user.exception.NotValidUserException;
 import com.woowacourse.zzinbros.user.exception.UserDuplicatedException;
 import com.woowacourse.zzinbros.user.exception.UserLoginException;
 import com.woowacourse.zzinbros.user.exception.UserNotFoundException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,10 +22,11 @@ public class UserService {
     }
 
     public User register(UserRequestDto userRequestDto) {
-        if (!userRepository.existsUserByEmail(userRequestDto.getEmail())) {
+        try {
             return userRepository.save(userRequestDto.toEntity());
+        } catch (DataIntegrityViolationException e) {
+            throw new UserDuplicatedException();
         }
-        throw new UserDuplicatedException();
     }
 
     public User modify(Long id, UserRequestDto userRequestDto, UserSession userSession) {
