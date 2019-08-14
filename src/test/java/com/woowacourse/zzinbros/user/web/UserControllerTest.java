@@ -2,6 +2,7 @@ package com.woowacourse.zzinbros.user.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.woowacourse.zzinbros.user.domain.User;
+import com.woowacourse.zzinbros.user.domain.UserTest;
 import com.woowacourse.zzinbros.user.dto.UserRequestDto;
 import com.woowacourse.zzinbros.user.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,6 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @SpringBootTest
 class UserControllerTest {
+    public static final long BASE_ID = 1L;
 
     MockMvc mockMvc;
 
@@ -43,8 +45,8 @@ class UserControllerTest {
     @BeforeEach
     void setUp() {
         mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
-        userRequestDto = new UserRequestDto("이름", "2@mail.com", "123qweASD!");
-        user = new User("이름", "2@mail.com", "123qweASD!");
+        userRequestDto = new UserRequestDto(UserTest.BASE_NAME, UserTest.BASE_EMAIL, UserTest.BASE_PASSWORD);
+        user = new User(UserTest.BASE_NAME, UserTest.BASE_EMAIL, UserTest.BASE_PASSWORD);
     }
 
     @Test
@@ -61,10 +63,10 @@ class UserControllerTest {
 
     @Test
     void putTest() throws Exception {
-        given(userService.findUserById(1L))
+        given(userService.findUserById(BASE_ID))
                 .willReturn(user);
 
-        mockMvc.perform(MockMvcRequestBuilders.put("/users/1")
+        mockMvc.perform(MockMvcRequestBuilders.put("/users/" + BASE_ID)
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(new ObjectMapper().writeValueAsString(userRequestDto)))
                 .andExpect(status().isOk())
@@ -73,10 +75,10 @@ class UserControllerTest {
 
     @Test
     void getTest() throws Exception {
-        given(userService.findUserById(1L))
+        given(userService.findUserById(BASE_ID))
                 .willReturn(user);
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/users/1")
+        mockMvc.perform(MockMvcRequestBuilders.get("/users/" + BASE_ID)
                 .sessionAttr(
                         "loggedInUser"
                         , new User("session", "session@mail.com", "123qweASD!")))
@@ -86,10 +88,10 @@ class UserControllerTest {
 
     @Test
     void deleteTest() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.delete("/users/1"))
+        mockMvc.perform(MockMvcRequestBuilders.delete("/users/" + BASE_ID))
                 .andExpect(status().isOk())
                 .andDo(print());
 
-        verify(userService, times(1)).delete(1L);
+        verify(userService, times(1)).delete(BASE_ID);
     }
 }
