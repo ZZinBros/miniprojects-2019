@@ -3,9 +3,39 @@
 
 # Ignore Gradle build output directory
 build
-.idea
+.idea/
 gradle
-out
-.DS_Store
-*images
+out/
+target/
+*images/
+/src/main/resources/static/images/*
 
+# Created by https://www.gitignore.io/
+### Intellij ###
+.idea/
+
+### macOS ###
+# General
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+
+### Windows ###
+# Windows thumbnail cache files
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+[Dd]esktop.ini
+$RECYCLE.BIN/
+*.lnk
+
+# End of https://www.gitignore.io/
