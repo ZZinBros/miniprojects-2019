@@ -1,6 +1,5 @@
-package com.woowacourse.zzinbros.user;
+package com.woowacourse.zzinbros.user.domain;
 
-import com.woowacourse.zzinbros.user.domain.User;
 import com.woowacourse.zzinbros.user.exception.IllegalUserArgumentException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

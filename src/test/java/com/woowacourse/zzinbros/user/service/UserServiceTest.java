@@ -1,9 +1,9 @@
-package com.woowacourse.zzinbros.user;
+package com.woowacourse.zzinbros.user.service;
 
 import com.woowacourse.zzinbros.user.domain.User;
 import com.woowacourse.zzinbros.user.domain.UserRepository;
+import com.woowacourse.zzinbros.user.domain.UserTest;
 import com.woowacourse.zzinbros.user.dto.UserRequestDto;
-import com.woowacourse.zzinbros.user.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
