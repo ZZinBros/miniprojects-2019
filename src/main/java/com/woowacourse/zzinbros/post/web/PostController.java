@@ -4,20 +4,22 @@ import com.woowacourse.zzinbros.post.domain.Post;
 import com.woowacourse.zzinbros.post.dto.PostRequestDto;
 import com.woowacourse.zzinbros.post.service.PostService;
 import com.woowacourse.zzinbros.user.domain.User;
+import com.woowacourse.zzinbros.user.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 
-@Controller
+@RestController
 @RequestMapping("/posts")
 public class PostController {
     private final PostService postService;
+    private final UserService userService;
 
-    public PostController(PostService postService) {
+    public PostController(PostService postService, UserService userService) {
         this.postService = postService;
+        this.userService = userService;
     }
 
     @GetMapping("/{id}")
@@ -27,14 +29,18 @@ public class PostController {
     }
 
     @PostMapping
-    public ResponseEntity<Post> create(PostRequestDto dto, HttpSession session) {
+    public Post create(@RequestBody PostRequestDto dto, HttpSession session) {
         User loggedInUser = (User) session.getAttribute("loggedInUser");
+
+        // 임시
+        loggedInUser = userService.findUserById(999L);
+
         Post persistPost = postService.add(dto, loggedInUser);
-        return new ResponseEntity<>(persistPost, HttpStatus.OK);
+        return persistPost;
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Post> modify(@PathVariable long id, PostRequestDto dto, HttpSession session) {
+    public ResponseEntity<Post> modify(@PathVariable long id, @RequestBody PostRequestDto dto, HttpSession session) {
         User loggedInUser = (User) session.getAttribute("loggedInUser");
         Post updatePost = postService.update(id, dto, loggedInUser);
         return new ResponseEntity<>(updatePost, HttpStatus.OK);
