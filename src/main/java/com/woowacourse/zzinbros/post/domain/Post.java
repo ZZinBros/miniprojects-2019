@@ -1,5 +1,7 @@
 package com.woowacourse.zzinbros.post.domain;
 
+import com.woowacourse.zzinbros.post.exception.UnAuthorizedException;
+import com.woowacourse.zzinbros.user.domain.User;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -33,6 +35,18 @@ public class Post {
         this.author = author;
     }
 
+    public Post update(Post another) {
+        if (matchAuthor(another.getAuthor())) {
+            this.contents = another.contents;
+            return this;
+        }
+        throw new UnAuthorizedException("게시글은 본인만 수정할 수 있습니다.");
+    }
+
+    public boolean matchAuthor(User user) {
+        return this.author.equals(user);
+    }
+
     public Long getId() {
         return id;
     }
@@ -51,18 +65,6 @@ public class Post {
 
     public User getAuthor() {
         return author;
-    }
-
-    public Post update(Post another) {
-        if (author.isAuthor(another.getAuthor())) {
-            this.contents = another.contents;
-            return this;
-        }
-        throw new UnAuthorizedException("게시글은 본인만 수정할 수 있습니다.");
-    }
-
-    public boolean matchAuthor(User user) {
-        return this.author.equals(user);
     }
 
     @Override

@@ -1,5 +1,7 @@
 package com.woowacourse.zzinbros.post.domain;
 
+import com.woowacourse.zzinbros.post.exception.UnAuthorizedException;
+import com.woowacourse.zzinbros.user.domain.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -12,7 +14,7 @@ public class PostTest {
 
     @BeforeEach
     void setUp() {
-        user = new User(999L);
+        user = new User("john", "john123@example.com", "123456789");
     }
 
     @Test
@@ -30,7 +32,7 @@ public class PostTest {
     @Test
     void 게시글_작성자가_아닌_회원이_게시글_수정_테스트() {
         Post oldPost = new Post("oldPost", user);
-        Post newPost = new Post("newPost", new User(1000L));
+        Post newPost = new Post("newPost", new User("paul", "paul123@example.com", "123456789"));
         assertThatExceptionOfType(UnAuthorizedException.class)
                 .isThrownBy(() -> oldPost.update(newPost));
 
