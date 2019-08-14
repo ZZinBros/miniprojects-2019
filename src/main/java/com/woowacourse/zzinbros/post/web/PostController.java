@@ -35,8 +35,7 @@ public class PostController {
         // 임시
         loggedInUser = userService.findUserById(999L);
 
-        Post persistPost = postService.add(dto, loggedInUser);
-        return persistPost;
+        return postService.add(dto, loggedInUser);
     }
 
     @PutMapping("/{id}")
@@ -49,6 +48,10 @@ public class PostController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Post> remove(@PathVariable long id, HttpSession session) {
         User loggedInUser = (User) session.getAttribute("loggedInUser");
+
+        // 임시
+        loggedInUser = userService.findUserById(999L);
+
         postService.delete(id, loggedInUser);
         return new ResponseEntity<>(null, HttpStatus.OK);
     }

@@ -13,7 +13,7 @@
                 </a>
                 <ul class="dropdown-menu">
                     <li>
-                        <a class="pointer">
+                        <a class="pointer" th:onclick="|onDeleteClick(${post.id})|">
                             <i class="ti-trash pdd-right-10 text-dark"></i>
                             <span class="">게시글 삭제</span>
                         </a>
@@ -23,3 +23,22 @@
         </li>
     </ul>
 </div>
+
+<script type="text/javascript">
+    function onDeleteClick(id) {
+        const url = document.location.href;
+
+        fetch(url + "/posts/" + id, {
+            method: "DELETE",
+            headers: {
+                "Accept": "application/json",
+                "Content-type": "application/json"
+            }
+        })
+            .then(res => console.log(res.json()))
+            .then(body => {
+                location.reload();
+            })
+            .catch(error => console.log(error));
+    }
+</script>
