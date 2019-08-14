@@ -25,6 +25,6 @@ public class UserArgumentResolver implements HandlerMethodArgumentResolver {
         HttpSession session = httpServletRequest.getSession();
         Optional<UserSession> userSession
                 = Optional.ofNullable((UserSession) session.getAttribute(UserSession.LOGIN_USER));
-        return userSession.orElseThrow(() -> new UserNotLoggedInException("로그인 실패"));
+        return userSession.orElseThrow(() -> new UserNotLoggedInException("로그인 해주세요"));
     }
 }

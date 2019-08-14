@@ -5,7 +5,7 @@ import com.woowacourse.zzinbros.user.domain.UserRepository;
 import com.woowacourse.zzinbros.user.domain.UserSession;
 import com.woowacourse.zzinbros.user.dto.UserRequestDto;
 import com.woowacourse.zzinbros.user.exception.NotValidUserException;
-import com.woowacourse.zzinbros.user.exception.UserDuplicatedException;
+import com.woowacourse.zzinbros.user.exception.UserAlreadyExistsException;
 import com.woowacourse.zzinbros.user.exception.UserLoginException;
 import com.woowacourse.zzinbros.user.exception.UserNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -25,7 +25,7 @@ public class UserService {
         try {
             return userRepository.save(userRequestDto.toEntity());
         } catch (DataIntegrityViolationException e) {
-            throw new UserDuplicatedException();
+            throw new UserAlreadyExistsException();
         }
     }
 
@@ -36,7 +36,7 @@ public class UserService {
             user.update(userRequestDto.toEntity());
             return user;
         }
-        throw new NotValidUserException("수정할 수 없습니다");
+        throw new NotValidUserException("수정할 수 없는 이용자입니다");
     }
 
     public void delete(Long id, UserSession userSession) {
@@ -46,7 +46,7 @@ public class UserService {
             userRepository.deleteById(id);
             return;
         }
-        throw new NotValidUserException("삭제할 수 없습니다");
+        throw new NotValidUserException("삭제할 수 없는 이용자입니다");
     }
 
     public User findUserById(long id) {
