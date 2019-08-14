@@ -39,6 +39,10 @@ public class User {
     @LastModifiedDate
     private LocalDateTime lastModifiedTime;
 
+    public User() {
+
+    }
+
     public User(String name, @Email String email, String password) {
         validateName(name);
         validateEmail(email);
