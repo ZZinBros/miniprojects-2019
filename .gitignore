@@ -8,3 +8,4 @@ gradle
 out
 .DS_Store
 *images/
+/src/main/resources/static/images/
