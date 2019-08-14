@@ -1,9 +1,10 @@
-package com.woowacourse.zzinbros.user;
+package com.woowacourse.zzinbros.user.service;
 
 import com.woowacourse.zzinbros.user.domain.User;
 import com.woowacourse.zzinbros.user.domain.UserRepository;
+import com.woowacourse.zzinbros.user.domain.UserTest;
 import com.woowacourse.zzinbros.user.dto.UserRequestDto;
-import com.woowacourse.zzinbros.user.service.UserService;
+import com.woowacourse.zzinbros.user.exception.UserDuplicatedException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,6 +16,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -43,10 +45,22 @@ class UserServiceTest {
     @Test
     @DisplayName("회원 가입 테스트")
     void addUser() {
+        given(userRepository.existsUserByEmail(UserTest.BASE_EMAIL))
+                .willReturn(false);
         given(userRepository.save(user)).willReturn(user);
 
         User savedUser = userService.add(userRequestDto);
         verify(userRepository, times(1)).save(savedUser);
+    }
+
+    @Test
+    @DisplayName("이미 이메일이 존재할 때 가입 실패")
+    void failAddUserWhenUserExists() {
+        given(userRepository.existsUserByEmail(UserTest.BASE_EMAIL))
+                .willReturn(true);
+
+        assertThatThrownBy(() ->
+                userService.add(userRequestDto)).isInstanceOf(UserDuplicatedException.class);
     }
 
     @Test

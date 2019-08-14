@@ -1,4 +1,4 @@
-package com.woowacourse.zzinbros.post.domain;
+package com.woowacourse.zzinbros.post.exception;
 
 public class UnAuthorizedException extends PostException {
     public UnAuthorizedException() {
