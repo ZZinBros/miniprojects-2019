@@ -1,6 +1,4 @@
-package com.woowacourse.zzinbros.post.service;
-
-import com.woowacourse.zzinbros.post.domain.PostException;
+package com.woowacourse.zzinbros.post.exception;
 
 public class PostNotFoundException extends PostException {
     public PostNotFoundException() {
