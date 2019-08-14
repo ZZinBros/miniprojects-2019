@@ -11,6 +11,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.util.Arrays;
 import java.util.Optional;
 
 import static com.woowacourse.zzinbros.post.domain.PostTest.*;
@@ -72,5 +73,11 @@ public class PostServiceTest {
                 .isThrownBy(() -> postService.delete(
                         DEFAULT_USER_ID,
                         new User("paul", "paul123@example.com", "123456789")));
+    }
+
+    @Test
+    void 모든_게시글_조회() {
+        given(postRepository.findAll()).willReturn(Arrays.asList(defaultPost));
+        assertThat(postService.readAll()).isEqualTo(Arrays.asList(defaultPost));
     }
 }
