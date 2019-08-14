@@ -1,4 +1,4 @@
-package com.woowacourse.zzinbros.user;
+package com.woowacourse.zzinbros.user.domain;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

@@ -1,7 +1,7 @@
-package com.woowacourse.zzinbros.user;
+package com.woowacourse.zzinbros.user.domain;
 
+import com.woowacourse.zzinbros.user.exception.IllegalUserArgumentException;
 import org.hibernate.annotations.CreationTimestamp;
-import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
@@ -68,7 +68,7 @@ public class User {
     }
 
     private boolean matchLength(String input, int min, int max) {
-        return (input.length() > min && input.length() < max);
+        return (input.length() >= min && input.length() < max);
     }
 
     private boolean matchRegex(String input, String regex) {
