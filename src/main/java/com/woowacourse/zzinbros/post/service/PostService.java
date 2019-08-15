@@ -8,6 +8,9 @@ import com.woowacourse.zzinbros.post.exception.UnAuthorizedException;
 import com.woowacourse.zzinbros.user.domain.User;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
+import java.util.List;
+
 @Service
 public class PostService {
     private final PostRepository postRepository;
@@ -37,5 +40,9 @@ public class PostService {
             return true;
         }
         throw new UnAuthorizedException("작성자만 삭제할 수 있습니다.");
+    }
+
+    public List<Post> readAll() {
+        return Collections.unmodifiableList(postRepository.findAll());
     }
 }

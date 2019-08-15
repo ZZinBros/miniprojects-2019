@@ -1,6 +1,5 @@
-<div class="feed-body no-pdd">
+<div class="feed-body no-pdd" xmlns:th="http://www.thymeleaf.org">
     <p>
-        <span> 해리와 션의 MVC 패턴 </span> <br>
-        <iframe src="https://www.youtube.com/embed/uoVNJkyXX0I" height="380" allowfullscreen></iframe>
+        <span th:text="${post.contents}"> 해리와 션의 MVC 패턴 </span> <br>
     </p>
 </div>
