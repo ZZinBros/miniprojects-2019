@@ -1,9 +1,9 @@
-<html xmlns:th="http://www.w3.org/1999/xhtml">
+<html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="common/header::mainHead"></head>
 <body>
 <div id="wootecobook-app">
     <header th:replace="common/headline::headline"></header>
-    <div id="main-content" class="container-fluid max-width-lg mx-auto mrg-top-70">
+    <div class="container-fluid max-width-lg mx-auto mrg-top-70" id="main-content">
         <div class="row">
             <div th:replace="common/left-profile"></div>
             <div th:replace="common/center-container"></div>

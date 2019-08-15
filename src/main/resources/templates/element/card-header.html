@@ -1,19 +1,19 @@
-<div class="feed-header">
+<div class="feed-header" xmlns:th="http://www.thymeleaf.org">
     <ul class="list-unstyled list-info">
         <li>
-            <img class="thumb-img img-circle" src="images/default/eastjun_profile.jpg" alt="">
+            <img alt="" class="thumb-img img-circle" src="images/default/eastjun_profile.jpg">
             <div class="info">
-                <a href="" class="title no-pdd-vertical text-semibold inline-block">eastjun</a>
+                <a class="title no-pdd-vertical text-semibold inline-block" href="" th:text="${post.author.name}">eastjun</a>
                 <span>님이 그룹에 링크를 공유했습니다.</span>
                 <span class="sub-title">15시간</span>
-                <a class="pointer absolute top-0 right-0" data-toggle="dropdown" aria-expanded="false">
+                <a aria-expanded="false" class="pointer absolute top-0 right-0" data-toggle="dropdown">
                                         <span class="btn-icon text-dark">
                                             <i class="ti-more font-size-16"></i>
                                         </span>
                 </a>
                 <ul class="dropdown-menu">
                     <li>
-                        <a class="pointer">
+                        <a class="pointer" th:onclick="|onDeleteClick(${post.id})|">
                             <i class="ti-trash pdd-right-10 text-dark"></i>
                             <span class="">게시글 삭제</span>
                         </a>
@@ -23,3 +23,22 @@
         </li>
     </ul>
 </div>
+
+<script type="text/javascript">
+    function onDeleteClick(id) {
+        const url = document.location.href;
+
+        fetch(url + "/posts/" + id, {
+            method: "DELETE",
+            headers: {
+                "Accept": "application/json",
+                "Content-type": "application/json"
+            }
+        })
+            .then(res => console.log(res.json()))
+            .then(body => {
+                location.reload();
+            })
+            .catch(error => console.log(error));
+    }
+</script>
