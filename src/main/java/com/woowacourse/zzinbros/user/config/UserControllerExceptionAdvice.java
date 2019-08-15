@@ -1,6 +1,7 @@
 package com.woowacourse.zzinbros.user.config;
 
 import com.woowacourse.zzinbros.user.exception.UserException;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -8,7 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class UserControllerExceptionAdvice {
 
     @ExceptionHandler(UserException.class)
-    public String handleUserException(UserException e) {
-        return "redirect:/";
+    public String handleUserException(UserException e, Model model) {
+        return "/signup";
     }
 }

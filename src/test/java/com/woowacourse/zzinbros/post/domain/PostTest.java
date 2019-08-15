@@ -38,12 +38,8 @@ public class PostTest {
 
     @Test
     void 게시글_작성자가_아닌_회원이_게시글_수정_테스트() {
-        Post newPost = new Post("newPost", new User(DEFAULT_NAME, DEFAULT_EMAIL, DEFAULT_PASSWORD));
+        Post newPost = new Post("newPost", new User("paul", "paul123@example.com", DEFAULT_PASSWORD));
         assertThatExceptionOfType(UnAuthorizedException.class)
                 .isThrownBy(() -> defaultPost.update(newPost));
-
-        assertThatExceptionOfType(UnAuthorizedException.class)
-                .isThrownBy(() -> newPost.update(defaultPost));
-
     }
 }
