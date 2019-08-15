@@ -51,8 +51,8 @@ class UserServiceTest {
                 UserTest.BASE_PASSWORD);
         user = userRequestDto.toEntity();
         notValidUser = new User(UserTest.BASE_NAME, MISMATCH_EMAIL, UserTest.BASE_PASSWORD);
-        validUserSession = new UserSession(UserTest.BASE_NAME, UserTest.BASE_EMAIL);
-        notValidUserSession = new UserSession(UserTest.BASE_NAME, MISMATCH_EMAIL);
+        validUserSession = new UserSession(BASE_ID, UserTest.BASE_NAME, UserTest.BASE_EMAIL);
+        notValidUserSession = new UserSession(BASE_ID, UserTest.BASE_NAME, MISMATCH_EMAIL);
     }
 
     @Test
