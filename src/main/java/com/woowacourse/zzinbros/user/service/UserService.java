@@ -4,6 +4,7 @@ import com.woowacourse.zzinbros.user.domain.User;
 import com.woowacourse.zzinbros.user.domain.UserRepository;
 import com.woowacourse.zzinbros.user.domain.UserSession;
 import com.woowacourse.zzinbros.user.dto.UserRequestDto;
+import com.woowacourse.zzinbros.user.dto.UserUpdateDto;
 import com.woowacourse.zzinbros.user.exception.NotValidUserException;
 import com.woowacourse.zzinbros.user.exception.UserAlreadyExistsException;
 import com.woowacourse.zzinbros.user.exception.UserLoginException;
@@ -29,11 +30,11 @@ public class UserService {
         }
     }
 
-    public User modify(Long id, UserRequestDto userRequestDto, UserSession userSession) {
+    public User modify(Long id, UserUpdateDto userUpdateDto, UserSession userSession) {
         User user = findUser(id);
         User loggedInUser = findUserByEmail(userSession.getEmail());
         if (loggedInUser.isAuthor(user)) {
-            user.update(userRequestDto.toEntity());
+            user.update(userUpdateDto.toEntity(loggedInUser.getPassword()));
             return user;
         }
         throw new NotValidUserException("수정할 수 없는 이용자입니다");

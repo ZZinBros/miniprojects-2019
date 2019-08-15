@@ -5,6 +5,7 @@ import com.woowacourse.zzinbros.user.domain.UserRepository;
 import com.woowacourse.zzinbros.user.domain.UserSession;
 import com.woowacourse.zzinbros.user.domain.UserTest;
 import com.woowacourse.zzinbros.user.dto.UserRequestDto;
+import com.woowacourse.zzinbros.user.dto.UserUpdateDto;
 import com.woowacourse.zzinbros.user.exception.NotValidUserException;
 import com.woowacourse.zzinbros.user.exception.UserAlreadyExistsException;
 import com.woowacourse.zzinbros.user.exception.UserLoginException;
@@ -38,6 +39,7 @@ class UserServiceTest {
     UserService userService;
 
     private UserRequestDto userRequestDto;
+    private UserUpdateDto userUpdateDto;
     private User user;
     private User notValidUser;
     private UserSession validUserSession;
@@ -49,6 +51,10 @@ class UserServiceTest {
                 UserTest.BASE_NAME,
                 UserTest.BASE_EMAIL,
                 UserTest.BASE_PASSWORD);
+        userUpdateDto = new UserUpdateDto(
+                UserTest.BASE_NAME,
+                UserTest.BASE_EMAIL
+        );
         user = userRequestDto.toEntity();
         notValidUser = new User(UserTest.BASE_NAME, MISMATCH_EMAIL, UserTest.BASE_PASSWORD);
         validUserSession = new UserSession(BASE_ID, UserTest.BASE_NAME, UserTest.BASE_EMAIL);
@@ -78,7 +84,7 @@ class UserServiceTest {
         given(userRepository.findById(BASE_ID)).willReturn(Optional.ofNullable(user));
         given(userRepository.findByEmail(validUserSession.getEmail())).willReturn(Optional.ofNullable(user));
 
-        User updatedUser = userService.modify(BASE_ID, userRequestDto, validUserSession);
+        User updatedUser = userService.modify(BASE_ID, userUpdateDto, validUserSession);
         assertThat(updatedUser).isEqualTo(user);
     }
 
@@ -88,7 +94,7 @@ class UserServiceTest {
         given(userRepository.findById(BASE_ID)).willReturn(Optional.ofNullable(user));
         given(userRepository.findByEmail(notValidUserSession.getEmail())).willReturn(Optional.ofNullable(notValidUser));
 
-        assertThatThrownBy(() -> userService.modify(BASE_ID, userRequestDto, notValidUserSession))
+        assertThatThrownBy(() -> userService.modify(BASE_ID, userUpdateDto, notValidUserSession))
                 .isInstanceOf(NotValidUserException.class);
     }
 
@@ -97,7 +103,7 @@ class UserServiceTest {
     void updateUserWhenUserNotExist() {
         given(userRepository.findById(BASE_ID)).willReturn(Optional.ofNullable(null));
 
-        assertThatThrownBy(() -> userService.modify(BASE_ID, userRequestDto, notValidUserSession))
+        assertThatThrownBy(() -> userService.modify(BASE_ID, userUpdateDto, notValidUserSession))
                 .isInstanceOf(UserNotFoundException.class);
     }
 

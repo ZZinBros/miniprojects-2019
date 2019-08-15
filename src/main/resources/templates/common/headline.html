@@ -32,8 +32,8 @@
                     <span class="text-white text-bold font-size-12">로그인</span>
                 </a>
             </li>
-            <li class="">
-                <a class="pointer">
+            <li class="" th:if="${session.loggedInUser}">
+                <a class="pointer" th:href="@{'/users/' + ${session.loggedInUser.id} + '/edit'}">
                     <span class="text-white text-bold font-size-12">홈</span>
                 </a>
             </li>

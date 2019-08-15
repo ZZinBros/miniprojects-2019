@@ -3,6 +3,7 @@ package com.woowacourse.zzinbros.user.web;
 import com.woowacourse.zzinbros.user.domain.User;
 import com.woowacourse.zzinbros.user.domain.UserSession;
 import com.woowacourse.zzinbros.user.dto.UserRequestDto;
+import com.woowacourse.zzinbros.user.dto.UserUpdateDto;
 import com.woowacourse.zzinbros.user.exception.UserException;
 import com.woowacourse.zzinbros.user.service.UserService;
 import com.woowacourse.zzinbros.user.web.exception.UserRegisterException;
@@ -43,13 +44,14 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
+    @ResponseBody
     public ResponseEntity<User> modify(
             @PathVariable Long id,
-            @RequestBody UserRequestDto userRequestDto,
+            @RequestBody UserUpdateDto userUpdateDto,
             UserSession userSession,
             HttpSession session) {
         try {
-            User user = userService.modify(id, userRequestDto, userSession);
+            User user = userService.modify(id, userUpdateDto, userSession);
             UserSession newUserSession = new UserSession(user.getId(), user.getName(), user.getEmail());
             session.setAttribute(UserSession.LOGIN_USER, newUserSession);
             return new ResponseEntity<>(user, HttpStatus.OK);

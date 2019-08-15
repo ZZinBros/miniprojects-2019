@@ -1,0 +1,82 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="common/header::mainHead"></head>
+<body>
+<div id="wootecobook-app">
+    <div id="main-content" class="container-fluid max-width-lg mx-auto mrg-top-70">
+        <div class="row">
+            <div class="col-md-7 mx-auto">
+                <div class="card">
+                        <div class="card-heading pdd-btm-5 border bottom">
+                            <h4 class="card-title d-inline-block">profile</h4>
+                            <button type="submit" th:onclick="|onUserUpdateClick()|"
+                                    class="btn btn-info float-right mrg-btm-0 relative bottom-5">
+                                수정
+                            </button>
+                        </div>
+                        <div class="card-block">
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <p class="mrg-top-10 text-dark"><b>이름</b></p>
+                            </div>
+                            <div class="col-md-6">
+                                <input th:value="${user?.name}" id="user-edit-name" name="name" type="text"
+                                       class="form-control">
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <p class="mrg-top-10 text-dark"><b>Email</b></p>
+                            </div>
+                            <div class="col-md-6">
+                                <p th:text="${user?.email}" class="mrg-top-10"></p>
+                                <input type="hidden" id="user-edit-email"
+                                       th:value="${user?.email}" name="email" class="form-control">
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <p class="mrg-top-10 text-dark"><b>Avatar</b></p>
+                            </div>
+                            <div class="col-md-6">
+                                <div>
+                                    <label for="img-upload" class="pointer">
+                                        <img src="https://avatars3.githubusercontent.com/u/46308949?s=460&v=4"
+                                             width="117" alt="">
+                                        <span class="btn btn-default display-block no-mrg-btm">Choose file</span>
+                                        <input class="d-none" type="file" name="uploadedimages0" multiple
+                                               id="img-upload">
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                </div>
+            </div>
+        </div>
+        <th:block th:include="common/cdns"></th:block>
+        <script>
+            const userId = [[ ${user.id}]];
+
+            onUserUpdateClick = function() {
+                const nameInput = document.getElementById('user-edit-name');
+                const nameValue = nameInput.value;
+                const emailValue = document.getElementById('user-edit-email').value;
+                fetch('/users/' + userId, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json; charset=UTF-8'
+                    },
+                    body: JSON.stringify({name: nameValue,
+                                          email: emailValue})
+                }).then(response=> {
+                    response.json().then(function(json) {
+                       nameInput.value = json.name;
+                    });
+                });
+            }
+        </script>
+</body>
+</html>
