@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="common/header::mainHead"></head>
+<body>
+<div id="wootecobook-app">
+    <header th:replace="common/headline::headline"></header>
+    <div class="container-fluid max-width-lg mx-auto mrg-top-70" id="main-content">
+        <div class="row">
+            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" id="left-placeholder-container">
+            </div>
+            <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">
+                <div class="signup-area">
+                    <div class="card widget-compose">
+                        <p class="border bottom width-100 pdd-btm-5 text-bold">게시물 수정</p>
+                        <textarea class="resize-none form-control border bottom resize-none" id="post-modify-content"
+                                  th:text="${post.contents}"></textarea>
+                        <div class="text-center">
+                            <button class="btn btn-facebook btn-lg btn-rounded "
+                                    th:onclick="|onModifyClick(${post.id})|" type="button">저장
+                            </button>
+                            <a class="btn btn-facebook btn-lg btn-rounded " href="/">취소</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 pdd-right-0">
+                <!-- placeholder-->
+            </div>
+        </div>
+    </div>
+</div>
+<th:block th:include="common/cdns"></th:block>
+<script type="text/javascript">
+    function onModifyClick(id) {
+        const content = document.getElementById('post-modify-content').value;
+        const url = document.location.origin;
+        const postRequest = {
+            contents: content
+        };
+
+        fetch(url + "/posts/" + id, {
+            method: "PUT",
+            body: JSON.stringify(postRequest),
+            headers: {
+                "Accept": "application/json",
+                "Content-type": "application/json"
+            }
+        }).then(document.location.href = url)
+            .catch(error => console.log(error));
+    }
+</script>
+</body>
+</html>
