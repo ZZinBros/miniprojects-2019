@@ -22,11 +22,11 @@ public class LoginController {
     }
 
     @PostMapping
-    public String login(@RequestBody UserRequestDto userRequestDto, HttpSession session) {
+    public String login(UserRequestDto userRequestDto, HttpSession session) {
         try {
             UserSession userSession = userService.login(userRequestDto);
             session.setAttribute(UserSession.LOGIN_USER, userSession);
-            return "/";
+            return "index";
         } catch (UserException e) {
             return "redirect:/";
         }

@@ -3,7 +3,8 @@
         <ul class="nav-left mrg-left-0">
             <li>
                 <a href="/">
-                    <div class="logo" style="background-image: url('https://raw.githubusercontent.com/woowacourse/miniprojects/master/wootecobook/images/default/icons.png')"></div>
+                    <div class="logo"
+                         style="background-image: url('https://raw.githubusercontent.com/woowacourse/miniprojects/master/wootecobook/images/default/icons.png')"></div>
                 </a>
             </li>
             <li class="search-container">
@@ -19,10 +20,15 @@
         </ul>
         <ul class="nav-right">
             <li class="user-profile">
-                <a>
-                    <img class="profile-img img-fluid" src="https://raw.githubusercontent.com/woowacourse/miniprojects/master/wootecobook/images/default/eastjun_profile.jpg" alt="">
+                <a th:unless="${session.loggedInUser}" class="pointer" th:href="@{/login}">
+                    <span class="text-white text-bold font-size-12">로그인</span>
+                </a>
+                <a th:if="${session.loggedInUser}">
+                    <img class="profile-img img-fluid"
+                         src="https://raw.githubusercontent.com/woowacourse/miniprojects/master/wootecobook/images/default/eastjun_profile.jpg"
+                         alt="">
                     <div class="user-info mrg-left-5">
-                        <span class="name pdd-right-5 text-white text-bold">eastjun</span>
+                        <span th:text="${session.loggedInUser.name}" class="name pdd-right-5 text-white text-bold">eastjun</span>
                     </div>
                 </a>
             </li>

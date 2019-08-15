@@ -99,6 +99,10 @@ public class User {
         this.password = updatedUser.password;
     }
 
+    public boolean matchPassword(String password) {
+        return this.password.equals(password);
+    }
+
     public boolean isAuthor(User another) {
         return this.email.equals(another.email)
                 && this.password.equals(another.password);
