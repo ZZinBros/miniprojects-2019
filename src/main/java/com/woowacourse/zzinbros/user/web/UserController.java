@@ -5,6 +5,7 @@ import com.woowacourse.zzinbros.user.domain.UserSession;
 import com.woowacourse.zzinbros.user.dto.UserRequestDto;
 import com.woowacourse.zzinbros.user.exception.UserException;
 import com.woowacourse.zzinbros.user.service.UserService;
+import com.woowacourse.zzinbros.user.web.exception.UserRegisterException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -32,12 +33,12 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<User> register(@RequestBody UserRequestDto userRequestDto) {
+    public String register(UserRequestDto userRequestDto) {
         try {
-            User user = userService.register(userRequestDto);
-            return new ResponseEntity<>(user, HttpStatus.OK);
+            userService.register(userRequestDto);
+            return "index";
         } catch (UserException e) {
-            return new ResponseEntity<>(null, HttpStatus.ACCEPTED);
+            throw new UserRegisterException(e.getMessage());
         }
     }
 
@@ -59,7 +60,7 @@ public class UserController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<User> resign(@PathVariable Long id, UserSession userSession, HttpSession session) {
-        userService.resign(id, userSession);
+        userService.delete(id, userSession);
         session.removeAttribute(UserSession.LOGIN_USER);
         return new ResponseEntity<>(null, HttpStatus.OK);
     }

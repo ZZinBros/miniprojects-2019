@@ -10,4 +10,9 @@ public class DemoController {
     public String demo() {
         return "index";
     }
+
+    @GetMapping("/signup")
+    public String signup() {
+        return "signup";
+    }
 }

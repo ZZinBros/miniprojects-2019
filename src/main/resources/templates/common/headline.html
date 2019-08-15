@@ -1,4 +1,4 @@
-<header id="header" class="header navbar" th:fragment="headline">
+<header id="header" class="header navbar" th:fragment="headline" xmlns:th="http://www.w3.org/1999/xhtml">
     <div class="header-container max-width-lg mx-auto">
         <ul class="nav-left mrg-left-0">
             <li>
@@ -34,6 +34,11 @@
             <li>
                 <a class="pointer">
                     <span class="text-white text-bold font-size-12">만들기</span>
+                </a>
+            </li>
+            <li>
+                <a class="pointer" th:href="@{/signup}">
+                    <span class="text-white text-bold font-size-12">회원 가입</span>
                 </a>
             </li>
             <li>

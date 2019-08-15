@@ -2,6 +2,7 @@ package com.woowacourse.zzinbros.user.domain;
 
 import com.woowacourse.zzinbros.user.exception.IllegalUserArgumentException;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
@@ -36,7 +37,7 @@ public class User {
     @CreationTimestamp
     private LocalDateTime createdTime;
 
-    @LastModifiedDate
+    @UpdateTimestamp
     private LocalDateTime lastModifiedTime;
 
     public User() {
@@ -44,29 +45,24 @@ public class User {
     }
 
     public User(String name, @Email String email, String password) {
-        validateName(name);
-        validateEmail(email);
-        validatePassword(password);
+        validateLength(name, MIN_NAME_LENGTH, MAX_NAME_LENGTH);
+        validateLength(password, MIN_PASSWORD_LENGTH, MAX_PASSWORD_LENGTH);
+        validatePattern(email, EMAIL_PATTERN);
 
         this.name = name;
         this.email = email;
         this.password = password;
     }
 
-    private void validateName(String name) {
-        if (!matchLength(name, MIN_NAME_LENGTH, MAX_NAME_LENGTH)) {
-            throw new IllegalUserArgumentException();
+    private void validateLength(String name, int minNameLength, int maxNameLength) {
+        if (!matchLength(name, minNameLength, maxNameLength)) {
+            String message = String.format("길이가 %d 이상 %d 미만이어야 합니다", MIN_NAME_LENGTH, MAX_NAME_LENGTH);
+            throw new IllegalUserArgumentException(message);
         }
     }
 
-    private void validatePassword(String password) {
-        if (!matchLength(password, MIN_PASSWORD_LENGTH, MAX_PASSWORD_LENGTH)) {
-            throw new IllegalUserArgumentException();
-        }
-    }
-
-    private void validateEmail(String email) {
-        if (!matchRegex(email, EMAIL_PATTERN)) {
+    private void validatePattern(String element, String pattern) {
+        if (!matchRegex(element, pattern)) {
             throw new IllegalUserArgumentException();
         }
     }
