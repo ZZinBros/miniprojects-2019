@@ -25,7 +25,7 @@ public class LoginController {
         try {
             UserSession userSession = userService.login(userRequestDto);
             session.setAttribute(UserSession.LOGIN_USER, userSession);
-            return "index";
+            return "redirect:/";
         } catch (UserException e) {
             return "redirect:/login";
         }

@@ -1,6 +1,5 @@
 package com.woowacourse.zzinbros.user.web;
 
-import com.woowacourse.zzinbros.user.domain.User;
 import com.woowacourse.zzinbros.user.domain.UserSession;
 import com.woowacourse.zzinbros.user.domain.UserTest;
 import com.woowacourse.zzinbros.user.dto.UserRequestDto;
@@ -15,6 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -49,11 +49,14 @@ class LoginControllerTest {
     void loginSuccess() throws Exception {
         given(userService.login(userRequestDto)).willReturn(userSession);
 
-        mockMvc.perform(post("/login")
+        String url = mockMvc.perform(post("/login")
                 .param("name", userRequestDto.getName())
                 .param("email", userRequestDto.getEmail())
                 .param("password", userRequestDto.getPassword()))
-                .andExpect(status().isOk());
+                .andExpect(status().isFound())
+                .andReturn().getResponse().getHeader("Location");
+        
+        assertTrue(url.equals("/"));
     }
 
     @Test
@@ -61,10 +64,13 @@ class LoginControllerTest {
         given(userService.login(userRequestDto))
                 .willThrow(UserLoginException.class);
 
-        mockMvc.perform(post("/login")
+        String url = mockMvc.perform(post("/login")
                 .param("name", userRequestDto.getName())
                 .param("email", userRequestDto.getEmail())
                 .param("password", userRequestDto.getPassword()))
-                .andExpect(status().is3xxRedirection());
+                .andExpect(status().isFound())
+                .andReturn().getResponse().getHeader("Location");
+
+        assertTrue(url.equals("/login"));
     }
 }
