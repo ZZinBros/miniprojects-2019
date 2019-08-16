@@ -6,7 +6,6 @@ import com.woowacourse.zzinbros.user.exception.UserException;
 import com.woowacourse.zzinbros.user.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpSession;

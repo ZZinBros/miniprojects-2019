@@ -31,7 +31,7 @@ class UserServiceTest {
 
     private static final long BASE_ID = 1L;
     private static final String MISMATCH_EMAIL = "error@test.com";
-    
+
     @Mock
     UserRepository userRepository;
 

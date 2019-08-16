@@ -62,7 +62,7 @@ public class UserService {
     public UserSession login(UserRequestDto userRequestDto) {
         User user = findUserByEmail(userRequestDto.getEmail());
 
-        if(user.matchPassword(userRequestDto.getPassword())) {
+        if (user.matchPassword(userRequestDto.getPassword())) {
             return new UserSession(user.getId(), user.getName(), user.getEmail());
         }
         throw new UserLoginException("비밀번호가 다릅니다");

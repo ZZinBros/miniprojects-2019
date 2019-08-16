@@ -3,7 +3,6 @@ package com.woowacourse.zzinbros.user.domain;
 import com.woowacourse.zzinbros.user.exception.IllegalUserArgumentException;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
