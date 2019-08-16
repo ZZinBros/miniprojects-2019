@@ -1,5 +1,6 @@
 package com.woowacourse.zzinbros.user.web;
 
+import com.woowacourse.zzinbros.user.domain.ResponseMessage;
 import com.woowacourse.zzinbros.user.domain.User;
 import com.woowacourse.zzinbros.user.domain.UserSession;
 import com.woowacourse.zzinbros.user.dto.UserRequestDto;
@@ -45,7 +46,7 @@ public class UserController {
 
     @PutMapping("/{id}")
     @ResponseBody
-    public ResponseEntity<User> modify(
+    public ResponseEntity<ResponseMessage> modify(
             @PathVariable Long id,
             @RequestBody UserUpdateDto userUpdateDto,
             UserSession userSession,
@@ -54,9 +55,10 @@ public class UserController {
             User user = userService.modify(id, userUpdateDto, userSession);
             UserSession newUserSession = new UserSession(user.getId(), user.getName(), user.getEmail());
             session.setAttribute(UserSession.LOGIN_USER, newUserSession);
-            return new ResponseEntity<>(user, HttpStatus.OK);
+            return new ResponseEntity<>(new ResponseMessage(user, "SUCCESS"), HttpStatus.OK);
         } catch (UserException e) {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+            User user = userService.findUserById(id);
+            return new ResponseEntity<>(new ResponseMessage(user, e.getMessage()), HttpStatus.NOT_FOUND);
         }
     }
 
