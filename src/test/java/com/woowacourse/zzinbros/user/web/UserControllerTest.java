@@ -74,7 +74,7 @@ class UserControllerTest {
                 .param("email", userRequestDto.getEmail())
                 .param("password", userRequestDto.getPassword())
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED))
-                .andExpect(status().isOk());
+                .andExpect(status().isFound());
     }
 
     @Test

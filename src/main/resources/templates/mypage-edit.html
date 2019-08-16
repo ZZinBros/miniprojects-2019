@@ -14,11 +14,11 @@
                             <button type="submit" class="btn btn-danger float-right mrg-btm-0 relative bottom-5">
                                 탈퇴
                             </button>
+                            <button type="button" onclick="onUserUpdateClick()"
+                                    class="btn btn-info float-right mrg-btm-0 relative bottom-5">
+                                수정
+                            </button>
                         </form>
-                        <button type="submit" th:onclick="|onUserUpdateClick()|"
-                                class="btn btn-info float-right mrg-btm-0 relative bottom-5">
-                            수정
-                        </button>
                     </div>
                     <div class="card-block">
                     </div>
@@ -82,28 +82,28 @@
                         name: nameValue,
                         email: emailValue
                     })
-                }).then(response = > {
+                }).then(response => {
                     console.log(response);
-                const errorDiv = document.getElementById("error-message");
-                errorDiv.innerHTML = "";
-                if (response.status === 200) {
+                    const errorDiv = document.getElementById("error-message");
+                    errorDiv.innerHTML = "";
+                    if (response.status === 200) {
+                        response.json().then(function (json) {
+                            console.log(json);
+                            const p = document.createElement('p');
+                            p.innerHTML = json.message;
+                            errorDiv.insertAdjacentElement('afterbegin', p);
+                            nameInput.value = json.object.name;
+                        });
+                        return;
+                    }
                     response.json().then(function (json) {
-                        console.log(json);
+                        console.log(json.message);
                         const p = document.createElement('p');
                         p.innerHTML = json.message;
                         errorDiv.insertAdjacentElement('afterbegin', p);
                         nameInput.value = json.object.name;
                     });
-                    return;
-                }
-                response.json().then(function (json) {
-                    console.log(json.message);
-                    const p = document.createElement('p');
-                    p.innerHTML = json.message;
-                    errorDiv.insertAdjacentElement('afterbegin', p);
-                    nameInput.value = json.object.name;
-                });
-            })
+                })
                 ;
             }
         </script>
