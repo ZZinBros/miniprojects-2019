@@ -1,9 +1,9 @@
 package com.woowacourse.zzinbros.comment.service;
 
 import com.woowacourse.zzinbros.comment.domain.Comment;
+import com.woowacourse.zzinbros.comment.domain.repository.CommentRepository;
 import com.woowacourse.zzinbros.comment.exception.CommentNotFoundException;
 import com.woowacourse.zzinbros.comment.exception.UnauthorizedException;
-import com.woowacourse.zzinbros.comment.repository.CommentRepository;
 import com.woowacourse.zzinbros.post.domain.Post;
 import com.woowacourse.zzinbros.user.domain.User;
 import org.springframework.stereotype.Service;

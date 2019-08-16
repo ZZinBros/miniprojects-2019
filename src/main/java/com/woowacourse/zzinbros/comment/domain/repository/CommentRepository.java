@@ -1,4 +1,4 @@
-package com.woowacourse.zzinbros.comment.repository;
+package com.woowacourse.zzinbros.comment.domain.repository;
 
 import com.woowacourse.zzinbros.comment.domain.Comment;
 import com.woowacourse.zzinbros.post.domain.Post;
