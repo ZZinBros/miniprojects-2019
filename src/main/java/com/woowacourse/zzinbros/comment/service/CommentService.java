@@ -26,15 +26,20 @@ public class CommentService {
         return commentRepository.findByPost(post);
     }
 
-    public Comment update(final Long commentId, final String newContents, final User author) {
+    public void update(final Long commentId, final String newContents, final User author) {
         final Comment comment = commentRepository.findById(commentId).orElseThrow(CommentNotFoundException::new);
-        return comment.update(newContents, author);
+        checkMatchedUser(comment, author);
+        comment.update(newContents);
     }
 
     public void delete(final Long commentId, final User author) {
         final Comment comment = commentRepository.findById(commentId).orElseThrow(CommentNotFoundException::new);
-        if (comment.isMatchUser(author)) {
-            commentRepository.delete(comment);
+        checkMatchedUser(comment, author);
+        commentRepository.delete(comment);
+    }
+
+    private void checkMatchedUser(final Comment comment, final User user) {
+        if (comment.isMatchUser(user)) {
             return;
         }
         throw new UnauthorizedException();
