@@ -73,6 +73,7 @@
                 const nameInput = document.getElementById('user-edit-name');
                 const nameValue = nameInput.value;
                 const emailValue = document.getElementById('user-edit-email').value;
+                const headlineName = document.getElementById('headline-user-name');
                 fetch('/users/' + userId, {
                     method: 'PUT',
                     headers: {
@@ -83,7 +84,6 @@
                         email: emailValue
                     })
                 }).then(response => {
-                    console.log(response);
                     const errorDiv = document.getElementById("error-message");
                     errorDiv.innerHTML = "";
                     if (response.status === 200) {
@@ -92,6 +92,7 @@
                             p.innerHTML = json.message;
                             errorDiv.insertAdjacentElement('afterbegin', p);
                             nameInput.value = json.object.name;
+                            headlineName.innerText = json.object.name;
                         });
                         return;
                     }

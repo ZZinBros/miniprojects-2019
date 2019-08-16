@@ -25,7 +25,10 @@
                          src="https://raw.githubusercontent.com/woowacourse/miniprojects/master/wootecobook/images/default/eastjun_profile.jpg"
                          alt="">
                     <div class="user-info mrg-left-5">
-                        <span th:text="${session.loggedInUser.name}" class="name pdd-right-5 text-white text-bold">eastjun</span>
+                        <span th:text="${session.loggedInUser.name}" id="headline-user-name"
+                              class="name pdd-right-5 text-white text-bold">
+                            eastjun
+                        </span>
                     </div>
                 </a>
                 <a th:unless="${session.loggedInUser}" class="pointer" th:href="@{/login}">
