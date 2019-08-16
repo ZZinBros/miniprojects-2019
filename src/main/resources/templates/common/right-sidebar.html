@@ -1,5 +1,5 @@
-<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 pdd-right-0">
-    <div class="card">
+<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 pdd-right-0" xmlns:th="http://www.w3.org/1999/xhtml">
+    <div th:if="${session.loggedInUser}" class="card">
         <h5 class="card-title mrg-top-15 mrg-btm-0 mrg-horizon-15">스토리</h5>
         <div class="card-body">
             <ul class="list-unstyled list-info">

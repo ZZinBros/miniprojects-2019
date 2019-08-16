@@ -60,12 +60,11 @@ public class UserService {
 
     public UserSession login(UserRequestDto userRequestDto) {
         User user = findUserByEmail(userRequestDto.getEmail());
-        User requestUser = userRequestDto.toEntity();
 
-        if (user.isAuthor(requestUser)) {
-            return new UserSession(userRequestDto.getName(), userRequestDto.getEmail());
+        if(user.matchPassword(userRequestDto.getPassword())) {
+            return new UserSession(user.getId(), user.getName(), user.getEmail());
         }
-        throw new UserLoginException();
+        throw new UserLoginException("비밀번호가 다릅니다");
     }
 
     private User findUserByEmail(String email) {

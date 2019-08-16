@@ -13,6 +13,12 @@
                 </a>
                 <ul class="dropdown-menu">
                     <li>
+                        <a class="pointer" th:href="@{/posts/{id}/edit(id=${post.id})}">
+                            <i class="ti-pencil pdd-right-10 text-dark"></i>
+                            <span class="">게시글 수정</span>
+                        </a>
+                    </li>
+                    <li>
                         <a class="pointer" th:onclick="|onDeleteClick(${post.id})|">
                             <i class="ti-trash pdd-right-10 text-dark"></i>
                             <span class="">게시글 삭제</span>

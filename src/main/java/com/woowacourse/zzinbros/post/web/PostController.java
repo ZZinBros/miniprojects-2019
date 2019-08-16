@@ -39,10 +39,13 @@ public class PostController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Post> modify(@PathVariable long id, @RequestBody PostRequestDto dto, HttpSession session) {
+    public Post modify(@PathVariable long id, @RequestBody PostRequestDto dto, HttpSession session) {
         User loggedInUser = (User) session.getAttribute("loggedInUser");
-        Post updatePost = postService.update(id, dto, loggedInUser);
-        return new ResponseEntity<>(updatePost, HttpStatus.OK);
+
+        // 임시
+        loggedInUser = userService.findUserById(999L);
+
+        return postService.update(id, dto, loggedInUser);
     }
 
     @DeleteMapping("/{id}")
