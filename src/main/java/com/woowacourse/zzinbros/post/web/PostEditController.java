@@ -1,6 +1,9 @@
 package com.woowacourse.zzinbros.post.web;
 
+import com.woowacourse.zzinbros.post.domain.Post;
+import com.woowacourse.zzinbros.post.exception.UnAuthorizedException;
 import com.woowacourse.zzinbros.post.service.PostService;
+import com.woowacourse.zzinbros.user.domain.UserSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,10 +18,14 @@ public class PostEditController {
     }
 
     @GetMapping("/posts/{id}/edit")
-    public ModelAndView showEdit(@PathVariable long id) {
+    public ModelAndView showEdit(@PathVariable long id, UserSession userSession) {
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("post-modify");
-        modelAndView.addObject("post", postService.read(id));
-        return modelAndView;
+        Post post = postService.read(id);
+        if (userSession.getId().equals(post.getAuthor().getId())) {
+            modelAndView.setViewName("post-modify");
+            modelAndView.addObject("post", postService.read(id));
+            return modelAndView;
+        }
+        throw new UnAuthorizedException("게시글은 작성자만 수정할 수 있습니다.");
     }
 }

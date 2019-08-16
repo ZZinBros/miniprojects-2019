@@ -4,6 +4,7 @@ import com.woowacourse.zzinbros.post.domain.Post;
 import com.woowacourse.zzinbros.post.dto.PostRequestDto;
 import com.woowacourse.zzinbros.post.service.PostService;
 import com.woowacourse.zzinbros.user.domain.User;
+import com.woowacourse.zzinbros.user.domain.UserSession;
 import com.woowacourse.zzinbros.user.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,13 +40,8 @@ public class PostController {
     }
 
     @PutMapping("/{id}")
-    public Post modify(@PathVariable long id, @RequestBody PostRequestDto dto, HttpSession session) {
-        User loggedInUser = (User) session.getAttribute("loggedInUser");
-
-        // 임시
-        loggedInUser = userService.findUserById(999L);
-
-        return postService.update(id, dto, loggedInUser);
+    public Post modify(@PathVariable long id, @RequestBody PostRequestDto dto, UserSession userSession) {
+        return postService.update(id, dto, userSession);
     }
 
     @DeleteMapping("/{id}")

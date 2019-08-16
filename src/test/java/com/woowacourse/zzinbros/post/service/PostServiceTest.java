@@ -5,6 +5,7 @@ import com.woowacourse.zzinbros.post.domain.repository.PostRepository;
 import com.woowacourse.zzinbros.post.dto.PostRequestDto;
 import com.woowacourse.zzinbros.post.exception.UnAuthorizedException;
 import com.woowacourse.zzinbros.user.domain.User;
+import com.woowacourse.zzinbros.user.domain.UserSession;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -20,9 +21,10 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.BDDMockito.given;
 
 public class PostServiceTest {
-    private final Long DEFAULT_USER_ID = 999L;
+    private final Long DEFAULT_POST_ID = 999L;
     private User defaultUser;
     private Post defaultPost;
+
     @Mock
     private PostRepository postRepository;
 
@@ -47,31 +49,31 @@ public class PostServiceTest {
 
     @Test
     void 게시글_수정() {
-        given(postRepository.findById(DEFAULT_USER_ID)).willReturn(Optional.of(defaultPost));
+        given(postRepository.findById(DEFAULT_POST_ID)).willReturn(Optional.of(defaultPost));
         PostRequestDto dto = new PostRequestDto();
         dto.setContents(NEW_CONTENT);
 
-        assertThat(postService.update(DEFAULT_USER_ID, dto, defaultUser)).isEqualTo(new Post(NEW_CONTENT, defaultUser));
+        assertThat(postService.update(DEFAULT_POST_ID, dto, new UserSession(null, DEFAULT_NAME, DEFAULT_EMAIL))).isEqualTo(new Post(NEW_CONTENT, defaultUser));
     }
 
     @Test
     void 게시글_조회() {
-        given(postRepository.findById(DEFAULT_USER_ID)).willReturn(Optional.of(defaultPost));
-        assertThat(postService.read(DEFAULT_USER_ID)).isEqualTo(defaultPost);
+        given(postRepository.findById(DEFAULT_POST_ID)).willReturn(Optional.of(defaultPost));
+        assertThat(postService.read(DEFAULT_POST_ID)).isEqualTo(defaultPost);
     }
 
     @Test
     void 게시글_작성자가_게시글_삭제() {
-        given(postRepository.findById(DEFAULT_USER_ID)).willReturn(Optional.of(defaultPost));
-        assertThat(postService.delete(DEFAULT_USER_ID, defaultUser)).isTrue();
+        given(postRepository.findById(DEFAULT_POST_ID)).willReturn(Optional.of(defaultPost));
+        assertThat(postService.delete(DEFAULT_POST_ID, defaultUser)).isTrue();
     }
 
     @Test
     void 게시글_작성자가_아닌_회원이_게시글_삭제() {
-        given(postRepository.findById(DEFAULT_USER_ID)).willReturn(Optional.of(defaultPost));
+        given(postRepository.findById(DEFAULT_POST_ID)).willReturn(Optional.of(defaultPost));
         assertThatExceptionOfType(UnAuthorizedException.class)
                 .isThrownBy(() -> postService.delete(
-                        DEFAULT_USER_ID,
+                        DEFAULT_POST_ID,
                         new User("paul", "paul123@example.com", "123456789")));
     }
 

@@ -32,14 +32,12 @@ public class PostTest {
 
     @Test
     void 게시글_작성자가_게시글_수정_테스트() {
-        Post newPost = new Post(NEW_CONTENT, defaultUser);
-        assertThat((defaultPost.update(newPost)).getContents()).isEqualTo(NEW_CONTENT);
+        assertThat((defaultPost.update(null, NEW_CONTENT)).getContents()).isEqualTo(NEW_CONTENT);
     }
 
     @Test
     void 게시글_작성자가_아닌_회원이_게시글_수정_테스트() {
-        Post newPost = new Post("newPost", new User("paul", "paul123@example.com", DEFAULT_PASSWORD));
         assertThatExceptionOfType(UnAuthorizedException.class)
-                .isThrownBy(() -> defaultPost.update(newPost));
+                .isThrownBy(() -> defaultPost.update(999L, NEW_CONTENT));
     }
 }

@@ -35,9 +35,9 @@ public class Post {
         this.author = author;
     }
 
-    public Post update(Post another) {
-        if (matchAuthor(another.getAuthor())) {
-            this.contents = another.contents;
+    public Post update(Long loggedInUserId, String contents) {
+        if (author.getId() == loggedInUserId) {
+            this.contents = contents;
             return this;
         }
         throw new UnAuthorizedException("게시글은 본인만 수정할 수 있습니다.");

@@ -6,6 +6,7 @@ import com.woowacourse.zzinbros.post.dto.PostRequestDto;
 import com.woowacourse.zzinbros.post.exception.PostNotFoundException;
 import com.woowacourse.zzinbros.post.exception.UnAuthorizedException;
 import com.woowacourse.zzinbros.user.domain.User;
+import com.woowacourse.zzinbros.user.domain.UserSession;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,9 +27,9 @@ public class PostService {
     }
 
     @Transactional
-    public Post update(long postId, PostRequestDto dto, User user) {
+    public Post update(long postId, PostRequestDto dto, UserSession userSession) {
         Post post = postRepository.findById(postId).orElseThrow(PostNotFoundException::new);
-        return post.update(new Post(dto.getContents(), user));
+        return post.update(userSession.getId(), dto.getContents());
     }
 
     public Post read(long postId) {
