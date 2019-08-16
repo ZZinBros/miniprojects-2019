@@ -6,7 +6,9 @@ import com.woowacourse.zzinbros.post.dto.PostRequestDto;
 import com.woowacourse.zzinbros.post.exception.PostNotFoundException;
 import com.woowacourse.zzinbros.post.exception.UnAuthorizedException;
 import com.woowacourse.zzinbros.user.domain.User;
+import com.woowacourse.zzinbros.user.domain.UserRepository;
 import com.woowacourse.zzinbros.user.domain.UserSession;
+import com.woowacourse.zzinbros.user.exception.UserNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,9 +18,11 @@ import java.util.List;
 @Service
 public class PostService {
     private final PostRepository postRepository;
+    private final UserRepository userRepository;
 
-    public PostService(PostRepository postRepository) {
+    public PostService(PostRepository postRepository, UserRepository userRepository) {
         this.postRepository = postRepository;
+        this.userRepository = userRepository;
     }
 
     public Post add(PostRequestDto dto, User user) {
@@ -36,8 +40,9 @@ public class PostService {
         return postRepository.findById(postId).orElseThrow(PostNotFoundException::new);
     }
 
-    public boolean delete(long postId, User user) {
+    public boolean delete(long postId, UserSession userSession) {
         Post post = postRepository.findById(postId).orElseThrow(PostNotFoundException::new);
+        User user = userRepository.findById(userSession.getId()).orElseThrow(UserNotFoundException::new);
         if (post.matchAuthor(user)) {
             postRepository.delete(post);
             return true;

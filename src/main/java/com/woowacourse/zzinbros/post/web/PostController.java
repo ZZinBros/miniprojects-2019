@@ -10,8 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpSession;
-
 @RestController
 @RequestMapping("/posts")
 public class PostController {
@@ -41,13 +39,8 @@ public class PostController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Post> remove(@PathVariable long id, HttpSession session) {
-        User loggedInUser = (User) session.getAttribute("loggedInUser");
-
-        // 임시
-        loggedInUser = userService.findUserById(999L);
-
-        postService.delete(id, loggedInUser);
+    public ResponseEntity<Post> remove(@PathVariable long id, UserSession userSession) {
+        postService.delete(id, userSession);
         return new ResponseEntity<>(null, HttpStatus.OK);
     }
 }
