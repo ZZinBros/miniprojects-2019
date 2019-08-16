@@ -5,6 +5,7 @@
 build
 .idea/
 gradle
+!gradle/wrapper/*
 out/
 target/
 *images/
