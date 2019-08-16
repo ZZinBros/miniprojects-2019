@@ -9,7 +9,7 @@ import com.woowacourse.zzinbros.user.domain.UserTest;
 import com.woowacourse.zzinbros.user.dto.UserRequestDto;
 import com.woowacourse.zzinbros.user.dto.UserUpdateDto;
 import com.woowacourse.zzinbros.user.exception.NotValidUserException;
-import com.woowacourse.zzinbros.user.exception.UserAlreadyExistsException;
+import com.woowacourse.zzinbros.user.exception.EmailAlreadyExistsException;
 import com.woowacourse.zzinbros.user.exception.UserNotFoundException;
 import com.woowacourse.zzinbros.user.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
@@ -81,7 +81,7 @@ class UserControllerTest {
     @DisplayName("중복된 이메일이 존재해서 회원가입 실패")
     void postWhenUserExistsTest() throws Exception {
         given(userService.register(userRequestDto))
-                .willThrow(UserAlreadyExistsException.class);
+                .willThrow(EmailAlreadyExistsException.class);
 
         mockMvc.perform(post("/users")
                 .param("name", userRequestDto.getName())

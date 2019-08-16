@@ -6,7 +6,7 @@ import com.woowacourse.zzinbros.user.domain.UserSession;
 import com.woowacourse.zzinbros.user.dto.UserRequestDto;
 import com.woowacourse.zzinbros.user.dto.UserUpdateDto;
 import com.woowacourse.zzinbros.user.exception.NotValidUserException;
-import com.woowacourse.zzinbros.user.exception.UserAlreadyExistsException;
+import com.woowacourse.zzinbros.user.exception.EmailAlreadyExistsException;
 import com.woowacourse.zzinbros.user.exception.UserLoginException;
 import com.woowacourse.zzinbros.user.exception.UserNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -26,7 +26,7 @@ public class UserService {
         try {
             return userRepository.save(userRequestDto.toEntity());
         } catch (DataIntegrityViolationException e) {
-            throw new UserAlreadyExistsException();
+            throw new EmailAlreadyExistsException("중복된 이메일이 존재합니다");
         }
     }
 
@@ -56,7 +56,7 @@ public class UserService {
 
     private User findUser(long id) {
         return userRepository.findById(id)
-                .orElseThrow(UserNotFoundException::new);
+                .orElseThrow(() -> new UserNotFoundException("User Not Found By ID"));
     }
 
     public UserSession login(UserRequestDto userRequestDto) {
@@ -70,6 +70,6 @@ public class UserService {
 
     private User findUserByEmail(String email) {
         return userRepository.findByEmail(email)
-                .orElseThrow(UserNotFoundException::new);
+                .orElseThrow(() -> new UserNotFoundException("User Not Found By email"));
     }
 }

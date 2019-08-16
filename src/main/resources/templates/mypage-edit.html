@@ -88,7 +88,6 @@
                     errorDiv.innerHTML = "";
                     if (response.status === 200) {
                         response.json().then(function (json) {
-                            console.log(json);
                             const p = document.createElement('p');
                             p.innerHTML = json.message;
                             errorDiv.insertAdjacentElement('afterbegin', p);
@@ -97,7 +96,6 @@
                         return;
                     }
                     response.json().then(function (json) {
-                        console.log(json.message);
                         const p = document.createElement('p');
                         p.innerHTML = json.message;
                         errorDiv.insertAdjacentElement('afterbegin', p);

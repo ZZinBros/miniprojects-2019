@@ -7,7 +7,7 @@ import com.woowacourse.zzinbros.user.domain.UserTest;
 import com.woowacourse.zzinbros.user.dto.UserRequestDto;
 import com.woowacourse.zzinbros.user.dto.UserUpdateDto;
 import com.woowacourse.zzinbros.user.exception.NotValidUserException;
-import com.woowacourse.zzinbros.user.exception.UserAlreadyExistsException;
+import com.woowacourse.zzinbros.user.exception.EmailAlreadyExistsException;
 import com.woowacourse.zzinbros.user.exception.UserLoginException;
 import com.woowacourse.zzinbros.user.exception.UserNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
@@ -73,9 +73,9 @@ class UserServiceTest {
     @Test
     @DisplayName("이미 이메일이 존재할 때 가입 실패")
     void failAddUserWhenUserExists() {
-        given(userRepository.save(userRequestDto.toEntity())).willThrow(UserAlreadyExistsException.class);
+        given(userRepository.save(userRequestDto.toEntity())).willThrow(EmailAlreadyExistsException.class);
         assertThatThrownBy(() ->
-                userService.register(userRequestDto)).isInstanceOf(UserAlreadyExistsException.class);
+                userService.register(userRequestDto)).isInstanceOf(EmailAlreadyExistsException.class);
     }
 
     @Test

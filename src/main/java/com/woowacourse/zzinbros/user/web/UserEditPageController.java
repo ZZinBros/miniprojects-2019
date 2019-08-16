@@ -26,6 +26,6 @@ public class UserEditPageController {
             model.addAttribute("user", userService.findUserById(id));
             return "mypage-edit";
         }
-        throw new UserEditPageNotFoundException();
+        throw new UserEditPageNotFoundException("edit page not found");
     }
 }
