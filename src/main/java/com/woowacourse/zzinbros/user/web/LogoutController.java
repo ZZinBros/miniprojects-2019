@@ -9,10 +9,10 @@ import javax.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/logout")
-public class LogoutContoller {
+public class LogoutController {
 
     @GetMapping
-    public String logout(HttpSession session) {
+    public String logout(HttpSession session, UserSession userSession) {
         session.removeAttribute(UserSession.LOGIN_USER);
         return "index";
     }

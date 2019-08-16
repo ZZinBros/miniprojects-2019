@@ -74,8 +74,7 @@ class UserControllerTest {
                 .param("email", userRequestDto.getEmail())
                 .param("password", userRequestDto.getPassword())
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED))
-                .andExpect(status().isOk())
-                .andDo(print());
+                .andExpect(status().isOk());
     }
 
     @Test
@@ -89,8 +88,7 @@ class UserControllerTest {
                 .param("email", userRequestDto.getEmail())
                 .param("password", userRequestDto.getPassword())
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED))
-                .andExpect(status().isFound())
-                .andDo(print());
+                .andExpect(status().isFound());
     }
 
     @Test
@@ -103,8 +101,7 @@ class UserControllerTest {
                 .sessionAttr(UserSession.LOGIN_USER, userSession)
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(new ObjectMapper().writeValueAsString(userUpdateDto)))
-                .andExpect(status().isOk())
-                .andDo(print());
+                .andExpect(status().isOk());
     }
 
     @Test
@@ -117,8 +114,7 @@ class UserControllerTest {
                 .sessionAttr(UserSession.LOGIN_USER, userSession)
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(new ObjectMapper().writeValueAsString(userUpdateDto)))
-                .andExpect(status().isNotFound())
-                .andDo(print());
+                .andExpect(status().isNotFound());
     }
 
     @Test
@@ -131,8 +127,7 @@ class UserControllerTest {
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .sessionAttr(UserSession.LOGIN_USER, userSession)
                 .content(new ObjectMapper().writeValueAsString(userUpdateDto)))
-                .andExpect(status().isNotFound())
-                .andDo(print());
+                .andExpect(status().isNotFound());
     }
 
     @Test
@@ -142,8 +137,7 @@ class UserControllerTest {
                 .willReturn(user);
 
         mockMvc.perform(MockMvcRequestBuilders.get("/users/" + BASE_ID))
-                .andExpect(status().isOk())
-                .andDo(print());
+                .andExpect(status().isOk());
     }
 
     @Test
@@ -153,8 +147,7 @@ class UserControllerTest {
                 .willThrow(UserNotFoundException.class);
 
         mockMvc.perform(MockMvcRequestBuilders.get("/users/" + BASE_ID))
-                .andExpect(status().isNotFound())
-                .andDo(print());
+                .andExpect(status().isNotFound());
     }
 
     @Test
@@ -162,8 +155,7 @@ class UserControllerTest {
     void deleteTest() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.delete("/users/" + BASE_ID)
                 .sessionAttr(UserSession.LOGIN_USER, userSession))
-                .andExpect(status().isOk())
-                .andDo(print());
+                .andExpect(status().isOk());
 
         verify(userService, times(1)).delete(BASE_ID, userSession);
     }

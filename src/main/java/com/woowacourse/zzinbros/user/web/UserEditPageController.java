@@ -22,11 +22,8 @@ public class UserEditPageController {
 
     @GetMapping("/{id}/edit")
     public String editPage(@PathVariable("id") Long id, UserSession userSession, Model model) {
-//        ModelAndView modelAndView = new ModelAndView();
 
         if (userSession.matchId(id)) {
-//            modelAndView.addObject("user", userService.findUserById(id));
-//            modelAndView.setViewName("mypage-edit");
             model.addAttribute("user", userService.findUserById(id));
             return "mypage-edit";
         }

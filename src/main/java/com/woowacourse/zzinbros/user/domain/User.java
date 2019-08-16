@@ -76,6 +76,21 @@ public class User {
         return matcher.find();
     }
 
+    public void update(User updatedUser) {
+        this.name = updatedUser.name;
+        this.email = updatedUser.email;
+        this.password = updatedUser.password;
+    }
+
+    public boolean matchPassword(String password) {
+        return this.password.equals(password);
+    }
+
+    public boolean isAuthor(User another) {
+        return this.email.equals(another.email)
+                && this.password.equals(another.password);
+    }
+
     public Long getId() {
         return id;
     }
@@ -90,21 +105,6 @@ public class User {
 
     public String getPassword() {
         return password;
-    }
-
-    public void update(User updatedUser) {
-        this.name = updatedUser.name;
-        this.email = updatedUser.email;
-        this.password = updatedUser.password;
-    }
-
-    public boolean matchPassword(String password) {
-        return this.password.equals(password);
-    }
-
-    public boolean isAuthor(User another) {
-        return this.email.equals(another.email)
-                && this.password.equals(another.password);
     }
 
     @Override

@@ -32,14 +32,11 @@ class LoginControllerTest {
     @InjectMocks
     LoginController loginController;
 
-    private User user;
     private UserRequestDto userRequestDto;
     private UserSession userSession;
 
-
     @BeforeEach
     void setUp() {
-        user = new User(UserTest.BASE_NAME, UserTest.BASE_EMAIL, UserTest.BASE_PASSWORD);
         userSession = new UserSession(UserControllerTest.BASE_ID, UserTest.BASE_NAME, UserTest.BASE_EMAIL);
         userRequestDto = new UserRequestDto(UserTest.BASE_NAME, UserTest.BASE_EMAIL, UserTest.BASE_PASSWORD);
 
