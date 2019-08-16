@@ -1,6 +1,5 @@
 package com.woowacourse.zzinbros.comment.domain;
 
-import com.woowacourse.zzinbros.comment.exception.UnauthorizedException;
 import com.woowacourse.zzinbros.post.domain.Post;
 import com.woowacourse.zzinbros.user.domain.User;
 import org.hibernate.annotations.CreationTimestamp;
@@ -71,12 +70,8 @@ public class Comment {
         return updatedDateTime;
     }
 
-    public Comment update(final String contents, final User user) {
-        if (isMatchUser(user)) {
-            this.contents = contents;
-            return this;
-        }
-        throw new UnauthorizedException();
+    public void update(final String contents) {
+        this.contents = contents;
     }
 
     public boolean isMatchUser(final User user) {
