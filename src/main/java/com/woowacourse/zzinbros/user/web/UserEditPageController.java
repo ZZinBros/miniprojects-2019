@@ -2,6 +2,7 @@ package com.woowacourse.zzinbros.user.web;
 
 import com.woowacourse.zzinbros.user.domain.UserSession;
 import com.woowacourse.zzinbros.user.service.UserService;
+import com.woowacourse.zzinbros.user.web.exception.UserEditPageNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,8 +28,6 @@ public class UserEditPageController {
             modelAndView.setViewName("mypage-edit");
             return modelAndView;
         }
-        modelAndView.addObject("errorMsg", "인가되지 않은 회원입니다");
-        //        modelAndView.setViewName("index");
-        return modelAndView;
+        throw new UserEditPageNotFoundException();
     }
 }
