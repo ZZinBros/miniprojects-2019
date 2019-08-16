@@ -30,13 +30,9 @@ public class PostController {
     }
 
     @PostMapping
-    public Post create(@RequestBody PostRequestDto dto, HttpSession session) {
-        User loggedInUser = (User) session.getAttribute("loggedInUser");
-
-        // 임시
-        loggedInUser = userService.findUserById(999L);
-
-        return postService.add(dto, loggedInUser);
+    public Post create(@RequestBody PostRequestDto dto, UserSession userSession) {
+        User user = userService.findUserById(userSession.getId());
+        return postService.add(dto, user);
     }
 
     @PutMapping("/{id}")
