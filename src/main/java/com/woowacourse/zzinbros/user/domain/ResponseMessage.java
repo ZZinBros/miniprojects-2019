@@ -9,7 +9,7 @@ public class ResponseMessage<T> {
         this.message = message;
     }
 
-    public static <T>ResponseMessage of(T object, String message) {
+    public static <T> ResponseMessage of(T object, String message) {
         return new ResponseMessage(object, message);
     }
 
