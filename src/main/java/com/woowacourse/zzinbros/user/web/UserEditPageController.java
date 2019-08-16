@@ -4,6 +4,7 @@ import com.woowacourse.zzinbros.user.domain.UserSession;
 import com.woowacourse.zzinbros.user.service.UserService;
 import com.woowacourse.zzinbros.user.web.exception.UserEditPageNotFoundException;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,13 +21,14 @@ public class UserEditPageController {
     }
 
     @GetMapping("/{id}/edit")
-    public ModelAndView editPage(@PathVariable("id") Long id, UserSession userSession) {
-        ModelAndView modelAndView = new ModelAndView();
+    public String editPage(@PathVariable("id") Long id, UserSession userSession, Model model) {
+//        ModelAndView modelAndView = new ModelAndView();
 
         if (userSession.matchId(id)) {
-            modelAndView.addObject("user", userService.findUserById(id));
-            modelAndView.setViewName("mypage-edit");
-            return modelAndView;
+//            modelAndView.addObject("user", userService.findUserById(id));
+//            modelAndView.setViewName("mypage-edit");
+            model.addAttribute("user", userService.findUserById(id));
+            return "mypage-edit";
         }
         throw new UserEditPageNotFoundException();
     }
