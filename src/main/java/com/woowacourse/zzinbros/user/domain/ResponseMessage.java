@@ -4,9 +4,13 @@ public class ResponseMessage<T> {
     private T object;
     private String message;
 
-    public ResponseMessage(T object, String message) {
+    private ResponseMessage(T object, String message) {
         this.object = object;
         this.message = message;
+    }
+
+    public static <T>ResponseMessage of(T object, String message) {
+        return new ResponseMessage(object, message);
     }
 
     public T getObject() {

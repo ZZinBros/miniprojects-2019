@@ -18,6 +18,7 @@ import javax.servlet.http.HttpSession;
 @Controller
 @RequestMapping("/users")
 public class UserController {
+    public static final String SUCCESS_MESSAGE = "수정 성공";
     private final UserService userService;
 
     public UserController(UserService userService) {
@@ -55,10 +56,10 @@ public class UserController {
             User user = userService.modify(id, userUpdateDto, userSession);
             UserSession newUserSession = new UserSession(user.getId(), user.getName(), user.getEmail());
             session.setAttribute(UserSession.LOGIN_USER, newUserSession);
-            return new ResponseEntity<>(new ResponseMessage(user, "SUCCESS"), HttpStatus.OK);
+            return new ResponseEntity<>(ResponseMessage.of(user, SUCCESS_MESSAGE), HttpStatus.OK);
         } catch (UserException e) {
             User user = userService.findUserById(id);
-            return new ResponseEntity<>(new ResponseMessage(user, e.getMessage()), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(ResponseMessage.of(user, e.getMessage()), HttpStatus.NOT_FOUND);
         }
     }
 
