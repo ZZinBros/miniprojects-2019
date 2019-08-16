@@ -2,6 +2,7 @@ package com.woowacourse.zzinbros.comment.service;
 
 import com.woowacourse.zzinbros.comment.domain.Comment;
 import com.woowacourse.zzinbros.comment.domain.repository.CommentRepository;
+import com.woowacourse.zzinbros.comment.dto.CommentResponseDto;
 import com.woowacourse.zzinbros.comment.exception.CommentNotFoundException;
 import com.woowacourse.zzinbros.comment.exception.UnauthorizedException;
 import com.woowacourse.zzinbros.post.domain.Post;
@@ -19,8 +20,9 @@ public class CommentService {
         this.commentRepository = commentRepository;
     }
 
-    public Comment add(final User author, final Post post, final String contents) {
-        return commentRepository.save(new Comment(author, post, contents));
+    public CommentResponseDto add(final User author, final Post post, final String contents) {
+        commentRepository.save(new Comment(author, post, contents));
+        return new CommentResponseDto(author.getName(), contents);
     }
 
     public List<Comment> findByPost(final Post post) {

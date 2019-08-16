@@ -18,12 +18,10 @@ public class Comment {
     private Long id;
 
     @ManyToOne
-    @Column(nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User author;
 
     @ManyToOne
-    @Column(nullable = false)
     @OnDelete(action = OnDeleteAction.NO_ACTION)
     private Post post;
 
