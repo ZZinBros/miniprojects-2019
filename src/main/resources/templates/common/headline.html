@@ -32,14 +32,14 @@
                     <span class="text-white text-bold font-size-12">로그인</span>
                 </a>
             </li>
-            <li class="">
+            <li>
                 <a class="pointer">
                     <span class="text-white text-bold font-size-12">홈</span>
                 </a>
             </li>
-            <li>
-                <a class="pointer">
-                    <span class="text-white text-bold font-size-12">만들기</span>
+            <li class="" th:if="${session.loggedInUser}">
+                <a class="pointer" th:href="@{'/users/' + ${session.loggedInUser.id} + '/edit'}">
+                    <span class="text-white text-bold font-size-12">정보 수정</span>
                 </a>
             </li>
             <li th:if="${session.loggedInUser}">

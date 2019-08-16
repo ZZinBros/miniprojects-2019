@@ -1,3 +1,5 @@
+#!/bin/sh
+
 zzinbros_pid=`sudo pgrep -f zzinbros-0.0.1-SNAPSHOT.*`
 
 echo running ports of zzinbros:

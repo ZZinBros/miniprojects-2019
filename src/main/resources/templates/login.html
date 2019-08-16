@@ -3,32 +3,33 @@
 <body>
 <div id="wootecobook-app">
     <header th:replace="common/headline::headline"></header>
-    <div id="main-content" class="container-fluid max-width-lg mx-auto mrg-top-70">
+    <div class="container-fluid max-width-lg mx-auto mrg-top-70" id="main-content">
         <div class="row">
-            <div id="left-placeholder-container" class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" id="left-placeholder-container">
             </div>
             <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">
                 <div class="login-area">
                     <div class="card widget-compose">
                         <p class="border bottom width-100 pdd-btm-5 text-bold">로그인</p>
-                        <form class="form-horizontal pdd-right-30 align-items-center" accept-charset="UTF-8"
-                              action="/login" id="login-form" method="post">
+                        <form accept-charset="UTF-8" action="/login"
+                              class="form-horizontal pdd-right-30 align-items-center" id="login-form" method="post">
                             <div class="form-group row">
-                                <label for="email" class="col-md-3 control-label text-right">이메일</label>
+                                <label class="col-md-3 control-label text-right" for="email">이메일</label>
                                 <div class="col-md-9">
-                                    <input type="text" class="form-control" id="email" placeholder="email"
-                                           autofocus required minlength="2" maxlength="10">
+                                    <input autofocus class="form-control" id="email" name="email" placeholder="email"
+                                           required type="email">
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label for="password" class="col-md-3 control-label text-right">패스워드</label>
+                                <label class="col-md-3 control-label text-right" for="password">패스워드</label>
                                 <div class="col-md-9">
-                                    <input type="email" class="form-control" id="password" placeholder="password"
-                                            autofocus required>
+                                    <input autofocus class="form-control" id="password" name="password"
+                                           placeholder="password"
+                                           required type="password">
                                 </div>
                             </div>
                             <div class="form-group text-right">
-                                <button type="submit" class="btn btn-success btn-lg btn-rounded">로그인</button>
+                                <button class="btn btn-success btn-lg btn-rounded" type="submit">로그인</button>
                             </div>
                         </form>
                     </div>

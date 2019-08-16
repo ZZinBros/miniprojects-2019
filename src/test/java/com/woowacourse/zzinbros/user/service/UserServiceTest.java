@@ -1,12 +1,13 @@
 package com.woowacourse.zzinbros.user.service;
 
 import com.woowacourse.zzinbros.user.domain.User;
-import com.woowacourse.zzinbros.user.domain.UserRepository;
-import com.woowacourse.zzinbros.user.domain.UserSession;
+import com.woowacourse.zzinbros.user.domain.repository.UserRepository;
+import com.woowacourse.zzinbros.user.web.support.UserSession;
 import com.woowacourse.zzinbros.user.domain.UserTest;
 import com.woowacourse.zzinbros.user.dto.UserRequestDto;
+import com.woowacourse.zzinbros.user.dto.UserUpdateDto;
 import com.woowacourse.zzinbros.user.exception.NotValidUserException;
-import com.woowacourse.zzinbros.user.exception.UserAlreadyExistsException;
+import com.woowacourse.zzinbros.user.exception.EmailAlreadyExistsException;
 import com.woowacourse.zzinbros.user.exception.UserLoginException;
 import com.woowacourse.zzinbros.user.exception.UserNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
@@ -30,7 +31,7 @@ class UserServiceTest {
 
     private static final long BASE_ID = 1L;
     private static final String MISMATCH_EMAIL = "error@test.com";
-    
+
     @Mock
     UserRepository userRepository;
 
@@ -38,6 +39,7 @@ class UserServiceTest {
     UserService userService;
 
     private UserRequestDto userRequestDto;
+    private UserUpdateDto userUpdateDto;
     private User user;
     private User notValidUser;
     private UserSession validUserSession;
@@ -49,6 +51,10 @@ class UserServiceTest {
                 UserTest.BASE_NAME,
                 UserTest.BASE_EMAIL,
                 UserTest.BASE_PASSWORD);
+        userUpdateDto = new UserUpdateDto(
+                UserTest.BASE_NAME,
+                UserTest.BASE_EMAIL
+        );
         user = userRequestDto.toEntity();
         notValidUser = new User(UserTest.BASE_NAME, MISMATCH_EMAIL, UserTest.BASE_PASSWORD);
         validUserSession = new UserSession(BASE_ID, UserTest.BASE_NAME, UserTest.BASE_EMAIL);
@@ -67,9 +73,9 @@ class UserServiceTest {
     @Test
     @DisplayName("이미 이메일이 존재할 때 가입 실패")
     void failAddUserWhenUserExists() {
-        given(userRepository.save(userRequestDto.toEntity())).willThrow(UserAlreadyExistsException.class);
+        given(userRepository.save(userRequestDto.toEntity())).willThrow(EmailAlreadyExistsException.class);
         assertThatThrownBy(() ->
-                userService.register(userRequestDto)).isInstanceOf(UserAlreadyExistsException.class);
+                userService.register(userRequestDto)).isInstanceOf(EmailAlreadyExistsException.class);
     }
 
     @Test
@@ -78,7 +84,7 @@ class UserServiceTest {
         given(userRepository.findById(BASE_ID)).willReturn(Optional.ofNullable(user));
         given(userRepository.findByEmail(validUserSession.getEmail())).willReturn(Optional.ofNullable(user));
 
-        User updatedUser = userService.modify(BASE_ID, userRequestDto, validUserSession);
+        User updatedUser = userService.modify(BASE_ID, userUpdateDto, validUserSession);
         assertThat(updatedUser).isEqualTo(user);
     }
 
@@ -88,7 +94,7 @@ class UserServiceTest {
         given(userRepository.findById(BASE_ID)).willReturn(Optional.ofNullable(user));
         given(userRepository.findByEmail(notValidUserSession.getEmail())).willReturn(Optional.ofNullable(notValidUser));
 
-        assertThatThrownBy(() -> userService.modify(BASE_ID, userRequestDto, notValidUserSession))
+        assertThatThrownBy(() -> userService.modify(BASE_ID, userUpdateDto, notValidUserSession))
                 .isInstanceOf(NotValidUserException.class);
     }
 
@@ -97,7 +103,7 @@ class UserServiceTest {
     void updateUserWhenUserNotExist() {
         given(userRepository.findById(BASE_ID)).willReturn(Optional.ofNullable(null));
 
-        assertThatThrownBy(() -> userService.modify(BASE_ID, userRequestDto, notValidUserSession))
+        assertThatThrownBy(() -> userService.modify(BASE_ID, userUpdateDto, notValidUserSession))
                 .isInstanceOf(UserNotFoundException.class);
     }
 

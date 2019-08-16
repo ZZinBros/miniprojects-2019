@@ -1,4 +1,4 @@
-package com.woowacourse.zzinbros.user.domain;
+package com.woowacourse.zzinbros.user.web.support;
 
 import java.util.Objects;
 
@@ -15,7 +15,11 @@ public class UserSession {
         this.email = email;
     }
 
-    public Long getId() {
+    public boolean matchId(Long id) {
+        return (this.id.compareTo(id) == 0);
+    }
+
+    public long getId() {
         return id;
     }
 

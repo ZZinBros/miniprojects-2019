@@ -3,6 +3,8 @@ package com.woowacourse.zzinbros.post.domain;
 import com.woowacourse.zzinbros.post.exception.UnAuthorizedException;
 import com.woowacourse.zzinbros.user.domain.User;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
@@ -25,6 +27,8 @@ public class Post {
     private LocalDateTime updateDateTime;
 
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JoinColumn(name = "author_id", foreignKey = @ForeignKey(name = "post_to_user"))
     private User author;
 
     public Post() {
@@ -35,9 +39,9 @@ public class Post {
         this.author = author;
     }
 
-    public Post update(Post another) {
-        if (matchAuthor(another.getAuthor())) {
-            this.contents = another.contents;
+    public Post update(Post post) {
+        if (matchAuthor(post.author)) {
+            this.contents = post.contents;
             return this;
         }
         throw new UnAuthorizedException("게시글은 본인만 수정할 수 있습니다.");
