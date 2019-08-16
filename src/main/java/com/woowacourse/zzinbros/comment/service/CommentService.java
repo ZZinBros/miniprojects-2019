@@ -8,6 +8,7 @@ import com.woowacourse.zzinbros.post.domain.Post;
 import com.woowacourse.zzinbros.user.domain.User;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -23,7 +24,7 @@ public class CommentService {
     }
 
     public List<Comment> findByPost(final Post post) {
-        return commentRepository.findByPost(post);
+        return Collections.unmodifiableList(commentRepository.findByPost(post));
     }
 
     public void update(final Long commentId, final String newContents, final User author) {
