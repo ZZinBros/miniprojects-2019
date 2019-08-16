@@ -50,7 +50,7 @@ public class UserController {
             HttpSession session) {
         try {
             User user = userService.modify(id, userRequestDto, userSession);
-            UserSession newUserSession = new UserSession(user.getName(), user.getEmail());
+            UserSession newUserSession = new UserSession(user.getId(), user.getName(), user.getEmail());
             session.setAttribute(UserSession.LOGIN_USER, newUserSession);
             return new ResponseEntity<>(user, HttpStatus.OK);
         } catch (UserException e) {
