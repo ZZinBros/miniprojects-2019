@@ -4,6 +4,8 @@ import com.woowacourse.zzinbros.user.domain.UserTest;
 import com.woowacourse.zzinbros.user.dto.UserRequestDto;
 import com.woowacourse.zzinbros.user.exception.UserLoginException;
 import com.woowacourse.zzinbros.user.service.UserService;
+import com.woowacourse.zzinbros.user.web.controller.LoginController;
+import com.woowacourse.zzinbros.user.web.support.LoginSessionManager;
 import com.woowacourse.zzinbros.user.web.support.UserSession;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,6 +30,9 @@ class LoginControllerTest {
 
     @Mock
     UserService userService;
+
+    @Mock
+    LoginSessionManager loginSessionManager;
 
     @InjectMocks
     LoginController loginController;
@@ -55,7 +60,6 @@ class LoginControllerTest {
                 .param("password", userRequestDto.getPassword()))
                 .andExpect(status().isFound())
                 .andReturn().getResponse().getHeader("Location");
-
         assertTrue(url.equals("/"));
     }
 

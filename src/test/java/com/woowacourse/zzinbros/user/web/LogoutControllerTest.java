@@ -1,13 +1,16 @@
 package com.woowacourse.zzinbros.user.web;
 
-import com.woowacourse.zzinbros.user.web.support.UserSession;
 import com.woowacourse.zzinbros.user.domain.UserTest;
+import com.woowacourse.zzinbros.user.web.controller.LogoutController;
+import com.woowacourse.zzinbros.user.web.support.LoginSessionManager;
 import com.woowacourse.zzinbros.user.web.support.UserArgumentResolver;
 import com.woowacourse.zzinbros.user.web.support.UserControllerExceptionAdvice;
+import com.woowacourse.zzinbros.user.web.support.UserSession;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
@@ -22,6 +25,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class LogoutControllerTest {
 
     MockMvc mockMvc;
+
+    @Mock
+    LoginSessionManager loginSessionManager;
 
     @InjectMocks
     LogoutController logoutController;

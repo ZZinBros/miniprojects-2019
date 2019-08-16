@@ -1,7 +1,8 @@
-package com.woowacourse.zzinbros.user.web;
+package com.woowacourse.zzinbros.user.web.controller;
 
 import com.woowacourse.zzinbros.user.service.UserService;
 import com.woowacourse.zzinbros.user.web.exception.UserEditPageNotFoundException;
+import com.woowacourse.zzinbros.user.web.support.SessionInfo;
 import com.woowacourse.zzinbros.user.web.support.UserSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,7 +21,7 @@ public class UserEditPageController {
     }
 
     @GetMapping("/{id}/edit")
-    public String editPage(@PathVariable("id") Long id, UserSession userSession, Model model) {
+    public String editPage(@PathVariable("id") Long id, @SessionInfo UserSession userSession, Model model) {
 
         if (userSession.matchId(id)) {
             model.addAttribute("user", userService.findUserById(id));

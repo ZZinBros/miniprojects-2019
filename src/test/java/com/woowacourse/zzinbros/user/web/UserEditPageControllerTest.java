@@ -1,11 +1,13 @@
 package com.woowacourse.zzinbros.user.web;
 
 import com.woowacourse.zzinbros.user.domain.User;
-import com.woowacourse.zzinbros.user.web.support.UserSession;
 import com.woowacourse.zzinbros.user.domain.UserTest;
 import com.woowacourse.zzinbros.user.service.UserService;
+import com.woowacourse.zzinbros.user.web.controller.UserEditPageController;
+import com.woowacourse.zzinbros.user.web.support.LoginSessionManager;
 import com.woowacourse.zzinbros.user.web.support.UserArgumentResolver;
 import com.woowacourse.zzinbros.user.web.support.UserControllerExceptionAdvice;
+import com.woowacourse.zzinbros.user.web.support.UserSession;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -27,6 +29,9 @@ class UserEditPageControllerTest {
 
     @Mock
     UserService userService;
+
+    @Mock
+    LoginSessionManager loginSessionManager;
 
     @InjectMocks
     UserEditPageController userEditPageController;

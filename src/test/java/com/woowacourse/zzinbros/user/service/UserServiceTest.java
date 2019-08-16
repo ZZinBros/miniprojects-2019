@@ -1,15 +1,15 @@
 package com.woowacourse.zzinbros.user.service;
 
 import com.woowacourse.zzinbros.user.domain.User;
-import com.woowacourse.zzinbros.user.domain.repository.UserRepository;
-import com.woowacourse.zzinbros.user.web.support.UserSession;
 import com.woowacourse.zzinbros.user.domain.UserTest;
+import com.woowacourse.zzinbros.user.domain.repository.UserRepository;
 import com.woowacourse.zzinbros.user.dto.UserRequestDto;
 import com.woowacourse.zzinbros.user.dto.UserUpdateDto;
-import com.woowacourse.zzinbros.user.exception.NotValidUserException;
 import com.woowacourse.zzinbros.user.exception.EmailAlreadyExistsException;
+import com.woowacourse.zzinbros.user.exception.NotValidUserException;
 import com.woowacourse.zzinbros.user.exception.UserLoginException;
 import com.woowacourse.zzinbros.user.exception.UserNotFoundException;
+import com.woowacourse.zzinbros.user.web.support.UserSession;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

@@ -1,4 +1,4 @@
-package com.woowacourse.zzinbros.user.web;
+package com.woowacourse.zzinbros.user.web.controller;
 
 import com.woowacourse.zzinbros.user.domain.User;
 import com.woowacourse.zzinbros.user.dto.UserRequestDto;
@@ -6,22 +6,23 @@ import com.woowacourse.zzinbros.user.dto.UserUpdateDto;
 import com.woowacourse.zzinbros.user.exception.UserException;
 import com.woowacourse.zzinbros.user.service.UserService;
 import com.woowacourse.zzinbros.user.web.exception.UserRegisterException;
+import com.woowacourse.zzinbros.user.web.support.LoginSessionManager;
+import com.woowacourse.zzinbros.user.web.support.SessionInfo;
 import com.woowacourse.zzinbros.user.web.support.UserSession;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpSession;
-
 @Controller
 @RequestMapping("/users")
 public class UserController {
-    public static final String SUCCESS_MESSAGE = "수정 성공";
     private final UserService userService;
+    private final LoginSessionManager loginSessionManager;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, LoginSessionManager loginSessionManager) {
         this.userService = userService;
+        this.loginSessionManager = loginSessionManager;
     }
 
     @GetMapping("/{id}")
@@ -47,24 +48,21 @@ public class UserController {
     @PutMapping("/{id}")
     public String modify(@PathVariable Long id,
                          UserUpdateDto userUpdateDto,
-                         UserSession userSession,
-                         HttpSession session) {
-
+                         @SessionInfo UserSession userSession) {
         try {
             User user = userService.modify(id, userUpdateDto, userSession);
             UserSession newUserSession = new UserSession(user.getId(), user.getName(), user.getEmail());
-            session.setAttribute(UserSession.LOGIN_USER, newUserSession);
+            loginSessionManager.setLoginSession(newUserSession);
             return "redirect:/";
         } catch (UserException e) {
-            User user = userService.findUserById(id);
             return "redirect:/users/" + id;
         }
     }
 
     @DeleteMapping("/{id}")
-    public String resign(@PathVariable Long id, UserSession userSession, HttpSession session) {
+    public String resign(@PathVariable Long id, @SessionInfo UserSession userSession) {
         userService.delete(id, userSession);
-        session.removeAttribute(UserSession.LOGIN_USER);
+        loginSessionManager.clearSession();
         return "redirect:/";
     }
 }
