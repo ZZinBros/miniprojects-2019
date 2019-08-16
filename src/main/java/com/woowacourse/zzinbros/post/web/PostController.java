@@ -3,9 +3,7 @@ package com.woowacourse.zzinbros.post.web;
 import com.woowacourse.zzinbros.post.domain.Post;
 import com.woowacourse.zzinbros.post.dto.PostRequestDto;
 import com.woowacourse.zzinbros.post.service.PostService;
-import com.woowacourse.zzinbros.user.domain.User;
 import com.woowacourse.zzinbros.user.domain.UserSession;
-import com.woowacourse.zzinbros.user.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,23 +12,19 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/posts")
 public class PostController {
     private final PostService postService;
-    private final UserService userService;
 
-    public PostController(PostService postService, UserService userService) {
+    public PostController(PostService postService) {
         this.postService = postService;
-        this.userService = userService;
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Post> show(@PathVariable long id) {
-        Post retrievePost = postService.read(id);
-        return new ResponseEntity<>(retrievePost, HttpStatus.OK);
+    public Post show(@PathVariable long id) {
+        return postService.read(id);
     }
 
     @PostMapping
     public Post create(@RequestBody PostRequestDto dto, UserSession userSession) {
-        User user = userService.findUserById(userSession.getId());
-        return postService.add(dto, user);
+        return postService.add(dto, userSession);
     }
 
     @PutMapping("/{id}")

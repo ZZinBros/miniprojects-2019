@@ -5,8 +5,8 @@ import com.woowacourse.zzinbros.post.domain.repository.PostRepository;
 import com.woowacourse.zzinbros.post.dto.PostRequestDto;
 import com.woowacourse.zzinbros.post.exception.UnAuthorizedException;
 import com.woowacourse.zzinbros.user.domain.User;
-import com.woowacourse.zzinbros.user.domain.UserRepository;
 import com.woowacourse.zzinbros.user.domain.UserSession;
+import com.woowacourse.zzinbros.user.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -31,7 +31,7 @@ public class PostServiceTest {
     private PostRepository postRepository;
 
     @Mock
-    private UserRepository userRepository;
+    private UserService userService;
 
     @InjectMocks
     private PostService postService;
@@ -41,6 +41,8 @@ public class PostServiceTest {
         MockitoAnnotations.initMocks(this);
         defaultUser = new User(DEFAULT_NAME, DEFAULT_EMAIL, DEFAULT_PASSWORD);
         defaultPost = new Post(DEFAULT_CONTENT, defaultUser);
+        given(postRepository.findById(DEFAULT_POST_ID)).willReturn(Optional.of(defaultPost));
+        given(userService.findUserById(DEFAULT_USER_ID)).willReturn(defaultUser);
     }
 
     @Test
@@ -49,35 +51,30 @@ public class PostServiceTest {
         PostRequestDto dto = new PostRequestDto();
         dto.setContents(DEFAULT_CONTENT);
 
-        assertThat(postService.add(dto, defaultUser)).isEqualTo(defaultPost);
+        assertThat(postService.add(dto, new UserSession(DEFAULT_USER_ID, DEFAULT_NAME, DEFAULT_EMAIL))).isEqualTo(defaultPost);
     }
 
     @Test
     void 게시글_수정() {
-        given(postRepository.findById(DEFAULT_POST_ID)).willReturn(Optional.of(defaultPost));
         PostRequestDto dto = new PostRequestDto();
         dto.setContents(NEW_CONTENT);
 
-        assertThat(postService.update(DEFAULT_POST_ID, dto, new UserSession(null, DEFAULT_NAME, DEFAULT_EMAIL))).isEqualTo(new Post(NEW_CONTENT, defaultUser));
+        assertThat(postService.update(DEFAULT_POST_ID, dto, new UserSession(DEFAULT_USER_ID, DEFAULT_NAME, DEFAULT_EMAIL))).isEqualTo(new Post(NEW_CONTENT, defaultUser));
     }
 
     @Test
     void 게시글_조회() {
-        given(postRepository.findById(DEFAULT_POST_ID)).willReturn(Optional.of(defaultPost));
         assertThat(postService.read(DEFAULT_POST_ID)).isEqualTo(defaultPost);
     }
 
     @Test
     void 게시글_작성자가_게시글_삭제() {
-        given(postRepository.findById(DEFAULT_POST_ID)).willReturn(Optional.of(defaultPost));
-        given(userRepository.findById(DEFAULT_USER_ID)).willReturn(Optional.of(new User(DEFAULT_NAME, DEFAULT_EMAIL, DEFAULT_PASSWORD)));
         assertThat(postService.delete(DEFAULT_POST_ID, new UserSession(DEFAULT_USER_ID, DEFAULT_NAME, DEFAULT_EMAIL))).isTrue();
     }
 
     @Test
     void 게시글_작성자가_아닌_회원이_게시글_삭제() {
-        given(postRepository.findById(DEFAULT_POST_ID)).willReturn(Optional.of(defaultPost));
-        given(userRepository.findById(1000L)).willReturn(Optional.of(new User("paul", "paul123@example.com", "123456789")));
+        given(userService.findUserById(1000L)).willReturn(new User("paul", "paul123@example.com", "123456789"));
         assertThatExceptionOfType(UnAuthorizedException.class)
                 .isThrownBy(() -> postService.delete(
                         DEFAULT_POST_ID,
