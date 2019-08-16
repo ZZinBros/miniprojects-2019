@@ -77,6 +77,8 @@ class UserControllerTest {
                 .andExpect(status().isFound());
     }
 
+    // TODO: 2019-08-16 본인이 아닌 경우 수정에 실패하는 테스트
+
     @Test
     @DisplayName("중복된 이메일이 존재해서 회원가입 실패")
     void postWhenUserExistsTest() throws Exception {
@@ -141,7 +143,7 @@ class UserControllerTest {
     }
 
     @Test
-    @DisplayName("회원 정보가 없을 떄 회원 정보 조회 실패")
+    @DisplayName("회원 정보가 없을 때 회원 정보 조회 실패")
     void getWhenUserNotFoundTest() throws Exception {
         given(userService.findUserById(BASE_ID))
                 .willThrow(UserNotFoundException.class);

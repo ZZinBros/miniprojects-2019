@@ -30,7 +30,7 @@ public class UserTest {
     }
 
     @Test
-    @DisplayName("비밀번호의 길이가 제한 길이 미만일때 예외를 던진다")
+    @DisplayName("비밀번호의 길이가 제한 길이 미만일 때 예외를 던진다")
     public void userPasswordUnderMinLength() {
         final String invalidPassword = "1aA!";
         assertThatThrownBy(() ->
@@ -38,7 +38,7 @@ public class UserTest {
     }
 
     @Test
-    @DisplayName("비밀번호의 길이가 제한 길이 미만일때 예외를 던진다")
+    @DisplayName("비밀번호의 길이가 제한 길이 이상일 때 예외를 던진다")
     public void userPasswordOverMaxLength() {
         final String invalidPassword = "1aA!aaaaaaaaaaaaaaaaaaaaaaaaaaa";
         assertThatThrownBy(() ->
