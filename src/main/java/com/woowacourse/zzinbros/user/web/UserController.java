@@ -64,9 +64,9 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<User> resign(@PathVariable Long id, UserSession userSession, HttpSession session) {
+    public String resign(@PathVariable Long id, UserSession userSession, HttpSession session) {
         userService.delete(id, userSession);
         session.removeAttribute(UserSession.LOGIN_USER);
-        return new ResponseEntity<>(null, HttpStatus.OK);
+        return "redirect:/";
     }
 }

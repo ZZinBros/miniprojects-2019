@@ -155,7 +155,7 @@ class UserControllerTest {
     void deleteTest() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.delete("/users/" + BASE_ID)
                 .sessionAttr(UserSession.LOGIN_USER, userSession))
-                .andExpect(status().isOk());
+                .andExpect(status().isFound());
 
         verify(userService, times(1)).delete(BASE_ID, userSession);
     }

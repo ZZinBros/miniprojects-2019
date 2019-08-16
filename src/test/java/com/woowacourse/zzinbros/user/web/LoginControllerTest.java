@@ -55,7 +55,7 @@ class LoginControllerTest {
                 .param("password", userRequestDto.getPassword()))
                 .andExpect(status().isFound())
                 .andReturn().getResponse().getHeader("Location");
-        
+
         assertTrue(url.equals("/"));
     }
 
