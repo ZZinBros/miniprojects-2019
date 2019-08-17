@@ -14,7 +14,7 @@
                             <button type="submit" class="btn btn-danger float-right mrg-btm-0 relative bottom-5">
                                 탈퇴
                             </button>
-                            <button type="button" onclick="onUserUpdateClick()"
+                            <button type="button" id="user-edit-btn"
                                     class="btn btn-info float-right mrg-btm-0 relative bottom-5">
                                 수정
                             </button>
@@ -69,42 +69,58 @@
         <script>
             const userId = [[ ${user.id}]];
 
-            onUserUpdateClick = function () {
-                const nameInput = document.getElementById('user-edit-name');
-                const nameValue = nameInput.value;
-                const emailValue = document.getElementById('user-edit-email').value;
-                const headlineName = document.getElementById('headline-user-name');
-                fetch('/users/' + userId, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json; charset=UTF-8'
-                    },
-                    body: JSON.stringify({
-                        name: nameValue,
-                        email: emailValue
-                    })
-                }).then(response => {
-                    const errorDiv = document.getElementById("error-message");
-                    errorDiv.innerHTML = "";
-                    if (response.status === 200) {
-                        response.json().then(function (json) {
-                            const p = document.createElement('p');
-                            p.innerHTML = json.message;
-                            errorDiv.insertAdjacentElement('afterbegin', p);
-                            nameInput.value = json.object.name;
-                            headlineName.innerText = json.object.name;
-                        });
-                        return;
-                    }
-                    response.json().then(function (json) {
-                        const p = document.createElement('p');
-                        p.innerHTML = json.message;
-                        errorDiv.insertAdjacentElement('afterbegin', p);
-                        nameInput.value = json.object.name;
+            const showMessage = (json) => {
+                const p = document.createElement('p');
+                p.innerText = json.message;
+                const errorDiv = document.getElementById('error-message');
+                errorDiv.innerText = '';
+                errorDiv.insertAdjacentElement('afterbegin', p);
+            };
+
+            const updateName = (json, element) => {
+                element.innerText = json.object.name;
+            };
+
+            const changeUserEditPage = (json) => {
+                const headlineNameSpan = document.getElementById('headline-user-name');
+                const userNameInput = document.getElementById('user-edit-name');
+
+                updateName(json, headlineNameSpan);
+                updateName(json, userNameInput);
+            };
+
+            const Api = () => {
+                const request = (url, method, body) => {
+                    const defaultHeader = {'Content-Type': 'application/json; charset=UTF-8'}
+                    return fetch(url, {
+                        method: method,
+                        headers: defaultHeader,
+                        body: body
                     });
-                })
-                ;
-            }
+                };
+
+                const updateUserInfo = (name, email) => {
+                    return request('/users/' + userId, 'PUT', JSON.stringify({name, email}));
+                };
+
+                return {
+                    updateUserInfo: updateUserInfo
+                }
+            };
+
+            userEditBtn = document.getElementById('user-edit-btn');
+            userEditBtn.addEventListener('click', (event) => {
+                const userName = document.getElementById('user-edit-name').value;
+                const userEmail = document.getElementById('user-edit-email').value;
+
+                Api().updateUserInfo(userName, userEmail)
+                    .then(response => response.json())
+                    .then(json => {
+                        changeUserEditPage(json);
+                        showMessage(json);
+                    });
+            });
+
         </script>
 </body>
 </html>
