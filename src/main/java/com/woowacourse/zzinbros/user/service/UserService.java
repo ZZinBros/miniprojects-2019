@@ -26,7 +26,7 @@ public class UserService {
         try {
             return userRepository.save(userRequestDto.toEntity());
         } catch (DataIntegrityViolationException e) {
-            throw new EmailAlreadyExistsException("중복된 이메일이 존재합니다");
+            throw new EmailAlreadyExistsException("중복된 이메일이 존재합니다", e);
         }
     }
 

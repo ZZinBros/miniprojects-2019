@@ -41,7 +41,7 @@ public class UserController {
             userService.register(userRequestDto);
             return "redirect:/";
         } catch (UserException e) {
-            throw new UserRegisterException(e.getMessage());
+            throw new UserRegisterException(e.getMessage(), e);
         }
     }
 
