@@ -25,7 +25,7 @@ public class PostService {
 
     public Post add(PostRequestDto dto, long userId) {
         User user = userService.findUserById(userId);
-        Post post = new Post(dto.getContents(), user);
+        Post post = dto.toEntity(user);
         return postRepository.save(post);
     }
 
@@ -33,7 +33,7 @@ public class PostService {
     public Post update(long postId, PostRequestDto dto, long userId) {
         User user = userService.findUserById(userId);
         Post post = postRepository.findById(postId).orElseThrow(PostNotFoundException::new);
-        return post.update(new Post(dto.getContents(), user));
+        return post.update(dto.toEntity(user));
     }
 
     public Post read(long postId) {
