@@ -1,12 +1,12 @@
 package com.woowacourse.zzinbros.user.web;
 
 import com.woowacourse.zzinbros.user.domain.UserTest;
+import com.woowacourse.zzinbros.user.dto.LoginUserDto;
 import com.woowacourse.zzinbros.user.dto.UserRequestDto;
 import com.woowacourse.zzinbros.user.exception.UserLoginException;
 import com.woowacourse.zzinbros.user.service.UserService;
 import com.woowacourse.zzinbros.user.web.controller.LoginController;
 import com.woowacourse.zzinbros.user.web.support.LoginSessionManager;
-import com.woowacourse.zzinbros.user.dto.LoginUserDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

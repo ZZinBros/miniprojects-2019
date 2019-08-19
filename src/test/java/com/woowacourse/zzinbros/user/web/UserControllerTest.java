@@ -2,6 +2,7 @@ package com.woowacourse.zzinbros.user.web;
 
 import com.woowacourse.zzinbros.user.domain.User;
 import com.woowacourse.zzinbros.user.domain.UserTest;
+import com.woowacourse.zzinbros.user.dto.LoginUserDto;
 import com.woowacourse.zzinbros.user.dto.UserRequestDto;
 import com.woowacourse.zzinbros.user.dto.UserUpdateDto;
 import com.woowacourse.zzinbros.user.exception.EmailAlreadyExistsException;
@@ -12,7 +13,6 @@ import com.woowacourse.zzinbros.user.web.controller.UserController;
 import com.woowacourse.zzinbros.user.web.support.LoginSessionManager;
 import com.woowacourse.zzinbros.user.web.support.UserArgumentResolver;
 import com.woowacourse.zzinbros.user.web.support.UserControllerExceptionAdvice;
-import com.woowacourse.zzinbros.user.dto.LoginUserDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -105,8 +105,8 @@ class UserControllerTest {
         mockMvc.perform(put("/users/" + BASE_ID)
                 .sessionAttr(LoginUserDto.LOGIN_USER, loginUserDto)
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                .param("name",userUpdateDto.getName())
-                .param("email",userUpdateDto.getEmail()))
+                .param("name", userUpdateDto.getName())
+                .param("email", userUpdateDto.getEmail()))
                 .andExpect(status().is3xxRedirection());
     }
 
@@ -119,8 +119,8 @@ class UserControllerTest {
         mockMvc.perform(put("/users/" + MISMATCH_ID)
                 .sessionAttr(LoginUserDto.LOGIN_USER, loginUserDto)
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                .param("name",userUpdateDto.getName())
-                .param("email",userUpdateDto.getEmail()))
+                .param("name", userUpdateDto.getName())
+                .param("email", userUpdateDto.getEmail()))
                 .andExpect(status().is3xxRedirection());
     }
 
@@ -133,8 +133,8 @@ class UserControllerTest {
         mockMvc.perform(put("/users/" + BASE_ID)
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .sessionAttr(LoginUserDto.LOGIN_USER, loginUserDto)
-                .param("name",userUpdateDto.getName())
-                .param("email",userUpdateDto.getEmail()))
+                .param("name", userUpdateDto.getName())
+                .param("email", userUpdateDto.getEmail()))
                 .andExpect(status().is3xxRedirection());
     }
 

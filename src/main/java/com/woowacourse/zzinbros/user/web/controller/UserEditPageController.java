@@ -3,7 +3,6 @@ package com.woowacourse.zzinbros.user.web.controller;
 import com.woowacourse.zzinbros.user.service.UserService;
 import com.woowacourse.zzinbros.user.web.exception.UserEditPageNotFoundException;
 import com.woowacourse.zzinbros.user.web.support.SessionInfo;
-import com.woowacourse.zzinbros.user.dto.LoginUserDto;
 import com.woowacourse.zzinbros.user.web.support.UserSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

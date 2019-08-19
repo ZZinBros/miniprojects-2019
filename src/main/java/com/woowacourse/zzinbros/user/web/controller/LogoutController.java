@@ -2,7 +2,6 @@ package com.woowacourse.zzinbros.user.web.controller;
 
 import com.woowacourse.zzinbros.user.web.support.LoginSessionManager;
 import com.woowacourse.zzinbros.user.web.support.SessionInfo;
-import com.woowacourse.zzinbros.user.dto.LoginUserDto;
 import com.woowacourse.zzinbros.user.web.support.UserSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

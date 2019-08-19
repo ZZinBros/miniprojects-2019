@@ -2,13 +2,13 @@ package com.woowacourse.zzinbros.user.service;
 
 import com.woowacourse.zzinbros.user.domain.User;
 import com.woowacourse.zzinbros.user.domain.repository.UserRepository;
+import com.woowacourse.zzinbros.user.dto.LoginUserDto;
 import com.woowacourse.zzinbros.user.dto.UserRequestDto;
 import com.woowacourse.zzinbros.user.dto.UserUpdateDto;
 import com.woowacourse.zzinbros.user.exception.EmailAlreadyExistsException;
 import com.woowacourse.zzinbros.user.exception.NotValidUserException;
 import com.woowacourse.zzinbros.user.exception.UserLoginException;
 import com.woowacourse.zzinbros.user.exception.UserNotFoundException;
-import com.woowacourse.zzinbros.user.dto.LoginUserDto;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -54,7 +54,7 @@ public class UserService {
         return findUser(id);
     }
 
-    public User findUserByLoginUserDto(LoginUserDto loginUserDto) {
+    public User findLoggedInUser(final LoginUserDto loginUserDto) {
         return findUser(loginUserDto.getId());
     }
 

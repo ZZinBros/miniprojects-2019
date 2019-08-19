@@ -3,13 +3,13 @@ package com.woowacourse.zzinbros.user.service;
 import com.woowacourse.zzinbros.user.domain.User;
 import com.woowacourse.zzinbros.user.domain.UserTest;
 import com.woowacourse.zzinbros.user.domain.repository.UserRepository;
+import com.woowacourse.zzinbros.user.dto.LoginUserDto;
 import com.woowacourse.zzinbros.user.dto.UserRequestDto;
 import com.woowacourse.zzinbros.user.dto.UserUpdateDto;
 import com.woowacourse.zzinbros.user.exception.EmailAlreadyExistsException;
 import com.woowacourse.zzinbros.user.exception.NotValidUserException;
 import com.woowacourse.zzinbros.user.exception.UserLoginException;
 import com.woowacourse.zzinbros.user.exception.UserNotFoundException;
-import com.woowacourse.zzinbros.user.dto.LoginUserDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -152,5 +152,15 @@ class UserServiceTest {
                 = new UserRequestDto(user.getName(), user.getEmail(), user.getPassword() + "a");
         assertThatThrownBy(() -> userService.login(loginRequestDto))
                 .isInstanceOf(UserLoginException.class);
+    }
+
+    @Test
+    @DisplayName("로그인한 계정에 맞는 User 반환")
+    void getUserBySession() {
+        given(userRepository.findById(validLoginUserDto.getId())).willReturn(Optional.ofNullable(user));
+
+        User actual = userService.findLoggedInUser(validLoginUserDto);
+
+        assertThat(actual).isEqualTo(user);
     }
 }

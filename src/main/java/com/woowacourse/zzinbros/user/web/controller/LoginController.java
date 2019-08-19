@@ -1,10 +1,10 @@
 package com.woowacourse.zzinbros.user.web.controller;
 
+import com.woowacourse.zzinbros.user.dto.LoginUserDto;
 import com.woowacourse.zzinbros.user.dto.UserRequestDto;
 import com.woowacourse.zzinbros.user.exception.UserException;
 import com.woowacourse.zzinbros.user.service.UserService;
 import com.woowacourse.zzinbros.user.web.support.LoginSessionManager;
-import com.woowacourse.zzinbros.user.dto.LoginUserDto;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
