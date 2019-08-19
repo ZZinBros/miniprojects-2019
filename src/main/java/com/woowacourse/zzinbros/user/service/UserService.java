@@ -4,14 +4,14 @@ import com.woowacourse.zzinbros.user.domain.User;
 import com.woowacourse.zzinbros.user.domain.repository.UserRepository;
 import com.woowacourse.zzinbros.user.dto.UserRequestDto;
 import com.woowacourse.zzinbros.user.dto.UserUpdateDto;
-import com.woowacourse.zzinbros.user.exception.EmailAlreadyExistsException;
-import com.woowacourse.zzinbros.user.exception.NotValidUserException;
-import com.woowacourse.zzinbros.user.exception.UserLoginException;
-import com.woowacourse.zzinbros.user.exception.UserNotFoundException;
+import com.woowacourse.zzinbros.user.exception.*;
 import com.woowacourse.zzinbros.user.web.support.UserSession;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.validation.constraints.NotNull;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -52,6 +52,11 @@ public class UserService {
 
     public User findUserById(long id) {
         return findUser(id);
+    }
+
+    public User findLoggedInUser(@NotNull final UserSession userSession) {
+        UserSession notNullUserSession = Optional.ofNullable(userSession).orElseThrow(UserNotLoggedInException::new);
+        return findUser(notNullUserSession.getId());
     }
 
     private User findUser(long id) {
