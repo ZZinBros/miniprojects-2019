@@ -51,7 +51,7 @@ public class UserController {
                          UserUpdateDto userUpdateDto,
                          @SessionInfo UserSession userSession) {
         try {
-            User user = userService.modify(id, userUpdateDto, userSession.toDto());
+            User user = userService.modify(id, userUpdateDto, userSession.getDto());
             LoginUserDto newLoginUserDto = new LoginUserDto(user.getId(), user.getName(), user.getEmail());
             loginSessionManager.setLoginSession(newLoginUserDto);
             return "redirect:/";
@@ -62,7 +62,7 @@ public class UserController {
 
     @DeleteMapping("/{id}")
     public String resign(@PathVariable Long id, @SessionInfo UserSession userSession) {
-        userService.delete(id, userSession.toDto());
+        userService.delete(id, userSession.getDto());
         loginSessionManager.clearSession();
         return "redirect:/";
     }

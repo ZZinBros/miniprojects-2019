@@ -26,19 +26,19 @@ public class PostController {
 
     @PostMapping
     public Post create(@RequestBody PostRequestDto dto, @SessionInfo UserSession userSession) {
-        LoginUserDto loginUserDto = userSession.toDto();
+        LoginUserDto loginUserDto = userSession.getDto();
         return postService.add(dto, loginUserDto.getId());
     }
 
     @PutMapping("/{id}")
     public Post modify(@PathVariable long id, @RequestBody PostRequestDto dto, @SessionInfo UserSession userSession) {
-        LoginUserDto loginUserDto = userSession.toDto();
+        LoginUserDto loginUserDto = userSession.getDto();
         return postService.update(id, dto, loginUserDto.getId());
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Post> remove(@PathVariable long id, @SessionInfo UserSession userSession) {
-        LoginUserDto loginUserDto = userSession.toDto();
+        LoginUserDto loginUserDto = userSession.getDto();
         postService.delete(id, loginUserDto.getId());
         return new ResponseEntity<>(null, HttpStatus.OK);
     }

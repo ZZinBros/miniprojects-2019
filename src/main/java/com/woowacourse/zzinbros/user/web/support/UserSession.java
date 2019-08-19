@@ -1,11 +1,12 @@
 package com.woowacourse.zzinbros.user.web.support;
 
 import com.woowacourse.zzinbros.user.dto.LoginUserDto;
+import org.springframework.lang.NonNull;
 
 public class UserSession {
     private LoginUserDto loginUserDto;
 
-    public UserSession(LoginUserDto loginUserDto) {
+    UserSession(LoginUserDto loginUserDto) {
         this.loginUserDto = loginUserDto;
     }
 
@@ -13,7 +14,8 @@ public class UserSession {
         return (id.compareTo(loginUserDto.getId()) == 0);
     }
 
-    public LoginUserDto toDto() {
-        return loginUserDto;
+    @NonNull
+    public LoginUserDto getDto() {
+        return new LoginUserDto(loginUserDto.getId(), loginUserDto.getName(), loginUserDto.getEmail());
     }
 }

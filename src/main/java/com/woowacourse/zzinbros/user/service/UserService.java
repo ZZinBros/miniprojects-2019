@@ -54,6 +54,10 @@ public class UserService {
         return findUser(id);
     }
 
+    public User findUserByLoginUserDto(LoginUserDto loginUserDto) {
+        return findUser(loginUserDto.getId());
+    }
+
     private User findUser(long id) {
         return userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("User Not Found By ID"));
