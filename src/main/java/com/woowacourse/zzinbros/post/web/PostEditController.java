@@ -3,6 +3,8 @@ package com.woowacourse.zzinbros.post.web;
 import com.woowacourse.zzinbros.post.domain.Post;
 import com.woowacourse.zzinbros.post.exception.UnAuthorizedException;
 import com.woowacourse.zzinbros.post.service.PostService;
+import com.woowacourse.zzinbros.user.dto.LoginUserDto;
+import com.woowacourse.zzinbros.user.web.support.SessionInfo;
 import com.woowacourse.zzinbros.user.web.support.UserSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,10 +20,11 @@ public class PostEditController {
     }
 
     @GetMapping("/posts/{id}/edit")
-    public ModelAndView showEdit(@PathVariable long id, UserSession userSession) {
+    public ModelAndView showEdit(@PathVariable long id, @SessionInfo UserSession userSession) {
         ModelAndView modelAndView = new ModelAndView();
         Post post = postService.read(id);
-        if (userSession.getId() == post.getAuthor().getId()) {
+        LoginUserDto loginUserDto = userSession.toDto();
+        if (loginUserDto.getId() == post.getAuthor().getId()) {
             modelAndView.setViewName("post-modify");
             modelAndView.addObject("post", postService.read(id));
             return modelAndView;

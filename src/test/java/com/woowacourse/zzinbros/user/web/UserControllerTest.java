@@ -1,6 +1,5 @@
 package com.woowacourse.zzinbros.user.web;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.woowacourse.zzinbros.user.domain.User;
 import com.woowacourse.zzinbros.user.domain.UserTest;
 import com.woowacourse.zzinbros.user.dto.UserRequestDto;
@@ -13,7 +12,7 @@ import com.woowacourse.zzinbros.user.web.controller.UserController;
 import com.woowacourse.zzinbros.user.web.support.LoginSessionManager;
 import com.woowacourse.zzinbros.user.web.support.UserArgumentResolver;
 import com.woowacourse.zzinbros.user.web.support.UserControllerExceptionAdvice;
-import com.woowacourse.zzinbros.user.web.support.UserSession;
+import com.woowacourse.zzinbros.user.dto.LoginUserDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -54,7 +53,7 @@ class UserControllerTest {
     private User user;
     private UserRequestDto userRequestDto;
     private UserUpdateDto userUpdateDto;
-    private UserSession userSession;
+    private LoginUserDto loginUserDto;
 
     @BeforeEach
     void setUp() {
@@ -66,7 +65,7 @@ class UserControllerTest {
         userRequestDto = new UserRequestDto(UserTest.BASE_NAME, UserTest.BASE_EMAIL, UserTest.BASE_PASSWORD);
         userUpdateDto = new UserUpdateDto(UserTest.BASE_NAME, UserTest.BASE_EMAIL);
         user = new User(UserTest.BASE_NAME, UserTest.BASE_EMAIL, UserTest.BASE_PASSWORD);
-        userSession = new UserSession(BASE_ID, user.getName(), user.getEmail());
+        loginUserDto = new LoginUserDto(BASE_ID, user.getName(), user.getEmail());
     }
 
     @Test
@@ -100,11 +99,11 @@ class UserControllerTest {
     @Test
     @DisplayName("정상적으로 회원 정보 변경")
     void putTest() throws Exception {
-        given(userService.modify(BASE_ID, userUpdateDto, userSession))
+        given(userService.modify(BASE_ID, userUpdateDto, loginUserDto))
                 .willReturn(user);
 
         mockMvc.perform(put("/users/" + BASE_ID)
-                .sessionAttr(UserSession.LOGIN_USER, userSession)
+                .sessionAttr(LoginUserDto.LOGIN_USER, loginUserDto)
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .param("name",userUpdateDto.getName())
                 .param("email",userUpdateDto.getEmail()))
@@ -114,11 +113,11 @@ class UserControllerTest {
     @Test
     @DisplayName("로그인 한 유저와 변경하려는 유저 정보가 다를 때 변경 실패")
     void putTestWhenUserMismatch() throws Exception {
-        given(userService.modify(MISMATCH_ID, userUpdateDto, userSession))
+        given(userService.modify(MISMATCH_ID, userUpdateDto, loginUserDto))
                 .willThrow(NotValidUserException.class);
 
         mockMvc.perform(put("/users/" + MISMATCH_ID)
-                .sessionAttr(UserSession.LOGIN_USER, userSession)
+                .sessionAttr(LoginUserDto.LOGIN_USER, loginUserDto)
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .param("name",userUpdateDto.getName())
                 .param("email",userUpdateDto.getEmail()))
@@ -128,12 +127,12 @@ class UserControllerTest {
     @Test
     @DisplayName("회원 정보가 없을 때 회원 정보 변경 실패")
     void putWhenUserNotFoundTest() throws Exception {
-        given(userService.modify(BASE_ID, userUpdateDto, userSession))
+        given(userService.modify(BASE_ID, userUpdateDto, loginUserDto))
                 .willThrow(UserNotFoundException.class);
 
         mockMvc.perform(put("/users/" + BASE_ID)
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                .sessionAttr(UserSession.LOGIN_USER, userSession)
+                .sessionAttr(LoginUserDto.LOGIN_USER, loginUserDto)
                 .param("name",userUpdateDto.getName())
                 .param("email",userUpdateDto.getEmail()))
                 .andExpect(status().is3xxRedirection());
@@ -163,9 +162,9 @@ class UserControllerTest {
     @DisplayName("정상적으로 회원 정보 삭제")
     void deleteTest() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.delete("/users/" + BASE_ID)
-                .sessionAttr(UserSession.LOGIN_USER, userSession))
+                .sessionAttr(LoginUserDto.LOGIN_USER, loginUserDto))
                 .andExpect(status().isFound());
 
-        verify(userService, times(1)).delete(BASE_ID, userSession);
+        verify(userService, times(1)).delete(BASE_ID, loginUserDto);
     }
 }

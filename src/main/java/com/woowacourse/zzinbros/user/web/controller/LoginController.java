@@ -4,7 +4,7 @@ import com.woowacourse.zzinbros.user.dto.UserRequestDto;
 import com.woowacourse.zzinbros.user.exception.UserException;
 import com.woowacourse.zzinbros.user.service.UserService;
 import com.woowacourse.zzinbros.user.web.support.LoginSessionManager;
-import com.woowacourse.zzinbros.user.web.support.UserSession;
+import com.woowacourse.zzinbros.user.dto.LoginUserDto;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,8 +24,8 @@ public class LoginController {
     @PostMapping
     public String login(UserRequestDto userRequestDto) {
         try {
-            UserSession userSession = userService.login(userRequestDto);
-            loginSessionManager.setLoginSession(userSession);
+            LoginUserDto loginUserDto = userService.login(userRequestDto);
+            loginSessionManager.setLoginSession(loginUserDto);
             return "redirect:/";
         } catch (UserException e) {
             return "redirect:/login";

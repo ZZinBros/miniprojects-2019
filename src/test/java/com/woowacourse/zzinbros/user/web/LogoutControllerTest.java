@@ -5,7 +5,7 @@ import com.woowacourse.zzinbros.user.web.controller.LogoutController;
 import com.woowacourse.zzinbros.user.web.support.LoginSessionManager;
 import com.woowacourse.zzinbros.user.web.support.UserArgumentResolver;
 import com.woowacourse.zzinbros.user.web.support.UserControllerExceptionAdvice;
-import com.woowacourse.zzinbros.user.web.support.UserSession;
+import com.woowacourse.zzinbros.user.dto.LoginUserDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -32,7 +32,7 @@ class LogoutControllerTest {
     @InjectMocks
     LogoutController logoutController;
 
-    private UserSession userSession;
+    private LoginUserDto loginUserDto;
 
     @BeforeEach
     void setUp() {
@@ -41,14 +41,14 @@ class LogoutControllerTest {
                 .setCustomArgumentResolvers(new UserArgumentResolver())
                 .alwaysDo(print())
                 .build();
-        userSession = new UserSession(UserControllerTest.BASE_ID, UserTest.BASE_NAME, UserTest.BASE_EMAIL);
+        loginUserDto = new LoginUserDto(UserControllerTest.BASE_ID, UserTest.BASE_NAME, UserTest.BASE_EMAIL);
     }
 
     @Test
     @DisplayName("정상 로그아웃 테스트")
     void logoutTestWhenLogin() throws Exception {
         mockMvc.perform(get("/logout")
-                .sessionAttr(UserSession.LOGIN_USER, userSession))
+                .sessionAttr(LoginUserDto.LOGIN_USER, loginUserDto))
                 .andExpect(status().is3xxRedirection());
     }
 

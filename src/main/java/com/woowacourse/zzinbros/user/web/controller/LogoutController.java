@@ -2,6 +2,7 @@ package com.woowacourse.zzinbros.user.web.controller;
 
 import com.woowacourse.zzinbros.user.web.support.LoginSessionManager;
 import com.woowacourse.zzinbros.user.web.support.SessionInfo;
+import com.woowacourse.zzinbros.user.dto.LoginUserDto;
 import com.woowacourse.zzinbros.user.web.support.UserSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,7 +19,7 @@ public class LogoutController {
     }
 
     @GetMapping
-    public String logout(@SessionInfo UserSession userSession) {
+    public String logout(@SessionInfo UserSession userSessoin) {
         loginSessionManager.clearSession();
         return "redirect:/";
     }

@@ -1,5 +1,6 @@
 package com.woowacourse.zzinbros.user.web.support;
 
+import com.woowacourse.zzinbros.user.dto.LoginUserDto;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
@@ -7,7 +8,7 @@ import javax.servlet.http.HttpSession;
 
 @Component
 public class LoginSessionManager {
-    public static final String LOGIN_USER = "loggedInUser";
+    private static final String LOGIN_USER = "loggedInUser";
 
     private HttpServletRequest httpServletRequest;
 
@@ -15,9 +16,9 @@ public class LoginSessionManager {
         this.httpServletRequest = httpServletRequest;
     }
 
-    public void setLoginSession(UserSession userSession) {
+    public void setLoginSession(LoginUserDto loginUserDto) {
         HttpSession session = httpServletRequest.getSession();
-        session.setAttribute(LOGIN_USER, userSession);
+        session.setAttribute(LOGIN_USER, loginUserDto);
     }
 
     public void clearSession() {

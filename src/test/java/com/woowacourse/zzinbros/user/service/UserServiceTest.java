@@ -9,7 +9,7 @@ import com.woowacourse.zzinbros.user.exception.EmailAlreadyExistsException;
 import com.woowacourse.zzinbros.user.exception.NotValidUserException;
 import com.woowacourse.zzinbros.user.exception.UserLoginException;
 import com.woowacourse.zzinbros.user.exception.UserNotFoundException;
-import com.woowacourse.zzinbros.user.web.support.UserSession;
+import com.woowacourse.zzinbros.user.dto.LoginUserDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -42,8 +42,8 @@ class UserServiceTest {
     private UserUpdateDto userUpdateDto;
     private User user;
     private User notValidUser;
-    private UserSession validUserSession;
-    private UserSession notValidUserSession;
+    private LoginUserDto validLoginUserDto;
+    private LoginUserDto notValidLoginUserDto;
 
     @BeforeEach
     void setUp() {
@@ -57,8 +57,8 @@ class UserServiceTest {
         );
         user = userRequestDto.toEntity();
         notValidUser = new User(UserTest.BASE_NAME, MISMATCH_EMAIL, UserTest.BASE_PASSWORD);
-        validUserSession = new UserSession(BASE_ID, UserTest.BASE_NAME, UserTest.BASE_EMAIL);
-        notValidUserSession = new UserSession(BASE_ID, UserTest.BASE_NAME, MISMATCH_EMAIL);
+        validLoginUserDto = new LoginUserDto(BASE_ID, UserTest.BASE_NAME, UserTest.BASE_EMAIL);
+        notValidLoginUserDto = new LoginUserDto(BASE_ID, UserTest.BASE_NAME, MISMATCH_EMAIL);
     }
 
     @Test
@@ -82,9 +82,9 @@ class UserServiceTest {
     @DisplayName("회원 정보 수정 성공")
     void updateUser() {
         given(userRepository.findById(BASE_ID)).willReturn(Optional.ofNullable(user));
-        given(userRepository.findByEmail(validUserSession.getEmail())).willReturn(Optional.ofNullable(user));
+        given(userRepository.findByEmail(validLoginUserDto.getEmail())).willReturn(Optional.ofNullable(user));
 
-        User updatedUser = userService.modify(BASE_ID, userUpdateDto, validUserSession);
+        User updatedUser = userService.modify(BASE_ID, userUpdateDto, validLoginUserDto);
         assertThat(updatedUser).isEqualTo(user);
     }
 
@@ -92,9 +92,9 @@ class UserServiceTest {
     @DisplayName("다른 유저가 수정 시도할 때 에외 발생")
     void updateUserWhenNotValid() {
         given(userRepository.findById(BASE_ID)).willReturn(Optional.ofNullable(user));
-        given(userRepository.findByEmail(notValidUserSession.getEmail())).willReturn(Optional.ofNullable(notValidUser));
+        given(userRepository.findByEmail(notValidLoginUserDto.getEmail())).willReturn(Optional.ofNullable(notValidUser));
 
-        assertThatThrownBy(() -> userService.modify(BASE_ID, userUpdateDto, notValidUserSession))
+        assertThatThrownBy(() -> userService.modify(BASE_ID, userUpdateDto, notValidLoginUserDto))
                 .isInstanceOf(NotValidUserException.class);
     }
 
@@ -103,7 +103,7 @@ class UserServiceTest {
     void updateUserWhenUserNotExist() {
         given(userRepository.findById(BASE_ID)).willReturn(Optional.ofNullable(null));
 
-        assertThatThrownBy(() -> userService.modify(BASE_ID, userUpdateDto, notValidUserSession))
+        assertThatThrownBy(() -> userService.modify(BASE_ID, userUpdateDto, notValidLoginUserDto))
                 .isInstanceOf(UserNotFoundException.class);
     }
 
@@ -119,9 +119,9 @@ class UserServiceTest {
     @DisplayName("회원 정보 ID로 삭제")
     void deleteUser() {
         given(userRepository.findById(BASE_ID)).willReturn(Optional.ofNullable(user));
-        given(userRepository.findByEmail(validUserSession.getEmail())).willReturn(Optional.ofNullable(user));
+        given(userRepository.findByEmail(validLoginUserDto.getEmail())).willReturn(Optional.ofNullable(user));
 
-        userService.delete(BASE_ID, validUserSession);
+        userService.delete(BASE_ID, validLoginUserDto);
         verify(userRepository, times(1)).deleteById(BASE_ID);
     }
 
@@ -130,7 +130,7 @@ class UserServiceTest {
     void deleteUserWhenUserNotMatch() {
         given(userRepository.findById(BASE_ID)).willReturn(Optional.ofNullable(user));
 
-        assertThatThrownBy(() -> userService.delete(BASE_ID, notValidUserSession));
+        assertThatThrownBy(() -> userService.delete(BASE_ID, notValidLoginUserDto));
     }
 
     @Test
@@ -138,9 +138,9 @@ class UserServiceTest {
     void loginSuccess() {
         given(userRepository.findByEmail(userRequestDto.getEmail())).willReturn(Optional.ofNullable(user));
 
-        UserSession userSession = userService.login(userRequestDto);
-        assertThat(userSession.getEmail()).isEqualTo(userRequestDto.getEmail());
-        assertThat(userSession.getName()).isEqualTo(userRequestDto.getName());
+        LoginUserDto loginUserDto = userService.login(userRequestDto);
+        assertThat(loginUserDto.getEmail()).isEqualTo(userRequestDto.getEmail());
+        assertThat(loginUserDto.getName()).isEqualTo(userRequestDto.getName());
     }
 
     @Test

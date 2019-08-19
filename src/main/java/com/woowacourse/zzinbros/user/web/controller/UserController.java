@@ -8,6 +8,7 @@ import com.woowacourse.zzinbros.user.service.UserService;
 import com.woowacourse.zzinbros.user.web.exception.UserRegisterException;
 import com.woowacourse.zzinbros.user.web.support.LoginSessionManager;
 import com.woowacourse.zzinbros.user.web.support.SessionInfo;
+import com.woowacourse.zzinbros.user.dto.LoginUserDto;
 import com.woowacourse.zzinbros.user.web.support.UserSession;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -50,9 +51,9 @@ public class UserController {
                          UserUpdateDto userUpdateDto,
                          @SessionInfo UserSession userSession) {
         try {
-            User user = userService.modify(id, userUpdateDto, userSession);
-            UserSession newUserSession = new UserSession(user.getId(), user.getName(), user.getEmail());
-            loginSessionManager.setLoginSession(newUserSession);
+            User user = userService.modify(id, userUpdateDto, userSession.toDto());
+            LoginUserDto newLoginUserDto = new LoginUserDto(user.getId(), user.getName(), user.getEmail());
+            loginSessionManager.setLoginSession(newLoginUserDto);
             return "redirect:/";
         } catch (UserException e) {
             return "redirect:/users/" + id;
@@ -61,7 +62,7 @@ public class UserController {
 
     @DeleteMapping("/{id}")
     public String resign(@PathVariable Long id, @SessionInfo UserSession userSession) {
-        userService.delete(id, userSession);
+        userService.delete(id, userSession.toDto());
         loginSessionManager.clearSession();
         return "redirect:/";
     }
