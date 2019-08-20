@@ -1,5 +1,6 @@
 package com.woowacourse.zzinbros.user.service;
 
+import com.woowacourse.zzinbros.BaseTest;
 import com.woowacourse.zzinbros.user.domain.User;
 import com.woowacourse.zzinbros.user.domain.UserTest;
 import com.woowacourse.zzinbros.user.domain.repository.UserRepository;
@@ -27,7 +28,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(SpringExtension.class)
-class UserServiceTest {
+class UserServiceTest extends BaseTest {
 
     private static final long BASE_ID = 1L;
     private static final String MISMATCH_EMAIL = "error@test.com";

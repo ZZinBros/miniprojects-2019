@@ -1,5 +1,6 @@
 package com.woowacourse.zzinbros.user.web;
 
+import com.woowacourse.zzinbros.BaseTest;
 import com.woowacourse.zzinbros.user.domain.User;
 import com.woowacourse.zzinbros.user.domain.UserTest;
 import com.woowacourse.zzinbros.user.dto.LoginUserDto;
@@ -35,7 +36,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @AutoConfigureMockMvc
 @SpringBootTest
-class UserControllerTest {
+class UserControllerTest extends BaseTest {
     static final long BASE_ID = 1L;
     static final long MISMATCH_ID = 2L;
 

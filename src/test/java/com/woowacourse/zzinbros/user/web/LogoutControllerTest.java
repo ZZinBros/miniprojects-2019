@@ -1,5 +1,6 @@
 package com.woowacourse.zzinbros.user.web;
 
+import com.woowacourse.zzinbros.BaseTest;
 import com.woowacourse.zzinbros.user.domain.UserTest;
 import com.woowacourse.zzinbros.user.dto.LoginUserDto;
 import com.woowacourse.zzinbros.user.web.controller.LogoutController;
@@ -22,7 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @AutoConfigureMockMvc
 @SpringBootTest
-class LogoutControllerTest {
+class LogoutControllerTest extends BaseTest {
 
     MockMvc mockMvc;
 
