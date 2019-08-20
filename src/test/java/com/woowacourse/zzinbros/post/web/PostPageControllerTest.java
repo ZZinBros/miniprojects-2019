@@ -1,4 +1,4 @@
-package com.woowacourse.zzinbros.user.web.controller;
+package com.woowacourse.zzinbros.post.web;
 
 import com.woowacourse.zzinbros.post.domain.Post;
 import com.woowacourse.zzinbros.post.domain.PostTest;
@@ -27,7 +27,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @AutoConfigureMockMvc
 @SpringBootTest
-class UserPageControllerTest {
+class PostPageControllerTest {
+
     private static final Long BASE_ID = 1L;
 
     MockMvc mockMvc;
@@ -39,13 +40,13 @@ class UserPageControllerTest {
     PostService postService;
 
     @Autowired
-    UserPageController userPageController;
+    PostPageController postPageController;
 
     private User baseUser;
 
     @BeforeEach
     void setUp() {
-        mockMvc = MockMvcBuilders.standaloneSetup(userPageController)
+        mockMvc = MockMvcBuilders.standaloneSetup(postPageController)
                 .alwaysDo(print())
                 .build();
 
@@ -62,7 +63,7 @@ class UserPageControllerTest {
         given(userService.findUserById(BASE_ID)).willReturn(baseUser);
         given(postService.readAllByUser(baseUser)).willReturn(posts);
 
-        mockMvc.perform(get("/user-page/" + BASE_ID))
+        mockMvc.perform(get("/posts?author=" + BASE_ID))
                 .andExpect(status().isOk());
     }
 
@@ -71,7 +72,7 @@ class UserPageControllerTest {
     void showPageWhenUserDoesNotExist() throws Exception {
         given(userService.findUserById(BASE_ID)).willThrow(UserNotFoundException.class);
 
-        mockMvc.perform(get("/user-page/" + BASE_ID))
+        mockMvc.perform(get("/posts?author=" + BASE_ID))
                 .andExpect(status().isFound());
     }
 }
