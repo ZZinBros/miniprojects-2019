@@ -26,6 +26,7 @@ public class UserController {
         this.loginSessionManager = loginSessionManager;
     }
 
+    // @TODO UserPage에서 호출하도록 일단 만들기만 해두기
     @GetMapping("/{id}")
     public ResponseEntity<User> show(@PathVariable("id") Long id) {
         try {
