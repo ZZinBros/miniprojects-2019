@@ -1,5 +1,6 @@
 package com.woowacourse.zzinbros.user.domain;
 
+import com.woowacourse.zzinbros.BaseTest;
 import com.woowacourse.zzinbros.user.domain.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -9,7 +10,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DataJpaTest
-class UserRepositoryTest {
+class UserRepositoryTest extends BaseTest {
 
     @Autowired
     UserRepository userRepository;

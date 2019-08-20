@@ -1,5 +1,6 @@
 package com.woowacourse.zzinbros.post.service;
 
+import com.woowacourse.zzinbros.BaseTest;
 import com.woowacourse.zzinbros.post.domain.Post;
 import com.woowacourse.zzinbros.post.domain.repository.PostRepository;
 import com.woowacourse.zzinbros.post.dto.PostRequestDto;
@@ -21,7 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.BDDMockito.given;
 
-public class PostServiceTest {
+public class PostServiceTest extends BaseTest {
     private static final Long DEFAULT_USER_ID = 999L;
     private static final Long DEFAULT_POST_ID = 999L;
     private User defaultUser;

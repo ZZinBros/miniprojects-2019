@@ -1,5 +1,6 @@
 package com.woowacourse.zzinbros.post.domain;
 
+import com.woowacourse.zzinbros.BaseTest;
 import com.woowacourse.zzinbros.post.exception.UnAuthorizedException;
 import com.woowacourse.zzinbros.user.domain.User;
 import org.junit.jupiter.api.BeforeEach;
@@ -9,7 +10,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
-public class PostTest {
+public class PostTest extends BaseTest {
     public static final String DEFAULT_CONTENT = "some content";
     public static final String NEW_CONTENT = "newPost";
     public static final String DEFAULT_NAME = "john";
