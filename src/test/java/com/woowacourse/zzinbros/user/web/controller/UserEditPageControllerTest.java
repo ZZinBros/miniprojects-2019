@@ -1,8 +1,10 @@
-package com.woowacourse.zzinbros.user.web;
+package com.woowacourse.zzinbros.user.web.controller;
 
+import com.woowacourse.zzinbros.BaseTest;
+import com.woowacourse.zzinbros.user.domain.User;
 import com.woowacourse.zzinbros.user.domain.UserTest;
 import com.woowacourse.zzinbros.user.dto.LoginUserDto;
-import com.woowacourse.zzinbros.user.web.controller.LogoutController;
+import com.woowacourse.zzinbros.user.service.UserService;
 import com.woowacourse.zzinbros.user.web.support.LoginSessionManager;
 import com.woowacourse.zzinbros.user.web.support.UserArgumentResolver;
 import com.woowacourse.zzinbros.user.web.support.UserControllerExceptionAdvice;
@@ -17,45 +19,48 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureMockMvc
 @SpringBootTest
-class LogoutControllerTest {
+class UserEditPageControllerTest extends BaseTest {
 
     MockMvc mockMvc;
+
+    @Mock
+    UserService userService;
 
     @Mock
     LoginSessionManager loginSessionManager;
 
     @InjectMocks
-    LogoutController logoutController;
+    UserEditPageController userEditPageController;
 
     private LoginUserDto loginUserDto;
+    private User user;
 
     @BeforeEach
     void setUp() {
-        mockMvc = MockMvcBuilders.standaloneSetup(logoutController)
-                .setControllerAdvice(new UserControllerExceptionAdvice())
-                .setCustomArgumentResolvers(new UserArgumentResolver())
-                .alwaysDo(print())
-                .build();
         loginUserDto = new LoginUserDto(UserControllerTest.BASE_ID, UserTest.BASE_NAME, UserTest.BASE_EMAIL);
+        user = new User(UserTest.BASE_NAME, UserTest.BASE_EMAIL, UserTest.BASE_PASSWORD);
+        mockMvc = MockMvcBuilders.standaloneSetup(userEditPageController)
+                .setCustomArgumentResolvers(new UserArgumentResolver())
+                .setControllerAdvice(new UserControllerExceptionAdvice())
+                .build();
     }
 
     @Test
-    @DisplayName("정상 로그아웃 테스트")
-    void logoutTestWhenLogin() throws Exception {
-        mockMvc.perform(get("/logout")
+    @DisplayName("사용자가 유저 수정 페이지로 이동")
+    void showEditPageTest() throws Exception {
+        mockMvc.perform(get("/users/" + UserControllerTest.BASE_ID + "/edit")
                 .sessionAttr(LoginUserDto.LOGIN_USER, loginUserDto))
-                .andExpect(status().is3xxRedirection());
+                .andExpect(status().isOk());
     }
 
     @Test
-    @DisplayName("로그인 안했을 때 로그아웃 요청하면 인덱스 페이지로 redirect")
-    void logoutTestWhenNotLogin() throws Exception {
-        mockMvc.perform(get("/logout"))
-                .andExpect(status().isFound());
+    @DisplayName("인가되지 않은 사용자가 유저 수정 페이지로 이동 불가")
+    void showEditPageWhenUserMismatchTest() throws Exception {
+        mockMvc.perform(get("/users/" + UserControllerTest.BASE_ID + "/edit"))
+                .andExpect(status().is3xxRedirection());
     }
 }

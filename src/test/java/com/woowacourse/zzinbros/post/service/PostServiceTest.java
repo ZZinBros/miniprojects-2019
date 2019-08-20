@@ -1,5 +1,6 @@
 package com.woowacourse.zzinbros.post.service;
 
+import com.woowacourse.zzinbros.BaseTest;
 import com.woowacourse.zzinbros.post.domain.Post;
 import com.woowacourse.zzinbros.post.domain.repository.PostRepository;
 import com.woowacourse.zzinbros.post.dto.PostRequestDto;
@@ -7,6 +8,7 @@ import com.woowacourse.zzinbros.post.exception.UnAuthorizedException;
 import com.woowacourse.zzinbros.user.domain.User;
 import com.woowacourse.zzinbros.user.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -20,7 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.BDDMockito.given;
 
-public class PostServiceTest {
+public class PostServiceTest extends BaseTest {
     private static final Long DEFAULT_USER_ID = 999L;
     private static final Long DEFAULT_POST_ID = 999L;
     private User defaultUser;
@@ -84,5 +86,12 @@ public class PostServiceTest {
     void 모든_게시글_조회() {
         given(postRepository.findAll()).willReturn(Arrays.asList(defaultPost));
         assertThat(postService.readAll()).isEqualTo(Arrays.asList(defaultPost));
+    }
+
+    @Test
+    @DisplayName("작성자에 따른 Post 조회하는지 검증")
+    void findAllByAuthor() {
+        given(postRepository.findAllByAuthor(defaultUser)).willReturn(Arrays.asList(defaultPost));
+        assertThat(postService.readAllByUser(defaultUser)).isEqualTo(Arrays.asList(defaultPost));
     }
 }
