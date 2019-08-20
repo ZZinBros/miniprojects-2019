@@ -42,9 +42,7 @@ class UserRepositoryTest extends BaseTest {
 
         one.addFriend(two);
 
-        userRepository.save(one);
         User actual = userRepository.findByEmail(one.getEmail()).orElseThrow(IllegalArgumentException::new);
-        userRepository.save(two);
         User actualTwo = userRepository.findByEmail(two.getEmail()).orElseThrow(IllegalArgumentException::new);
 
         assertEquals(1, actual.getFriends().size());

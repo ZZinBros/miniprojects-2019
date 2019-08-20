@@ -13,6 +13,9 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
+import java.util.Set;
+
 @Service
 @Transactional
 public class UserService {
@@ -58,7 +61,7 @@ public class UserService {
         return findUser(loginUserDto.getId());
     }
 
-    private User findUser(long id) {
+    private User findUser(Long id) {
         return userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("User Not Found By ID"));
     }
@@ -75,5 +78,17 @@ public class UserService {
     private User findUserByEmail(String email) {
         return userRepository.findByEmail(email)
                 .orElseThrow(() -> new UserNotFoundException("User Not Found By email"));
+    }
+
+    public Set<User> getFriendsOf(final Long id) {
+        User user = findUser(id);
+        return Collections.unmodifiableSet(userRepository.findByFriends(user));
+    }
+
+
+    public boolean addFriends(final Long friendToId, final Long friendById) {
+        User friendRequest = findUser(friendToId);
+        User friendResponse = findUser(friendById);
+        return friendRequest.addFriend(friendResponse);
     }
 }
