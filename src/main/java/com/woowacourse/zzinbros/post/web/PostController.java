@@ -42,4 +42,10 @@ public class PostController {
         postService.delete(id, loginUserDto.getId());
         return new ResponseEntity<>(null, HttpStatus.OK);
     }
+
+    @PutMapping("/{id}/like")
+    public int updateLike(@PathVariable long id, @SessionInfo UserSession userSession) {
+        LoginUserDto loginUserDto = userSession.getDto();
+        return postService.updateLike(id, loginUserDto.getId());
+    }
 }
