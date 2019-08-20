@@ -1,5 +1,6 @@
 package com.woowacourse.zzinbros.post.web;
 
+import com.woowacourse.zzinbros.BaseTest;
 import com.woowacourse.zzinbros.post.domain.Post;
 import com.woowacourse.zzinbros.post.domain.PostTest;
 import com.woowacourse.zzinbros.post.service.PostService;
@@ -27,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @AutoConfigureMockMvc
 @SpringBootTest
-class PostPageControllerTest {
+class PostPageControllerTest extends BaseTest {
 
     private static final Long BASE_ID = 1L;
 
