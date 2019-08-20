@@ -94,4 +94,9 @@ public class PostServiceTest extends BaseTest {
         given(postRepository.findAllByAuthor(defaultUser)).willReturn(Arrays.asList(defaultPost));
         assertThat(postService.readAllByUser(defaultUser)).isEqualTo(Arrays.asList(defaultPost));
     }
+
+    @Test
+    void 게시글_좋아요_확인() {
+        assertThat(postService.updateLike(DEFAULT_POST_ID, DEFAULT_USER_ID)).isEqualTo(INIT_LIKE + 1);
+    }
 }

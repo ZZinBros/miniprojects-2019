@@ -57,4 +57,10 @@ public class PostService {
     public List<Post> readAllByUser(User user) {
         return Collections.unmodifiableList(postRepository.findAllByAuthor(user));
     }
+
+    public int updateLike(long postId, long userId) {
+        Post post = postRepository.findById(postId).orElseThrow(PostNotFoundException::new);
+        User user = userService.findUserById(userId);
+        return post.updateLike(user);
+    }
 }
