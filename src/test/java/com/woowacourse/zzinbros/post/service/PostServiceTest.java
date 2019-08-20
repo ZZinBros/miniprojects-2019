@@ -7,6 +7,7 @@ import com.woowacourse.zzinbros.post.exception.UnAuthorizedException;
 import com.woowacourse.zzinbros.user.domain.User;
 import com.woowacourse.zzinbros.user.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -84,5 +85,12 @@ public class PostServiceTest {
     void 모든_게시글_조회() {
         given(postRepository.findAll()).willReturn(Arrays.asList(defaultPost));
         assertThat(postService.readAll()).isEqualTo(Arrays.asList(defaultPost));
+    }
+
+    @Test
+    @DisplayName("작성자에 따른 Post 조회하는지 검증")
+    void findAllByAuthor() {
+        given(postRepository.findAllByAuthor(defaultUser)).willReturn(Arrays.asList(defaultPost));
+        assertThat(postService.readAllByUser(defaultUser)).isEqualTo(Arrays.asList(defaultPost));
     }
 }
