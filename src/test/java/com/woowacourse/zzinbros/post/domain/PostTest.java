@@ -16,6 +16,7 @@ public class PostTest extends BaseTest {
     public static final String DEFAULT_NAME = "john";
     public static final String DEFAULT_EMAIL = "john123@example.com";
     public static final String DEFAULT_PASSWORD = "123456789";
+    public static final int INIT_LIKE = 0;
 
     private User defaultUser;
     private Post defaultPost;
@@ -42,5 +43,18 @@ public class PostTest extends BaseTest {
         User user = new User("paul", "paul@example.com", "123456789");
         assertThatExceptionOfType(UnAuthorizedException.class)
                 .isThrownBy(() -> defaultPost.update(new Post(NEW_CONTENT, user)));
+    }
+
+    @Test
+    void 좋아요를_누르지_않은_회원이_좋아요를_눌렀을_경우_테스트() {
+        int countOfLikes = defaultPost.updateLike(defaultUser);
+        assertThat(countOfLikes).isEqualTo(INIT_LIKE + 1);
+    }
+
+    @Test
+    void 좋아요를_누른_회원이_좋아요를_눌렀을_경우_테스트() {
+        defaultPost.updateLike(defaultUser);
+        int countOfLikes = defaultPost.updateLike(defaultUser);
+        assertThat(countOfLikes).isEqualTo(INIT_LIKE);
     }
 }
