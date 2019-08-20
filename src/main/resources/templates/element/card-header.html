@@ -13,10 +13,10 @@
                 </a>
                 <ul class="dropdown-menu">
                     <li>
-                        <a class="pointer" th:href="@{/posts/{id}/edit(id=${post.id})}">
+                        <button class="pointer" data-target="#post-edit-modal" data-toggle="modal" type="button">
                             <i class="ti-pencil pdd-right-10 text-dark"></i>
                             <span class="">게시글 수정</span>
-                        </a>
+                        </button>
                     </li>
                     <li>
                         <a class="pointer" th:onclick="|onDeleteClick(${post.id})|">
@@ -25,6 +25,7 @@
                         </a>
                     </li>
                 </ul>
+                <th:block th:include="element/post-edit-modal"/>
             </div>
         </li>
     </ul>
