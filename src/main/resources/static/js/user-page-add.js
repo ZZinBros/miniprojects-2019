@@ -1,7 +1,6 @@
 (function() {
-    function onAddPostClick(event) {
+    function onAddPostClick() {
         const contents = document.getElementById('post-content').value;
-
         const api = new AjaxApi();
         api.post(`/posts`, { contents })
             .then(res => {
