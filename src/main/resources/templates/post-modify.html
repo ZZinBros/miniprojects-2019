@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="common/header::mainHead"></head>
+
+<body>
+    <div id="wootecobook-app">
+        <header th:replace="layout/headline::headline"></header>
+        <div class="container-fluid max-width-lg mx-auto mrg-top-70" id="main-content">
+            <div class="row">
+                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" id="left-placeholder-container">
+                </div>
+                <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">
+                    <div th:replace="layout/post-edit-area"></div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 pdd-right-0">
+                </div>
+            </div>
+        </div>
+    </div>
+    <th:block th:include="common/cdns"></th:block>
+    <script src="/js/fetch-api.js"></script>
+    <script src="/js/post-edit.js"></script>
+</body>
+
+</html>

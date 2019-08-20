@@ -1,0 +1,35 @@
+<header id="header" class="header navbar" th:fragment="headline" xmlns:th="http://www.w3.org/1999/xhtml">
+    <div class="header-container max-width-lg mx-auto">
+        <ul class="nav-left mrg-left-0">
+            <li>
+                <a href="/">
+                    <div class="logo" style="background-image: url('https://raw.githubusercontent.com/woowacourse/miniprojects/master/wootecobook/images/default/icons.png')">
+                    </div>
+                </a>
+            </li>
+            <li class="search-container">
+                <span class="search">
+                    <form action="" method="get">
+                        <input type="text" class="searchbox" placeholder="검색">
+                        <button type="submit" class="search-btn">
+                            <i class="ti-search"></i>
+                        </button>
+                    </form>
+                </span>
+            </li>
+        </ul>
+        <ul class="nav-right">
+            <th:block th:replace="element/headline-user"></th:block>
+            <li>
+                <div class="friend-btn pointer mrg-vertical-10 mrg-horizon-5"></div>
+            </li>
+            <li>
+                <div class="message-btn pointer mrg-vertical-10 mrg-horizon-5"></div>
+            </li>
+            <li>
+                <div class="notification-btn pointer mrg-vertical-10 mrg-horizon-5"></div>
+            </li>
+
+        </ul>
+    </div>
+</header>

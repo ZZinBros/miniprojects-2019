@@ -1,0 +1,23 @@
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head th:replace="common/header::mainHead"></head>
+
+<body>
+    <div id="wootecobook-app">
+        <header th:replace="layout/headline::headline"></header>
+        <div id="main-content" class="container-fluid max-width-lg mx-auto mrg-top-70">
+            <div class="row">
+                <div th:replace="layout/blank-left-profile"></div>
+                <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">
+                    <div th:replace="layout/user-edit-area"></div>
+                </div>
+                <div th:replace="layout/blank-right-sidebar"></div>
+            </div>
+        </div>
+    </div>
+    <th:block th:include="common/cdns"></th:block>
+    <script src="/js/fetch-api.js"></script>
+    <script src="/js/mypage-edit.js"></script>
+</body>
+
+</html>

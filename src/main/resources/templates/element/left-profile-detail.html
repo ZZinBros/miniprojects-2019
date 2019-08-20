@@ -1,0 +1,8 @@
+<div class="left-profile">
+    <a th:if="${session.loggedInUser}" class="pointer">
+        <img class="img-circle width-25px" src="https://raw.githubusercontent.com/woowacourse/miniprojects/master/wootecobook/images/default/eastjun_profile.jpg">
+        <div class="left-name-edit pointer">
+            <a th:text="${session.loggedInUser.name}" class="left-name">이름</a>
+        </div>
+    </a>
+</div>
