@@ -49,10 +49,6 @@ debug: true
 spring:
   profiles: deploy
 
-  devtools:
-    livereload.enabled: true
-    restart.enabled: true
-
   jpa:
     hibernate.ddl-auto: update
     database: mysql
@@ -62,3 +58,14 @@ spring:
     url: jdbc:mysql://localhost:3306/wootecobook?serverTimezone=UTC
     username: zzinbros
     password: 1234
+
+  logging:
+    level:
+      root: ERROR
+      com.woowacourse.zzinbros: WARN
+      org.springframework: WARN
+      org.hibernate: INFO
+
+  output:
+    ansi:
+      enabled: detect
