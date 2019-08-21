@@ -45,7 +45,7 @@ public class PostController {
 
     @PutMapping("/{id}/like")
     public int updateLike(@PathVariable long id, @SessionInfo UserSession userSession) {
-        LoginUserDto loginUserDto = userSession.getDto();
+        UserResponseDto loginUserDto = userSession.getDto();
         return postService.updateLike(id, loginUserDto.getId());
     }
 }

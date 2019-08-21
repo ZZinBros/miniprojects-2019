@@ -10,7 +10,7 @@ import java.util.UUID;
 
 public class UploadToLocal implements UploadTo {
     private static final Logger logger = LoggerFactory.getLogger(UploadToLocal.class);
-    private static final String PATH = "/tmp/";
+    private static final String PATH = new File("").getAbsolutePath() + "/src/main/resources/static/images/";
     private MultipartFile file;
 
     public UploadToLocal(MultipartFile file) {
