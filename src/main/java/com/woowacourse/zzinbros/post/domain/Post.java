@@ -9,9 +9,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 public class Post {
@@ -33,9 +31,10 @@ public class Post {
     @JoinColumn(name = "author_id", foreignKey = @ForeignKey(name = "post_to_user"))
     private User author;
 
-    @OneToMany
-    @JoinColumn(name = "author_id")
-    private Set<User> likeUsers = new HashSet<>();
+    @OneToMany(mappedBy = "post", cascade = {CascadeType.REMOVE, CascadeType.PERSIST} )
+    private Set<PostLike> postLikes = new HashSet<>();
+
+    private int countOfLike;
 
     public Post() {
     }
@@ -43,6 +42,7 @@ public class Post {
     public Post(String contents, User author) {
         this.contents = contents;
         this.author = author;
+        countOfLike = 0;
     }
 
     public Post update(Post post) {
@@ -57,13 +57,13 @@ public class Post {
         return this.author.equals(user);
     }
 
-    public int updateLike(User user) {
-        if (likeUsers.contains(user)) {
-            likeUsers.remove(user);
-            return likeUsers.size();
-        }
-        likeUsers.add(user);
-        return likeUsers.size();
+    public void addLike(PostLike postLike) {
+        postLikes.add(postLike);
+        countOfLike++;
+    }
+    public void removeLike(PostLike postLike) {
+        postLikes.remove(postLike);
+        countOfLike--;
     }
 
     public Long getId() {
@@ -86,9 +86,14 @@ public class Post {
         return author;
     }
 
-    public Set<User> getLikeUsers() {
-        return likeUsers;
+    public Set<PostLike> getPostLikes() {
+        return Collections.unmodifiableSet(postLikes);
     }
+
+    public int getCountOfLike() {
+        return countOfLike;
+    }
+
 
     @Override
     public boolean equals(Object o) {
