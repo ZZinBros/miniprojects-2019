@@ -101,7 +101,6 @@ public class User {
     }
 
     public boolean addFriend(User friend) {
-        friend.getFriends().add(this);
         return friends.add(friend);
     }
 
@@ -121,8 +120,12 @@ public class User {
         return password;
     }
 
-    public Set<User> getFriends() {
+    public Set<User> getCopyOfFriends() {
         return new HashSet<>(friends);
+    }
+
+    private Set<User> getFriends() {
+        return friends;
     }
 
     @Override

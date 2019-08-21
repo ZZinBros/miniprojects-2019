@@ -193,7 +193,8 @@ class UserServiceTest extends BaseTest {
         given(userRepository.findById(2L)).willReturn(Optional.ofNullable(friendTwo));
 
         assertTrue(userService.addFriends(1L, 2L));
-        assertThat(friendOne.getFriends()).contains(friendTwo);
-        assertThat(friendTwo.getFriends()).contains(friendOne);
+        assertTrue(userService.addFriends(2L, 1L));
+        assertThat(friendOne.getCopyOfFriends()).contains(friendTwo);
+        assertThat(friendTwo.getCopyOfFriends()).contains(friendOne);
     }
 }
