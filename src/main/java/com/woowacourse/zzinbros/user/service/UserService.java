@@ -27,7 +27,7 @@ public class UserService {
 
     public User register(UserRequestDto userRequestDto) {
         final String email = userRequestDto.getEmail();
-        if (userRepository.existsUserByEmail(email)) {
+        if (!userRepository.existsUserByEmail(email)) {
             return userRepository.save(userRequestDto.toEntity());
         }
         throw new EmailAlreadyExistsException("중복된 이메일이 존재합니다");

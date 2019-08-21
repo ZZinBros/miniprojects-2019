@@ -67,9 +67,9 @@ class UserServiceTest extends BaseTest {
     }
 
     @Test
-    @DisplayName("회원 가입 테스트")
+    @DisplayName("정상 회원 가입 테스트")
     void addUser() {
-        given(userRepository.existsUserByEmail(user.getEmail())).willReturn(true);
+        given(userRepository.existsUserByEmail(user.getEmail())).willReturn(false);
         given(userRepository.save(user)).willReturn(user);
 
         User savedUser = userService.register(userRequestDto);
@@ -79,7 +79,7 @@ class UserServiceTest extends BaseTest {
     @Test
     @DisplayName("이미 이메일이 존재할 때 가입 실패")
     void failAddUserWhenUserExists() {
-        given(userRepository.save(userRequestDto.toEntity())).willThrow(EmailAlreadyExistsException.class);
+        given(userRepository.existsUserByEmail(user.getEmail())).willReturn(true);
         assertThatThrownBy(() ->
                 userService.register(userRequestDto)).isInstanceOf(EmailAlreadyExistsException.class);
     }
