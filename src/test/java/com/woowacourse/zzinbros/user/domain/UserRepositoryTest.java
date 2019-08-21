@@ -7,8 +7,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.dao.DataIntegrityViolationException;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DataJpaTest
@@ -31,6 +33,14 @@ class UserRepositoryTest {
         userRepository.save(user);
         User actual = userRepository.findByEmail(user.getEmail()).orElseThrow(IllegalArgumentException::new);
         assertEquals(user, actual);
+    }
+
+    @Test
+    @DisplayName("이메일이 중복일 때 에러가 발생하는지 테스트")
+    void signupWhenEmailExists() {
+        userRepository.save(user);
+
+        assertThatThrownBy(() -> userRepository.save(user)).isInstanceOf(DataIntegrityViolationException.class);
     }
 
     @Test
