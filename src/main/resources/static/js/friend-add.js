@@ -5,7 +5,6 @@
         const api = new AjaxApi();
         api.post("/friends", {requestFriendId})
             .then(res => {
-                console.log(res);
                 if(res.redirected) {
                     window.location.href = res.url;
                 }
