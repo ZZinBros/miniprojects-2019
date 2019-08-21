@@ -28,7 +28,7 @@ public class PostLike {
     @UpdateTimestamp
     private LocalDateTime updateDateTime;
 
-    public PostLike() {
+    protected PostLike() {
     }
 
     public PostLike(Post post, User user) {
