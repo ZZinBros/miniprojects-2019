@@ -122,7 +122,7 @@ public class User {
     }
 
     public Set<User> getFriends() {
-        return friends;
+        return new HashSet<>(friends);
     }
 
     @Override
