@@ -3,7 +3,7 @@ package com.woowacourse.zzinbros.post.web;
 import com.woowacourse.zzinbros.post.domain.Post;
 import com.woowacourse.zzinbros.post.dto.PostRequestDto;
 import com.woowacourse.zzinbros.post.service.PostService;
-import com.woowacourse.zzinbros.user.dto.LoginUserDto;
+import com.woowacourse.zzinbros.user.dto.UserResponseDto;
 import com.woowacourse.zzinbros.user.web.support.SessionInfo;
 import com.woowacourse.zzinbros.user.web.support.UserSession;
 import org.springframework.http.HttpStatus;
@@ -26,19 +26,19 @@ public class PostController {
 
     @PostMapping
     public Post create(@RequestBody PostRequestDto dto, @SessionInfo UserSession userSession) {
-        LoginUserDto loginUserDto = userSession.getDto();
+        UserResponseDto loginUserDto = userSession.getDto();
         return postService.add(dto, loginUserDto.getId());
     }
 
     @PutMapping("/{id}")
     public Post modify(@PathVariable long id, @RequestBody PostRequestDto dto, @SessionInfo UserSession userSession) {
-        LoginUserDto loginUserDto = userSession.getDto();
+        UserResponseDto loginUserDto = userSession.getDto();
         return postService.update(id, dto, loginUserDto.getId());
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Post> remove(@PathVariable long id, @SessionInfo UserSession userSession) {
-        LoginUserDto loginUserDto = userSession.getDto();
+        UserResponseDto loginUserDto = userSession.getDto();
         postService.delete(id, loginUserDto.getId());
         return new ResponseEntity<>(null, HttpStatus.OK);
     }

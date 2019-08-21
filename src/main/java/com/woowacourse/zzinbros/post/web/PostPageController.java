@@ -3,7 +3,7 @@ package com.woowacourse.zzinbros.post.web;
 import com.woowacourse.zzinbros.post.domain.Post;
 import com.woowacourse.zzinbros.post.service.PostService;
 import com.woowacourse.zzinbros.user.domain.User;
-import com.woowacourse.zzinbros.user.dto.LoginUserDto;
+import com.woowacourse.zzinbros.user.dto.UserResponseDto;
 import com.woowacourse.zzinbros.user.exception.UserNotFoundException;
 import com.woowacourse.zzinbros.user.service.UserService;
 import org.springframework.stereotype.Controller;
@@ -30,7 +30,7 @@ public class PostPageController {
         try {
             User author = userService.findUserById(id);
             List<Post> posts = postService.readAllByUser(author);
-            Set<LoginUserDto> friends = userService.getFriendsOf(id);
+            Set<UserResponseDto> friends = userService.getFriendsOf(id);
             model.addAttribute("author", author);
             model.addAttribute("posts", posts);
             model.addAttribute("friends", friends);

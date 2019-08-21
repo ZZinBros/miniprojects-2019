@@ -2,7 +2,7 @@ package com.woowacourse.zzinbros.user.service;
 
 import com.woowacourse.zzinbros.user.domain.User;
 import com.woowacourse.zzinbros.user.domain.repository.UserRepository;
-import com.woowacourse.zzinbros.user.dto.LoginUserDto;
+import com.woowacourse.zzinbros.user.dto.UserResponseDto;
 import com.woowacourse.zzinbros.user.dto.UserRequestDto;
 import com.woowacourse.zzinbros.user.dto.UserUpdateDto;
 import com.woowacourse.zzinbros.user.exception.EmailAlreadyExistsException;
@@ -34,7 +34,7 @@ public class UserService {
         throw new EmailAlreadyExistsException("중복된 이메일이 존재합니다");
     }
 
-    public User modify(Long id, UserUpdateDto userUpdateDto, LoginUserDto loginUserDto) {
+    public User modify(Long id, UserUpdateDto userUpdateDto, UserResponseDto loginUserDto) {
         User user = findUser(id);
         User loggedInUser = findUserByEmail(loginUserDto.getEmail());
         if (loggedInUser.isAuthor(user)) {
@@ -44,7 +44,7 @@ public class UserService {
         throw new NotValidUserException("수정할 수 없는 이용자입니다");
     }
 
-    public void delete(Long id, LoginUserDto loginUserDto) {
+    public void delete(Long id, UserResponseDto loginUserDto) {
         User user = findUser(id);
         User loggedInUser = findUserByEmail(loginUserDto.getEmail());
         if (loggedInUser.isAuthor(user)) {
@@ -58,7 +58,7 @@ public class UserService {
         return findUser(id);
     }
 
-    public User findLoggedInUser(final LoginUserDto loginUserDto) {
+    public User findLoggedInUser(final UserResponseDto loginUserDto) {
         return findUser(loginUserDto.getId());
     }
 
@@ -67,11 +67,11 @@ public class UserService {
                 .orElseThrow(() -> new UserNotFoundException("User Not Found By ID"));
     }
 
-    public LoginUserDto login(UserRequestDto userRequestDto) {
+    public UserResponseDto login(UserRequestDto userRequestDto) {
         User user = findUserByEmail(userRequestDto.getEmail());
 
         if (user.matchPassword(userRequestDto.getPassword())) {
-            return new LoginUserDto(user.getId(), user.getName(), user.getEmail());
+            return new UserResponseDto(user.getId(), user.getName(), user.getEmail());
         }
         throw new UserLoginException("비밀번호가 다릅니다");
     }
@@ -81,10 +81,10 @@ public class UserService {
                 .orElseThrow(() -> new UserNotFoundException("User Not Found By email"));
     }
 
-    public Set<LoginUserDto> getFriendsOf(final Long id) {
+    public Set<UserResponseDto> getFriendsOf(final Long id) {
         User owner = findUser(id);
-        Set<LoginUserDto> users = userRepository.findByFriends(owner).stream()
-                .map((user) -> new LoginUserDto(user.getId(), user.getName(), user.getEmail()))
+        Set<UserResponseDto> users = userRepository.findByFriends(owner).stream()
+                .map((user) -> new UserResponseDto(user.getId(), user.getName(), user.getEmail()))
                 .collect(toSet());
         return Collections.unmodifiableSet(users);
     }
