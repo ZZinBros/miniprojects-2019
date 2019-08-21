@@ -69,6 +69,7 @@ class UserServiceTest extends BaseTest {
     @Test
     @DisplayName("회원 가입 테스트")
     void addUser() {
+        given(userRepository.existsUserByEmail(user.getEmail())).willReturn(true);
         given(userRepository.save(user)).willReturn(user);
 
         User savedUser = userService.register(userRequestDto);

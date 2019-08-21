@@ -1,6 +1,7 @@
 package com.woowacourse.zzinbros.user.domain;
 
 import com.woowacourse.zzinbros.user.domain.repository.UserRepository;
+import com.woowacourse.zzinbros.user.exception.EmailAlreadyExistsException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,6 +13,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -40,7 +42,7 @@ class UserRepositoryTest {
     void signupWhenEmailExists() {
         userRepository.save(user);
 
-        assertThatThrownBy(() -> userRepository.save(user)).isInstanceOf(DataIntegrityViolationException.class);
+        assertTrue(userRepository.existsUserByEmail(user.getEmail()));
     }
 
     @Test

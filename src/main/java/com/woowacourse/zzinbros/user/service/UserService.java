@@ -26,11 +26,11 @@ public class UserService {
     }
 
     public User register(UserRequestDto userRequestDto) {
-        try {
+        final String email = userRequestDto.getEmail();
+        if (userRepository.existsUserByEmail(email)) {
             return userRepository.save(userRequestDto.toEntity());
-        } catch (DataIntegrityViolationException e) {
-            throw new EmailAlreadyExistsException("중복된 이메일이 존재합니다", e);
         }
+        throw new EmailAlreadyExistsException("중복된 이메일이 존재합니다");
     }
 
     public User modify(Long id, UserUpdateDto userUpdateDto, LoginUserDto loginUserDto) {
