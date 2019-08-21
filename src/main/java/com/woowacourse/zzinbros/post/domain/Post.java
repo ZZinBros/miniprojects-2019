@@ -34,6 +34,7 @@ public class Post {
     @OneToMany(mappedBy = "post", cascade = {CascadeType.REMOVE, CascadeType.PERSIST} )
     private Set<PostLike> postLikes = new HashSet<>();
 
+    @Column
     private int countOfLike;
 
     public Post() {

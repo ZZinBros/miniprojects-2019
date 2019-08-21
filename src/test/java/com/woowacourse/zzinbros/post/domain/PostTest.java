@@ -46,15 +46,17 @@ public class PostTest extends BaseTest {
     }
 
     @Test
-    void 좋아요를_누르지_않은_회원이_좋아요를_눌렀을_경우_테스트() {
-        int countOfLikes = defaultPost.updateLike(defaultUser);
-        assertThat(countOfLikes).isEqualTo(INIT_LIKE + 1);
+    void 좋아요를_눌렀을_경우_테스트() {
+        PostLike postLike = new PostLike(defaultPost, defaultUser);
+        defaultPost.addLike(postLike);
+        assertThat(defaultPost.getPostLikes()).contains(postLike);
     }
 
     @Test
-    void 좋아요를_누른_회원이_좋아요를_눌렀을_경우_테스트() {
-        defaultPost.updateLike(defaultUser);
-        int countOfLikes = defaultPost.updateLike(defaultUser);
-        assertThat(countOfLikes).isEqualTo(INIT_LIKE);
+    void 좋아요_취소_테스트() {
+        PostLike postLike = new PostLike(defaultPost, defaultUser);
+        defaultPost.addLike(postLike);
+        defaultPost.removeLike(postLike);
+        assertThat(defaultPost.getPostLikes()).doesNotContain(postLike);
     }
 }

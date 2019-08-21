@@ -2,6 +2,8 @@ package com.woowacourse.zzinbros.post.service;
 
 import com.woowacourse.zzinbros.BaseTest;
 import com.woowacourse.zzinbros.post.domain.Post;
+import com.woowacourse.zzinbros.post.domain.PostLike;
+import com.woowacourse.zzinbros.post.domain.repository.PostLikeRepository;
 import com.woowacourse.zzinbros.post.domain.repository.PostRepository;
 import com.woowacourse.zzinbros.post.dto.PostRequestDto;
 import com.woowacourse.zzinbros.post.exception.UnAuthorizedException;
@@ -21,6 +23,7 @@ import static com.woowacourse.zzinbros.post.domain.PostTest.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doNothing;
 
 public class PostServiceTest extends BaseTest {
     private static final Long DEFAULT_USER_ID = 999L;
@@ -30,6 +33,9 @@ public class PostServiceTest extends BaseTest {
 
     @Mock
     private PostRepository postRepository;
+
+    @Mock
+    private PostLikeRepository postLikeRepository;
 
     @Mock
     private UserService userService;
@@ -96,7 +102,17 @@ public class PostServiceTest extends BaseTest {
     }
 
     @Test
-    void 게시글_좋아요_확인() {
+    void 좋아요를_누른상태에서_좋아요를_눌렀을_경우_확인() {
+        PostLike postLike = new PostLike(defaultPost, defaultUser);
+        given(postLikeRepository.findByPostAndUser(defaultPost, defaultUser)).willReturn(postLike);
+        doNothing().when(postLikeRepository).delete(postLike);
+
+        assertThat(postService.updateLike(DEFAULT_POST_ID, DEFAULT_USER_ID)).isEqualTo(INIT_LIKE);
+    }
+
+    @Test
+    void 좋아요를_누르지_않은_상태에서_좋아요를_눌렀을_경우_확인() {
+        given(postLikeRepository.findByPostAndUser(defaultPost, defaultUser)).willReturn(null);
         assertThat(postService.updateLike(DEFAULT_POST_ID, DEFAULT_USER_ID)).isEqualTo(INIT_LIKE + 1);
     }
 }
