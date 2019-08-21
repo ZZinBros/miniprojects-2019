@@ -11,7 +11,8 @@
         <div class="container-fluid max-width-lg mx-auto mrg-top-70" id="user-friend-list">
             <div class="row">
                 <div th:each="friend : ${friends}">
-                    <span th:text="${friend.name}">기본친구</span>
+<!--                    <span th:text="${friend.name}">기본친구</span>-->
+                    <span th:replace="element/friend-card"></span>
                 </div>
             </div>
         </div>
