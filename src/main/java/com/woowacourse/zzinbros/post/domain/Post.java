@@ -10,9 +10,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
 public class Post {
@@ -39,12 +37,19 @@ public class Post {
     @JoinColumn(name = "media_file_id", foreignKey = @ForeignKey(name = "post_to_media_file"))
     private List<MediaFile> mediaFiles = new ArrayList<>();
 
+    @OneToMany(mappedBy = "post", cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
+    private Set<PostLike> postLikes = new HashSet<>();
+
+    @Column
+    private int countOfLike;
+
     public Post() {
     }
 
     public Post(String contents, User author) {
         this.contents = contents;
         this.author = author;
+        countOfLike = 0;
     }
 
     public Post update(Post post) {
@@ -61,6 +66,16 @@ public class Post {
 
     public void addMediaFiles(MediaFile mediaFile) {
         this.mediaFiles.add(mediaFile);
+    }
+
+    public void addLike(PostLike postLike) {
+        postLikes.add(postLike);
+        countOfLike++;
+    }
+
+    public void removeLike(PostLike postLike) {
+        postLikes.remove(postLike);
+        countOfLike--;
     }
 
     public Long getId() {
@@ -89,6 +104,14 @@ public class Post {
 
     public void setMediaFiles(List<MediaFile> mediaFiles) {
         this.mediaFiles = mediaFiles;
+    }
+
+    public Set<PostLike> getPostLikes() {
+        return Collections.unmodifiableSet(postLikes);
+    }
+
+    public int getCountOfLike() {
+        return countOfLike;
     }
 
     @Override

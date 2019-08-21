@@ -4,7 +4,7 @@ import com.woowacourse.zzinbros.BaseTest;
 import com.woowacourse.zzinbros.user.domain.User;
 import com.woowacourse.zzinbros.user.domain.UserTest;
 import com.woowacourse.zzinbros.user.domain.repository.UserRepository;
-import com.woowacourse.zzinbros.user.dto.LoginUserDto;
+import com.woowacourse.zzinbros.user.dto.UserResponseDto;
 import com.woowacourse.zzinbros.user.dto.UserRequestDto;
 import com.woowacourse.zzinbros.user.dto.UserUpdateDto;
 import com.woowacourse.zzinbros.user.exception.EmailAlreadyExistsException;
@@ -47,8 +47,8 @@ class UserServiceTest extends BaseTest {
     private UserUpdateDto userUpdateDto;
     private User user;
     private User notValidUser;
-    private LoginUserDto validLoginUserDto;
-    private LoginUserDto notValidLoginUserDto;
+    private UserResponseDto validLoginUserDto;
+    private UserResponseDto notValidLoginUserDto;
 
     @BeforeEach
     void setUp() {
@@ -62,8 +62,8 @@ class UserServiceTest extends BaseTest {
         );
         user = userRequestDto.toEntity();
         notValidUser = new User(UserTest.BASE_NAME, MISMATCH_EMAIL, UserTest.BASE_PASSWORD);
-        validLoginUserDto = new LoginUserDto(BASE_ID, UserTest.BASE_NAME, UserTest.BASE_EMAIL);
-        notValidLoginUserDto = new LoginUserDto(BASE_ID, UserTest.BASE_NAME, MISMATCH_EMAIL);
+        validLoginUserDto = new UserResponseDto(BASE_ID, UserTest.BASE_NAME, UserTest.BASE_EMAIL);
+        notValidLoginUserDto = new UserResponseDto(BASE_ID, UserTest.BASE_NAME, MISMATCH_EMAIL);
     }
 
     @Test
@@ -144,7 +144,7 @@ class UserServiceTest extends BaseTest {
     void loginSuccess() {
         given(userRepository.findByEmail(userRequestDto.getEmail())).willReturn(Optional.ofNullable(user));
 
-        LoginUserDto loginUserDto = userService.login(userRequestDto);
+        UserResponseDto loginUserDto = userService.login(userRequestDto);
         assertThat(loginUserDto.getEmail()).isEqualTo(userRequestDto.getEmail());
         assertThat(loginUserDto.getName()).isEqualTo(userRequestDto.getName());
     }
@@ -176,12 +176,16 @@ class UserServiceTest extends BaseTest {
         Set<User> friends = new HashSet<>(Arrays.asList(
                 new User(UserTest.BASE_NAME, "1@email.com", UserTest.BASE_PASSWORD),
                 new User(UserTest.BASE_NAME, "2@email.com", UserTest.BASE_PASSWORD)
-                ));
+        ));
         given(userRepository.findById(1L)).willReturn(Optional.ofNullable(user));
         given(userRepository.findByFriends(user)).willReturn(friends);
 
-        Set<User> actual = userService.getFriendsOf(1L);
-        assertThat(actual).isEqualTo(friends);
+        Set<UserResponseDto> actual = userService.getFriendsOf(1L);
+        Set<UserResponseDto> expected = new HashSet<>(Arrays.asList(
+                new UserResponseDto(null, UserTest.BASE_NAME, "1@email.com"),
+                new UserResponseDto(null, UserTest.BASE_NAME, "2@email.com")
+        ));
+        assertThat(actual).isEqualTo(expected);
     }
 
     @Test

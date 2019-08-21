@@ -10,7 +10,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class UUIDTest {
     @Test
-    void name() {
+    void UUID_랜덤_중복_테스트() {
         String[] strings1 = new String[10000000];
         for (int i = 0; i < 10000000; i++) {
             strings1[i] = (UUID.randomUUID().toString());
