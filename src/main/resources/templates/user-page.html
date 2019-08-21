@@ -5,11 +5,12 @@
 <body>
 <div id="wootecobook-app">
     <header th:replace="layout/headline::headline"></header>
+    <div th:replace="layout/user-page-cover"></div>
+    <div th:replace="layout/user-page-tabs"></div>
     <div class="container-fluid max-width-lg mx-auto mrg-top-70" id="main-content">
         <div class="row">
-            <div th:replace="layout/left-profile"></div>
+            <div th:replace="layout/user-page-info"></div>
             <div th:replace="layout/center-container"></div>
-            <div th:replace="layout/right-sidebar"></div>
         </div>
     </div>
 </div>

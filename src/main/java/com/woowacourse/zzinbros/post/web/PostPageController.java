@@ -30,7 +30,7 @@ public class PostPageController {
             List<Post> posts = postService.readAllByUser(author);
             model.addAttribute("author", author);
             model.addAttribute("posts", posts);
-            return "/user-page";
+            return "user-page";
         } catch (UserNotFoundException e) {
             return "redirect:/";
         }

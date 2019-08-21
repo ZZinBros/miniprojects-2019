@@ -19,10 +19,14 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -63,8 +67,9 @@ class UserServiceTest extends BaseTest {
     }
 
     @Test
-    @DisplayName("회원 가입 테스트")
+    @DisplayName("정상 회원 가입 테스트")
     void addUser() {
+        given(userRepository.existsUserByEmail(user.getEmail())).willReturn(false);
         given(userRepository.save(user)).willReturn(user);
 
         User savedUser = userService.register(userRequestDto);
@@ -74,7 +79,7 @@ class UserServiceTest extends BaseTest {
     @Test
     @DisplayName("이미 이메일이 존재할 때 가입 실패")
     void failAddUserWhenUserExists() {
-        given(userRepository.save(userRequestDto.toEntity())).willThrow(EmailAlreadyExistsException.class);
+        given(userRepository.existsUserByEmail(user.getEmail())).willReturn(true);
         assertThatThrownBy(() ->
                 userService.register(userRequestDto)).isInstanceOf(EmailAlreadyExistsException.class);
     }
@@ -163,5 +168,34 @@ class UserServiceTest extends BaseTest {
         User actual = userService.findLoggedInUser(validLoginUserDto);
 
         assertThat(actual).isEqualTo(user);
+    }
+
+    @Test
+    @DisplayName("친구의 목록을 반환 받기")
+    void getFriendsOfTest() {
+        Set<User> friends = new HashSet<>(Arrays.asList(
+                new User(UserTest.BASE_NAME, "1@email.com", UserTest.BASE_PASSWORD),
+                new User(UserTest.BASE_NAME, "2@email.com", UserTest.BASE_PASSWORD)
+                ));
+        given(userRepository.findById(1L)).willReturn(Optional.ofNullable(user));
+        given(userRepository.findByFriends(user)).willReturn(friends);
+
+        Set<User> actual = userService.getFriendsOf(1L);
+        assertThat(actual).isEqualTo(friends);
+    }
+
+    @Test
+    @DisplayName("친구 추가")
+    void addTest() {
+        User friendOne = new User(UserTest.BASE_NAME, "1@email.com", UserTest.BASE_PASSWORD);
+        User friendTwo = new User(UserTest.BASE_NAME, "2@email.com", UserTest.BASE_PASSWORD);
+
+        given(userRepository.findById(1L)).willReturn(Optional.ofNullable(friendOne));
+        given(userRepository.findById(2L)).willReturn(Optional.ofNullable(friendTwo));
+
+        assertTrue(userService.addFriends(1L, 2L));
+        assertTrue(userService.addFriends(2L, 1L));
+        assertThat(friendOne.getCopyOfFriends()).contains(friendTwo);
+        assertThat(friendTwo.getCopyOfFriends()).contains(friendOne);
     }
 }
