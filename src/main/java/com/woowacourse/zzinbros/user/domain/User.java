@@ -37,8 +37,8 @@ public class User {
     private String password;
 
     @ManyToMany
-    @JoinTable(name = "USER_FRINEDS",
-                joinColumns = @JoinColumn(name = "temp_id", referencedColumnName = "id"),
+    @JoinTable(name = "USER_FRIEND",
+                joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
                 inverseJoinColumns = @JoinColumn(name = "friend_id", referencedColumnName = "id"))
     private Set<User> friends = new HashSet<>();
 
