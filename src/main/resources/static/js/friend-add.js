@@ -1,6 +1,5 @@
 (function() {
     const sendFriendRequest = (event)=>{
-        console.log(event.target);
         const requestFriendId = event.target.dataset.userId;
         const api = new AjaxApi();
         api.post("/friends", {requestFriendId})
