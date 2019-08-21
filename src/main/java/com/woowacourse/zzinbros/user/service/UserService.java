@@ -9,12 +9,13 @@ import com.woowacourse.zzinbros.user.exception.EmailAlreadyExistsException;
 import com.woowacourse.zzinbros.user.exception.NotValidUserException;
 import com.woowacourse.zzinbros.user.exception.UserLoginException;
 import com.woowacourse.zzinbros.user.exception.UserNotFoundException;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.Set;
+
+import static java.util.stream.Collectors.toSet;
 
 @Service
 @Transactional
@@ -80,9 +81,12 @@ public class UserService {
                 .orElseThrow(() -> new UserNotFoundException("User Not Found By email"));
     }
 
-    public Set<User> getFriendsOf(final Long id) {
-        User user = findUser(id);
-        return Collections.unmodifiableSet(userRepository.findByFriends(user));
+    public Set<LoginUserDto> getFriendsOf(final Long id) {
+        User owner = findUser(id);
+        Set<LoginUserDto> users = userRepository.findByFriends(owner).stream()
+                .map((user) -> new LoginUserDto(user.getId(), user.getName(), user.getEmail()))
+                .collect(toSet());
+        return Collections.unmodifiableSet(users);
     }
 
 

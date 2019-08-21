@@ -32,12 +32,13 @@ public class LoginUserDto {
         if (this == o) return true;
         if (!(o instanceof LoginUserDto)) return false;
         LoginUserDto that = (LoginUserDto) o;
-        return Objects.equals(name, that.name) &&
+        return Objects.equals(id, that.id) &&
+                Objects.equals(name, that.name) &&
                 Objects.equals(email, that.email);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, email);
+        return Objects.hash(id, name, email);
     }
 }

@@ -176,12 +176,16 @@ class UserServiceTest extends BaseTest {
         Set<User> friends = new HashSet<>(Arrays.asList(
                 new User(UserTest.BASE_NAME, "1@email.com", UserTest.BASE_PASSWORD),
                 new User(UserTest.BASE_NAME, "2@email.com", UserTest.BASE_PASSWORD)
-                ));
+        ));
         given(userRepository.findById(1L)).willReturn(Optional.ofNullable(user));
         given(userRepository.findByFriends(user)).willReturn(friends);
 
-        Set<User> actual = userService.getFriendsOf(1L);
-        assertThat(actual).isEqualTo(friends);
+        Set<LoginUserDto> actual = userService.getFriendsOf(1L);
+        Set<LoginUserDto> expected = new HashSet<>(Arrays.asList(
+                new LoginUserDto(null, UserTest.BASE_NAME, "1@email.com"),
+                new LoginUserDto(null, UserTest.BASE_NAME, "2@email.com")
+        ));
+        assertThat(actual).isEqualTo(expected);
     }
 
     @Test

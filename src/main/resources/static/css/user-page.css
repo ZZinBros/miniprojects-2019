@@ -20,6 +20,12 @@
     left: 52%;
 }
 
+#friend-btn {
+    position: relative;
+    top: 65%;
+    left: 52%;
+}
+
 .user-info-icon {
     display: inline-block;
     margin-bottom: 0.5rem;
