@@ -1,6 +1,8 @@
 package com.woowacourse.zzinbros.post.service;
 
 import com.woowacourse.zzinbros.post.domain.Post;
+import com.woowacourse.zzinbros.post.domain.PostLike;
+import com.woowacourse.zzinbros.post.domain.repository.PostLikeRepository;
 import com.woowacourse.zzinbros.post.domain.repository.PostRepository;
 import com.woowacourse.zzinbros.post.dto.PostRequestDto;
 import com.woowacourse.zzinbros.post.exception.PostNotFoundException;
@@ -12,15 +14,18 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class PostService {
     private final UserService userService;
     private final PostRepository postRepository;
+    private final PostLikeRepository postLikeRepository;
 
-    public PostService(UserService userService, PostRepository postRepository) {
+    public PostService(UserService userService, PostRepository postRepository, PostLikeRepository postLikeRepository) {
         this.userService = userService;
         this.postRepository = postRepository;
+        this.postLikeRepository = postLikeRepository;
     }
 
     public Post add(PostRequestDto dto, long userId) {
@@ -52,5 +57,24 @@ public class PostService {
 
     public List<Post> readAll() {
         return Collections.unmodifiableList(postRepository.findAll());
+    }
+
+    public List<Post> readAllByUser(User user) {
+        return Collections.unmodifiableList(postRepository.findAllByAuthor(user));
+    }
+
+    @Transactional
+    public int updateLike(long postId, long userId) {
+        Post post = postRepository.findById(postId).orElseThrow(PostNotFoundException::new);
+        User user = userService.findUserById(userId);
+        PostLike postLike = postLikeRepository.findByPostAndUser(post, user);
+        if (Objects.isNull(postLike)) {
+            postLike = new PostLike(post, user);
+            post.addLike(postLike);
+            return post.getPostLikes().size();
+        }
+        postLikeRepository.delete(postLike);
+        post.removeLike(postLike);
+        return post.getPostLikes().size();
     }
 }

@@ -2,12 +2,16 @@ package com.woowacourse.zzinbros.user.domain;
 
 import com.woowacourse.zzinbros.user.exception.IllegalUserArgumentException;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -32,6 +36,14 @@ public class User {
 
     @Column(name = "password", nullable = false, length = MAX_PASSWORD_LENGTH)
     private String password;
+
+    @ManyToMany(cascade = CascadeType.REMOVE,
+                fetch = FetchType.LAZY)
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinTable(name = "USER_FRIEND",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "friend_id", referencedColumnName = "id"))
+    private Set<User> friends = new HashSet<>();
 
     @CreationTimestamp
     private LocalDateTime createdTime;
@@ -91,6 +103,10 @@ public class User {
                 && this.password.equals(another.password);
     }
 
+    public boolean addFriend(User friend) {
+        return friends.add(friend);
+    }
+
     public Long getId() {
         return id;
     }
@@ -105,6 +121,14 @@ public class User {
 
     public String getPassword() {
         return password;
+    }
+
+    public Set<User> getCopyOfFriends() {
+        return new HashSet<>(friends);
+    }
+
+    private Set<User> getFriends() {
+        return friends;
     }
 
     @Override

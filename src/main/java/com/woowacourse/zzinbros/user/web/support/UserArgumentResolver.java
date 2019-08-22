@@ -1,6 +1,6 @@
 package com.woowacourse.zzinbros.user.web.support;
 
-import com.woowacourse.zzinbros.user.dto.LoginUserDto;
+import com.woowacourse.zzinbros.user.dto.UserResponseDto;
 import com.woowacourse.zzinbros.user.exception.UserNotLoggedInException;
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.support.WebDataBinderFactory;
@@ -26,8 +26,8 @@ public class UserArgumentResolver implements HandlerMethodArgumentResolver {
                                   WebDataBinderFactory binderFactory) {
         HttpServletRequest httpServletRequest = (HttpServletRequest) webRequest.getNativeRequest();
         HttpSession session = httpServletRequest.getSession();
-        Optional<LoginUserDto> loginUserDto
-                = Optional.ofNullable((LoginUserDto) session.getAttribute(LoginUserDto.LOGIN_USER));
+        Optional<UserResponseDto> loginUserDto
+                = Optional.ofNullable((UserResponseDto) session.getAttribute(UserSession.LOGIN_USER));
 
         return new UserSession(loginUserDto.orElseThrow(() -> new UserNotLoggedInException("로그인 해주세요")));
     }

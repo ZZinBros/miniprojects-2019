@@ -4,8 +4,7 @@
 # Ignore Gradle build output directory
 build
 .idea/
-gradle
-!gradle/wrapper/gradle-wrapper.properties
+!gradle/wrapper/gradle-wrapper.jar
 out/
 target/
 *images/
@@ -38,5 +37,6 @@ ehthumbs_vista.db
 [Dd]esktop.ini
 $RECYCLE.BIN/
 *.lnk
+*.log
 
 # End of https://www.gitignore.io/

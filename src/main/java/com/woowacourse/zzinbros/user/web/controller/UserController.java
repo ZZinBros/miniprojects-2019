@@ -1,7 +1,7 @@
 package com.woowacourse.zzinbros.user.web.controller;
 
 import com.woowacourse.zzinbros.user.domain.User;
-import com.woowacourse.zzinbros.user.dto.LoginUserDto;
+import com.woowacourse.zzinbros.user.dto.UserResponseDto;
 import com.woowacourse.zzinbros.user.dto.UserRequestDto;
 import com.woowacourse.zzinbros.user.dto.UserUpdateDto;
 import com.woowacourse.zzinbros.user.exception.UserException;
@@ -52,7 +52,7 @@ public class UserController {
                          @SessionInfo UserSession userSession) {
         try {
             User user = userService.modify(id, userUpdateDto, userSession.getDto());
-            LoginUserDto newLoginUserDto = new LoginUserDto(user.getId(), user.getName(), user.getEmail());
+            UserResponseDto newLoginUserDto = new UserResponseDto(user.getId(), user.getName(), user.getEmail());
             loginSessionManager.setLoginSession(newLoginUserDto);
             return "redirect:/";
         } catch (UserException e) {

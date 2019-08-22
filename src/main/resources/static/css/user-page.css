@@ -1,0 +1,32 @@
+#cover-profile-img {
+    height: 50%;
+    position: relative;
+    top: 55%;
+    left: 15%;
+}
+
+#user-name-in-cover {
+    position: relative;
+    display: inline-block;
+    color: white;
+    font-size: 2rem;
+    top: 65%;
+    left: 16%;
+}
+
+#add-friend-btn {
+    position: relative;
+    top: 65%;
+    left: 52%;
+}
+
+#friend-btn {
+    position: relative;
+    top: 65%;
+    left: 52%;
+}
+
+.user-info-icon {
+    display: inline-block;
+    margin-bottom: 0.5rem;
+}

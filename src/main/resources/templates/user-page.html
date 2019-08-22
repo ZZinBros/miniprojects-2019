@@ -1,0 +1,20 @@
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="common/header::mainHead"></head>
+
+<body>
+<div id="wootecobook-app">
+    <header th:replace="layout/headline::headline"></header>
+    <div th:replace="element/user-page-cover"></div>
+    <div class="tab-info center-tabs" id="user-page-tab">
+        <ul th:replace="layout/user-page-tabs"></ul>
+        <div th:replace="element/user-tab-contents"></div>
+    </div>
+</div>
+<th:block th:include="common/cdns"></th:block>
+<script src="/js/fetch-api.js"></script>
+<script src="/js/user-page-add.js"></script>
+<script src="/js/friend-add.js"></script>
+</body>
+
+</html>

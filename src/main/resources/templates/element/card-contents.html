@@ -2,4 +2,7 @@
     <p>
         <span th:text="${post.contents}"> 해리와 션의 MVC 패턴 </span> <br>
     </p>
+    <div class="feed-body feed-image" th:each="img : ${post.mediaFiles}">
+        <img alt="메롱" th:src="${img.url}">
+    </div>
 </div>

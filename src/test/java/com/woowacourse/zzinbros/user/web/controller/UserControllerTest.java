@@ -1,18 +1,19 @@
-package com.woowacourse.zzinbros.user.web;
+package com.woowacourse.zzinbros.user.web.controller;
 
+import com.woowacourse.zzinbros.BaseTest;
 import com.woowacourse.zzinbros.user.domain.User;
 import com.woowacourse.zzinbros.user.domain.UserTest;
-import com.woowacourse.zzinbros.user.dto.LoginUserDto;
+import com.woowacourse.zzinbros.user.dto.UserResponseDto;
 import com.woowacourse.zzinbros.user.dto.UserRequestDto;
 import com.woowacourse.zzinbros.user.dto.UserUpdateDto;
 import com.woowacourse.zzinbros.user.exception.EmailAlreadyExistsException;
 import com.woowacourse.zzinbros.user.exception.NotValidUserException;
 import com.woowacourse.zzinbros.user.exception.UserNotFoundException;
 import com.woowacourse.zzinbros.user.service.UserService;
-import com.woowacourse.zzinbros.user.web.controller.UserController;
 import com.woowacourse.zzinbros.user.web.support.LoginSessionManager;
 import com.woowacourse.zzinbros.user.web.support.UserArgumentResolver;
 import com.woowacourse.zzinbros.user.web.support.UserControllerExceptionAdvice;
+import com.woowacourse.zzinbros.user.web.support.UserSession;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -35,7 +36,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @AutoConfigureMockMvc
 @SpringBootTest
-class UserControllerTest {
+class UserControllerTest extends BaseTest {
     static final long BASE_ID = 1L;
     static final long MISMATCH_ID = 2L;
 
@@ -53,7 +54,7 @@ class UserControllerTest {
     private User user;
     private UserRequestDto userRequestDto;
     private UserUpdateDto userUpdateDto;
-    private LoginUserDto loginUserDto;
+    private UserResponseDto loginUserDto;
 
     @BeforeEach
     void setUp() {
@@ -65,7 +66,7 @@ class UserControllerTest {
         userRequestDto = new UserRequestDto(UserTest.BASE_NAME, UserTest.BASE_EMAIL, UserTest.BASE_PASSWORD);
         userUpdateDto = new UserUpdateDto(UserTest.BASE_NAME, UserTest.BASE_EMAIL);
         user = new User(UserTest.BASE_NAME, UserTest.BASE_EMAIL, UserTest.BASE_PASSWORD);
-        loginUserDto = new LoginUserDto(BASE_ID, user.getName(), user.getEmail());
+        loginUserDto = new UserResponseDto(BASE_ID, user.getName(), user.getEmail());
     }
 
     @Test
@@ -103,7 +104,7 @@ class UserControllerTest {
                 .willReturn(user);
 
         mockMvc.perform(put("/users/" + BASE_ID)
-                .sessionAttr(LoginUserDto.LOGIN_USER, loginUserDto)
+                .sessionAttr(UserSession.LOGIN_USER, loginUserDto)
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .param("name", userUpdateDto.getName())
                 .param("email", userUpdateDto.getEmail()))
@@ -117,7 +118,7 @@ class UserControllerTest {
                 .willThrow(NotValidUserException.class);
 
         mockMvc.perform(put("/users/" + MISMATCH_ID)
-                .sessionAttr(LoginUserDto.LOGIN_USER, loginUserDto)
+                .sessionAttr(UserSession.LOGIN_USER, loginUserDto)
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .param("name", userUpdateDto.getName())
                 .param("email", userUpdateDto.getEmail()))
@@ -132,7 +133,7 @@ class UserControllerTest {
 
         mockMvc.perform(put("/users/" + BASE_ID)
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                .sessionAttr(LoginUserDto.LOGIN_USER, loginUserDto)
+                .sessionAttr(UserSession.LOGIN_USER, loginUserDto)
                 .param("name", userUpdateDto.getName())
                 .param("email", userUpdateDto.getEmail()))
                 .andExpect(status().is3xxRedirection());
@@ -162,7 +163,7 @@ class UserControllerTest {
     @DisplayName("정상적으로 회원 정보 삭제")
     void deleteTest() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.delete("/users/" + BASE_ID)
-                .sessionAttr(LoginUserDto.LOGIN_USER, loginUserDto))
+                .sessionAttr(UserSession.LOGIN_USER, loginUserDto))
                 .andExpect(status().isFound());
 
         verify(userService, times(1)).delete(BASE_ID, loginUserDto);

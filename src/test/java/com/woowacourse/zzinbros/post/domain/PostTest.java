@@ -1,5 +1,6 @@
 package com.woowacourse.zzinbros.post.domain;
 
+import com.woowacourse.zzinbros.BaseTest;
 import com.woowacourse.zzinbros.post.exception.UnAuthorizedException;
 import com.woowacourse.zzinbros.user.domain.User;
 import org.junit.jupiter.api.BeforeEach;
@@ -9,12 +10,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
-public class PostTest {
+public class PostTest extends BaseTest {
     public static final String DEFAULT_CONTENT = "some content";
     public static final String NEW_CONTENT = "newPost";
     public static final String DEFAULT_NAME = "john";
     public static final String DEFAULT_EMAIL = "john123@example.com";
     public static final String DEFAULT_PASSWORD = "123456789";
+    public static final int INIT_LIKE = 0;
 
     private User defaultUser;
     private Post defaultPost;
@@ -41,5 +43,20 @@ public class PostTest {
         User user = new User("paul", "paul@example.com", "123456789");
         assertThatExceptionOfType(UnAuthorizedException.class)
                 .isThrownBy(() -> defaultPost.update(new Post(NEW_CONTENT, user)));
+    }
+
+    @Test
+    void 좋아요를_눌렀을_경우_테스트() {
+        PostLike postLike = new PostLike(defaultPost, defaultUser);
+        defaultPost.addLike(postLike);
+        assertThat(defaultPost.getPostLikes()).contains(postLike);
+    }
+
+    @Test
+    void 좋아요_취소_테스트() {
+        PostLike postLike = new PostLike(defaultPost, defaultUser);
+        defaultPost.addLike(postLike);
+        defaultPost.removeLike(postLike);
+        assertThat(defaultPost.getPostLikes()).doesNotContain(postLike);
     }
 }

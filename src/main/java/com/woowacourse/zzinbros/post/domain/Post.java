@@ -1,5 +1,6 @@
 package com.woowacourse.zzinbros.post.domain;
 
+import com.woowacourse.zzinbros.mediafile.MediaFile;
 import com.woowacourse.zzinbros.post.exception.UnAuthorizedException;
 import com.woowacourse.zzinbros.user.domain.User;
 import org.hibernate.annotations.CreationTimestamp;
@@ -9,7 +10,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
 public class Post {
@@ -18,6 +19,7 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Lob
     private String contents;
 
     @CreationTimestamp
@@ -31,12 +33,23 @@ public class Post {
     @JoinColumn(name = "author_id", foreignKey = @ForeignKey(name = "post_to_user"))
     private User author;
 
+    @OneToMany
+    @JoinColumn(name = "media_file_id", foreignKey = @ForeignKey(name = "post_to_media_file"))
+    private List<MediaFile> mediaFiles = new ArrayList<>();
+
+    @OneToMany(mappedBy = "post", cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
+    private Set<PostLike> postLikes = new HashSet<>();
+
+    @Column
+    private int countOfLike;
+
     public Post() {
     }
 
     public Post(String contents, User author) {
         this.contents = contents;
         this.author = author;
+        countOfLike = 0;
     }
 
     public Post update(Post post) {
@@ -49,6 +62,20 @@ public class Post {
 
     public boolean matchAuthor(User user) {
         return this.author.equals(user);
+    }
+
+    public void addMediaFiles(MediaFile mediaFile) {
+        this.mediaFiles.add(mediaFile);
+    }
+
+    public void addLike(PostLike postLike) {
+        postLikes.add(postLike);
+        countOfLike++;
+    }
+
+    public void removeLike(PostLike postLike) {
+        postLikes.remove(postLike);
+        countOfLike--;
     }
 
     public Long getId() {
@@ -69,6 +96,22 @@ public class Post {
 
     public User getAuthor() {
         return author;
+    }
+
+    public List<MediaFile> getMediaFiles() {
+        return new ArrayList<>(mediaFiles);
+    }
+
+    public void setMediaFiles(List<MediaFile> mediaFiles) {
+        this.mediaFiles = mediaFiles;
+    }
+
+    public Set<PostLike> getPostLikes() {
+        return Collections.unmodifiableSet(postLikes);
+    }
+
+    public int getCountOfLike() {
+        return countOfLike;
     }
 
     @Override

@@ -1,0 +1,43 @@
+<div aria-hidden="true" aria-labelledby="exampleModalLabel" class="modal fade" id="post-edit-modal"
+     role="dialog" tabindex="-1">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-lightgray border">
+                <h5 class="width-100 pdd-btm-5 text-bold" id="exampleModalLabel">게시물 수정</h5>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div>
+                        <textarea class="resize-none form-control border bottom resize-none" id="post-edit-content" th:data-postid="${post.id}" th:text="${post.contents}"></textarea>
+                    </div>
+                </form>
+                <ul class="composor-tools">
+                    <li class="bg-lightgray border-radius-round mrg-right-5 inline-block">
+                        <a class="pdd-vertical-5 pdd-horizon-10 pointer">
+                            <div class="icons photo-video"></div>
+                            <span class="icon-name font-size-13 text-bold"> 사진/동영상</span>
+                        </a>
+                    </li>
+                    <li class="bg-lightgray border-radius-round mrg-right-5 inline-block">
+                        <a class="pdd-vertical-5 pdd-horizon-10 pointer">
+                            <div class="icons tag-friend"></div>
+                            <span class="icon-name font-size-13 text-bold"> 친구 태그하기</span>
+                        </a>
+                    </li>
+                    <li class="bg-lightgray border-radius-round mrg-right-5 inline-block">
+                        <a class="pdd-vertical-5 pdd-horizon-10 pointer">
+                            <div class="icons feeling-activity"></div>
+                            <span class="icon-name font-size-13 text-bold"> 기분/활동</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="modal-footer bg-lightgray">
+                <button class="btn btn-facebook btn-rounded text-bold font-size-13" type="button" id="post-edit-btn"> 저장 </button>
+                <button class="btn btn-secondary btn-rounded text-bold font-size-13" data-dismiss="modal" type="button">
+                     취소
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
