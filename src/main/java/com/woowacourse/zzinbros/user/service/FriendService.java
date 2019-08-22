@@ -6,11 +6,13 @@ import com.woowacourse.zzinbros.user.domain.repository.FriendRepository;
 import com.woowacourse.zzinbros.user.dto.UserResponseDto;
 import com.woowacourse.zzinbros.user.exception.AlreadyFriendRequestExist;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class FriendService {
 
     private final FriendRepository friendRepository;
