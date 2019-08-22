@@ -1,7 +1,8 @@
 package com.woowacourse.zzinbros.user.domain.repository;
 
 import com.woowacourse.zzinbros.user.domain.Friend;
-import com.woowacourse.zzinbros.user.domain.TempUser;
+import com.woowacourse.zzinbros.user.domain.User;
+import com.woowacourse.zzinbros.user.domain.User;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -20,14 +21,14 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-class UserAndFriendRepositoryTest extends TestUserBaseTest {
+class UserAndFriendRepositoryTest extends UserBaseTest {
 
     //@TODO 테스트 완료시 제거 할 것
 //    @Autowired
 //    UserRepository userRepository;
 //
     @Autowired
-    TempUserRepository userRepository;
+    UserRepository userRepository;
 
     @Autowired
     FriendRepository friendRepository;
@@ -41,9 +42,9 @@ class UserAndFriendRepositoryTest extends TestUserBaseTest {
     @Test
     @DisplayName("정상적으로 친구 추가 후 조회 테스트")
     void friendAddTest() {
-        TempUser me = userRepository.save(SAMPLE_USERS.get(SAMPLE_ONE));
-        TempUser first = userRepository.save(SAMPLE_USERS.get(SAMPLE_TWO));
-        TempUser second = userRepository.save(SAMPLE_USERS.get(SAMPLE_THREE));
+        User me = userRepository.save(SAMPLE_USERS.get(SAMPLE_ONE));
+        User first = userRepository.save(SAMPLE_USERS.get(SAMPLE_TWO));
+        User second = userRepository.save(SAMPLE_USERS.get(SAMPLE_THREE));
 
         Friend firstFriend = friendRepository.save(Friend.of(me, first));
         Friend secondFriend = friendRepository.save(Friend.of(me, second));
@@ -63,8 +64,8 @@ class UserAndFriendRepositoryTest extends TestUserBaseTest {
 //    @Test
 //    @DisplayName("정상적으로 친구 추가했을 때 User에서 친구를 확인할 수 있는지 확인")
 //    void test() {
-//        TempUser me = userRepository.save(SAMPLE_USERS.get(SAMPLE_ONE));
-//        TempUser first = userRepository.save(SAMPLE_USERS.get(SAMPLE_TWO));
+//        User me = userRepository.save(SAMPLE_USERS.get(SAMPLE_ONE));
+//        User first = userRepository.save(SAMPLE_USERS.get(SAMPLE_TWO));
 //        TempUser second = userRepository.save(SAMPLE_USERS.get(SAMPLE_THREE));
 //
 //        Friend firstFriend = friendRepository.save(Friend.of(me, first));
@@ -89,8 +90,8 @@ class UserAndFriendRepositoryTest extends TestUserBaseTest {
     @Test
     @DisplayName("중복된 Friend를 저장했을 때 예외가 발생하는지 확인")
     void friendAddWhenAlreadyExists() {
-        TempUser me = userRepository.save(SAMPLE_USERS.get(SAMPLE_ONE));
-        TempUser other = userRepository.save(SAMPLE_USERS.get(SAMPLE_TWO));
+        User me = userRepository.save(SAMPLE_USERS.get(SAMPLE_ONE));
+        User other = userRepository.save(SAMPLE_USERS.get(SAMPLE_TWO));
 
         friendRepository.save(Friend.of(me, other));
 
@@ -98,6 +99,17 @@ class UserAndFriendRepositoryTest extends TestUserBaseTest {
                 .isInstanceOf(DataIntegrityViolationException.class);
     }
 
+
+    @Test
+    @DisplayName("중복된 Friend를 저장했을 때 True를 반환하는지 확인")
+    void existsByFromAndToWhenAlreadyExists() {
+        User me = userRepository.save(SAMPLE_USERS.get(SAMPLE_ONE));
+        User other = userRepository.save(SAMPLE_USERS.get(SAMPLE_TWO));
+
+        friendRepository.save(Friend.of(me, other));
+
+        assertTrue(friendRepository.existsByFromAndTo(me, other));
+    }
 //    @Test
 //    @DisplayName("서로 친구 추가가 되었을 때 서로 친구인지 확인")
 //    void checkIsFollowTo() {
@@ -126,8 +138,8 @@ class UserAndFriendRepositoryTest extends TestUserBaseTest {
     @Test
     @DisplayName("친구 관계가 설정됬을 때 회원 삭제를 했을 경우")
     void deleteTest() {
-        TempUser me = userRepository.save(SAMPLE_USERS.get(SAMPLE_ONE));
-        TempUser first = userRepository.save(SAMPLE_USERS.get(SAMPLE_TWO));
+        User me = userRepository.save(SAMPLE_USERS.get(SAMPLE_ONE));
+        User first = userRepository.save(SAMPLE_USERS.get(SAMPLE_TWO));
         friendRepository.save(Friend.of(me, first));
 
         userRepository.deleteById(me.getId());

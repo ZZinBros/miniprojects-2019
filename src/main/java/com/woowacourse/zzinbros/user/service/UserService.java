@@ -81,18 +81,18 @@ public class UserService {
                 .orElseThrow(() -> new UserNotFoundException("User Not Found By email"));
     }
 
-    public Set<UserResponseDto> getFriendsOf(final Long id) {
-        User owner = findUser(id);
-        Set<UserResponseDto> users = userRepository.findByFriends(owner).stream()
-                .map((user) -> new UserResponseDto(user.getId(), user.getName(), user.getEmail()))
-                .collect(toSet());
-        return Collections.unmodifiableSet(users);
-    }
+//    public Set<UserResponseDto> getFriendsOf(final Long id) {
+//        User owner = findUser(id);
+//        Set<UserResponseDto> users = userRepository.findByFriends(owner).stream()
+//                .map((user) -> new UserResponseDto(user.getId(), user.getName(), user.getEmail()))
+//                .collect(toSet());
+//        return Collections.unmodifiableSet(users);
+//    }
 
-
-    public boolean addFriends(final Long friendToId, final Long friendById) {
-        User friendRequest = findUser(friendToId);
-        User friendResponse = findUser(friendById);
-        return friendRequest.addFriend(friendResponse);
-    }
+//
+//    public boolean addFriends(final Long friendToId, final Long friendById) {
+//        User friendRequest = findUser(friendToId);
+//        User friendResponse = findUser(friendById);
+//        return friendRequest.addFriend(friendResponse);
+//    }
 }

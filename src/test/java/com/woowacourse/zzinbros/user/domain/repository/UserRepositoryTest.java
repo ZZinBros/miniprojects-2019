@@ -39,60 +39,60 @@ class UserRepositoryTest extends UserBaseTest {
         assertTrue(userRepository.existsUserByEmail(user.getEmail()));
     }
 
-    @Test
-    @DisplayName("친구 추가가 잘되는지 테스트")
-    void addFriends() {
-        User one = userRepository.save(SAMPLE_USERS.get(SAMPLE_ONE));
-        User two = userRepository.save(SAMPLE_USERS.get(SAMPLE_TWO));
-
-        one.addFriend(two);
-        two.addFriend(one);
-
-        User actual = userRepository.findByEmail(one.getEmail())
-                .orElseThrow(IllegalArgumentException::new);
-        User actualTwo = userRepository.findByEmail(two.getEmail())
-                .orElseThrow(IllegalArgumentException::new);
-
-        assertEquals(1, actual.getCopyOfFriends().size());
-        assertEquals(1, one.getCopyOfFriends().size());
-        assertEquals(1, two.getCopyOfFriends().size());
-        assertEquals(1, actualTwo.getCopyOfFriends().size());
-    }
-
-    @Test
-    @DisplayName("해당 유저의 친구 목록 반환하는지 테스트")
-    void friendsList() {
-        User me = userRepository.save(SAMPLE_USERS.get(SAMPLE_ONE));
-        User friendOne = userRepository.save(SAMPLE_USERS.get(SAMPLE_TWO));
-        User friendTwo = userRepository.save(SAMPLE_USERS.get(SAMPLE_THREE));
-        User notFriend = userRepository.save(SAMPLE_USERS.get(SAMPLE_FOUR));
-
-        me.addFriend(friendOne);
-        friendOne.addFriend(me);
-
-        me.addFriend(friendTwo);
-        friendTwo.addFriend(me);
-
-        friendTwo.addFriend(notFriend);
-        notFriend.addFriend(friendTwo);
-
-        assertThat(userRepository.findByFriends(me)).contains(friendOne, friendTwo);
-        assertEquals(userRepository.findByFriends(me).size(), 2);
-    }
-
-    @Test
-    @DisplayName("친구 관계를 맺은 상태에서 회원 삭제 테스트")
-    void signOutWhenHasFriendTest() {
-        User me = userRepository.save(SAMPLE_USERS.get(SAMPLE_ONE));
-        User friend = userRepository.save(SAMPLE_USERS.get(SAMPLE_THREE));
-
-        me.addFriend(friend);
-        friend.addFriend(me);
-
-        assertEquals(1, userRepository.findByFriends(me).size());
-
-        userRepository.delete(friend);
-
-        assertEquals(0, userRepository.findByFriends(me).size());
-    }
+//    @Test
+//    @DisplayName("친구 추가가 잘되는지 테스트")
+//    void addFriends() {
+//        User one = userRepository.save(SAMPLE_USERS.get(SAMPLE_ONE));
+//        User two = userRepository.save(SAMPLE_USERS.get(SAMPLE_TWO));
+//
+//        one.addFriend(two);
+//        two.addFriend(one);
+//
+//        User actual = userRepository.findByEmail(one.getEmail())
+//                .orElseThrow(IllegalArgumentException::new);
+//        User actualTwo = userRepository.findByEmail(two.getEmail())
+//                .orElseThrow(IllegalArgumentException::new);
+//
+//        assertEquals(1, actual.getCopyOfFriends().size());
+//        assertEquals(1, one.getCopyOfFriends().size());
+//        assertEquals(1, two.getCopyOfFriends().size());
+//        assertEquals(1, actualTwo.getCopyOfFriends().size());
+//    }
+//
+//    @Test
+//    @DisplayName("해당 유저의 친구 목록 반환하는지 테스트")
+//    void friendsList() {
+//        User me = userRepository.save(SAMPLE_USERS.get(SAMPLE_ONE));
+//        User friendOne = userRepository.save(SAMPLE_USERS.get(SAMPLE_TWO));
+//        User friendTwo = userRepository.save(SAMPLE_USERS.get(SAMPLE_THREE));
+//        User notFriend = userRepository.save(SAMPLE_USERS.get(SAMPLE_FOUR));
+//
+//        me.addFriend(friendOne);
+//        friendOne.addFriend(me);
+//
+//        me.addFriend(friendTwo);
+//        friendTwo.addFriend(me);
+//
+//        friendTwo.addFriend(notFriend);
+//        notFriend.addFriend(friendTwo);
+//
+//        assertThat(userRepository.findByFriends(me)).contains(friendOne, friendTwo);
+//        assertEquals(userRepository.findByFriends(me).size(), 2);
+//    }
+//
+//    @Test
+//    @DisplayName("친구 관계를 맺은 상태에서 회원 삭제 테스트")
+//    void signOutWhenHasFriendTest() {
+//        User me = userRepository.save(SAMPLE_USERS.get(SAMPLE_ONE));
+//        User friend = userRepository.save(SAMPLE_USERS.get(SAMPLE_THREE));
+//
+//        me.addFriend(friend);
+//        friend.addFriend(me);
+//
+//        assertEquals(1, userRepository.findByFriends(me).size());
+//
+//        userRepository.delete(friend);
+//
+//        assertEquals(0, userRepository.findByFriends(me).size());
+//    }
 }

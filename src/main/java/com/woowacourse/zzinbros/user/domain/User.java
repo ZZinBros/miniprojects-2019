@@ -15,6 +15,7 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+// @TODO Serializable 구현
 @Entity
 public class User {
     private static final int MIN_NAME_LENGTH = 2;
@@ -36,14 +37,6 @@ public class User {
 
     @Column(name = "password", nullable = false, length = MAX_PASSWORD_LENGTH)
     private String password;
-
-    @ManyToMany(cascade = CascadeType.REMOVE,
-                fetch = FetchType.LAZY)
-    @NotFound(action = NotFoundAction.IGNORE)
-    @JoinTable(name = "USER_FRIEND",
-            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "friend_id", referencedColumnName = "id"))
-    private Set<User> friends = new HashSet<>();
 
     @CreationTimestamp
     private LocalDateTime createdTime;
@@ -103,9 +96,9 @@ public class User {
                 && this.password.equals(another.password);
     }
 
-    public boolean addFriend(User friend) {
-        return friends.add(friend);
-    }
+//    public boolean addFriend(User friend) {
+//        return friends.add(friend);
+//    }
 
     public Long getId() {
         return id;
@@ -123,13 +116,13 @@ public class User {
         return password;
     }
 
-    public Set<User> getCopyOfFriends() {
-        return new HashSet<>(friends);
-    }
-
-    private Set<User> getFriends() {
-        return friends;
-    }
+//    public Set<User> getCopyOfFriends() {
+//        return new HashSet<>(friends);
+//    }
+//
+//    private Set<User> getFriends() {
+//        return friends;
+//    }
 
     @Override
     public boolean equals(Object o) {

@@ -170,36 +170,37 @@ class UserServiceTest extends BaseTest {
         assertThat(actual).isEqualTo(user);
     }
 
-    @Test
-    @DisplayName("친구의 목록을 반환 받기")
-    void getFriendsOfTest() {
-        Set<User> friends = new HashSet<>(Arrays.asList(
-                new User(UserTest.BASE_NAME, "1@email.com", UserTest.BASE_PASSWORD),
-                new User(UserTest.BASE_NAME, "2@email.com", UserTest.BASE_PASSWORD)
-        ));
-        given(userRepository.findById(1L)).willReturn(Optional.ofNullable(user));
-        given(userRepository.findByFriends(user)).willReturn(friends);
+    // @TODO FriendService 잘되면 지워도 됨
+//    @Test
+//    @DisplayName("친구의 목록을 반환 받기")
+//    void getFriendsOfTest() {
+//        Set<User> friends = new HashSet<>(Arrays.asList(
+//                new User(UserTest.BASE_NAME, "1@email.com", UserTest.BASE_PASSWORD),
+//                new User(UserTest.BASE_NAME, "2@email.com", UserTest.BASE_PASSWORD)
+//        ));
+//        given(userRepository.findById(1L)).willReturn(Optional.ofNullable(user));
+//        given(userRepository.findByFriends(user)).willReturn(friends);
+//
+//        Set<UserResponseDto> actual = userService.getFriendsOf(1L);
+//        Set<UserResponseDto> expected = new HashSet<>(Arrays.asList(
+//                new UserResponseDto(null, UserTest.BASE_NAME, "1@email.com"),
+//                new UserResponseDto(null, UserTest.BASE_NAME, "2@email.com")
+//        ));
+//        assertThat(actual).isEqualTo(expected);
+//    }
 
-        Set<UserResponseDto> actual = userService.getFriendsOf(1L);
-        Set<UserResponseDto> expected = new HashSet<>(Arrays.asList(
-                new UserResponseDto(null, UserTest.BASE_NAME, "1@email.com"),
-                new UserResponseDto(null, UserTest.BASE_NAME, "2@email.com")
-        ));
-        assertThat(actual).isEqualTo(expected);
-    }
-
-    @Test
-    @DisplayName("친구 추가")
-    void addTest() {
-        User friendOne = new User(UserTest.BASE_NAME, "1@email.com", UserTest.BASE_PASSWORD);
-        User friendTwo = new User(UserTest.BASE_NAME, "2@email.com", UserTest.BASE_PASSWORD);
-
-        given(userRepository.findById(1L)).willReturn(Optional.ofNullable(friendOne));
-        given(userRepository.findById(2L)).willReturn(Optional.ofNullable(friendTwo));
-
-        assertTrue(userService.addFriends(1L, 2L));
-        assertTrue(userService.addFriends(2L, 1L));
-        assertThat(friendOne.getCopyOfFriends()).contains(friendTwo);
-        assertThat(friendTwo.getCopyOfFriends()).contains(friendOne);
-    }
+//    @Test
+//    @DisplayName("친구 추가")
+//    void addTest() {
+//        User friendOne = new User(UserTest.BASE_NAME, "1@email.com", UserTest.BASE_PASSWORD);
+//        User friendTwo = new User(UserTest.BASE_NAME, "2@email.com", UserTest.BASE_PASSWORD);
+//
+//        given(userRepository.findById(1L)).willReturn(Optional.ofNullable(friendOne));
+//        given(userRepository.findById(2L)).willReturn(Optional.ofNullable(friendTwo));
+//
+//        assertTrue(userService.addFriends(1L, 2L));
+//        assertTrue(userService.addFriends(2L, 1L));
+//        assertThat(friendOne.getCopyOfFriends()).contains(friendTwo);
+//        assertThat(friendTwo.getCopyOfFriends()).contains(friendOne);
+//    }
 }

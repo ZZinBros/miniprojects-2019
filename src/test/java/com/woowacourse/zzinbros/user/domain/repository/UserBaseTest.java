@@ -6,7 +6,7 @@ import com.woowacourse.zzinbros.user.domain.UserTest;
 import java.util.HashMap;
 import java.util.Map;
 
-class UserBaseTest {
+public class UserBaseTest {
 
     protected final static Map<Integer, User> SAMPLE_USERS;
     protected final static int SAMPLE_ONE = 1;

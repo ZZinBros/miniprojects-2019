@@ -2,6 +2,8 @@ package com.woowacourse.zzinbros.user.domain;
 
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -20,22 +22,24 @@ public class Friend implements Serializable {
     @ManyToOne
     @NotFound(action = NotFoundAction.IGNORE)
     @JoinColumn(name = "to_Id", foreignKey = @ForeignKey(name = "FRIEND_TO_OTHER"), updatable = false, nullable = false)
-    private TempUser to;
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private User to;
 
     @ManyToOne
     @NotFound(action = NotFoundAction.IGNORE)
     @JoinColumn(name = "from_Id", foreignKey = @ForeignKey(name = "FRIEND_TO_MASTER"), updatable = false, nullable = false)
-    private TempUser from;
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private User from;
 
     protected Friend() {
     }
 
-    private Friend(TempUser from, TempUser other) {
+    private Friend(User from, User other) {
         this.from = from;
         this.to = other;
     }
 
-    public static Friend of(TempUser from, TempUser to) {
+    public static Friend of(User from, User to) {
         Friend friend = new Friend(from, to);
 //        from.addFriend(friend);
         return friend;
@@ -45,15 +49,19 @@ public class Friend implements Serializable {
 //        return to.equals(other);
 //    }
 
+    public boolean isSameWithFrom(User from) {
+        return this.from.equals(from);
+    }
+
     public Long getId() {
         return id;
     }
 
-    public TempUser getFrom() {
+    public User getFrom() {
         return from;
     }
 
-    public TempUser getTo() {
+    public User getTo() {
         return to;
     }
 
@@ -62,11 +70,12 @@ public class Friend implements Serializable {
         if (this == o) return true;
         if (!(o instanceof Friend)) return false;
         Friend friend = (Friend) o;
-        return Objects.equals(id, friend.id);
+        return Objects.equals(to, friend.to) &&
+                Objects.equals(from, friend.from);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(to, from);
     }
 }
