@@ -20,13 +20,11 @@ public class Friend implements Serializable {
     private Long id;
 
     @ManyToOne
-    @NotFound(action = NotFoundAction.IGNORE)
     @JoinColumn(name = "to_Id", foreignKey = @ForeignKey(name = "FRIEND_TO_OTHER"), updatable = false, nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User to;
 
     @ManyToOne
-    @NotFound(action = NotFoundAction.IGNORE)
     @JoinColumn(name = "from_Id", foreignKey = @ForeignKey(name = "FRIEND_TO_MASTER"), updatable = false, nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User from;
