@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-// @TODO Service 내의 메소드 객체로 빼기
 @Service
 public class FriendService {
 

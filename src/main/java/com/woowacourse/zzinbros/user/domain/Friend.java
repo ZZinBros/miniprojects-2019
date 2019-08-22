@@ -41,13 +41,8 @@ public class Friend implements Serializable {
 
     public static Friend of(User from, User to) {
         Friend friend = new Friend(from, to);
-//        from.addFriend(friend);
         return friend;
     }
-//
-//    public boolean isFollowTo(TempUser other) {
-//        return to.equals(other);
-//    }
 
     public boolean isSameWithFrom(User from) {
         return this.from.equals(from);

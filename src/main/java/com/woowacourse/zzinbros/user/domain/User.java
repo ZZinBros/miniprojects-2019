@@ -2,20 +2,15 @@ package com.woowacourse.zzinbros.user.domain;
 
 import com.woowacourse.zzinbros.user.exception.IllegalUserArgumentException;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.NotFound;
-import org.hibernate.annotations.NotFoundAction;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import java.time.LocalDateTime;
-import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-// @TODO Serializable 구현
 @Entity
 public class User {
     private static final int MIN_NAME_LENGTH = 2;
@@ -96,10 +91,6 @@ public class User {
                 && this.password.equals(another.password);
     }
 
-//    public boolean addFriend(User friend) {
-//        return friends.add(friend);
-//    }
-
     public Long getId() {
         return id;
     }
@@ -115,14 +106,6 @@ public class User {
     public String getPassword() {
         return password;
     }
-
-//    public Set<User> getCopyOfFriends() {
-//        return new HashSet<>(friends);
-//    }
-//
-//    private Set<User> getFriends() {
-//        return friends;
-//    }
 
     @Override
     public boolean equals(Object o) {
