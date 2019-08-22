@@ -2,6 +2,8 @@ package com.woowacourse.zzinbros.user.domain;
 
 import com.woowacourse.zzinbros.user.exception.IllegalUserArgumentException;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
@@ -35,7 +37,9 @@ public class User {
     @Column(name = "password", nullable = false, length = MAX_PASSWORD_LENGTH)
     private String password;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.REMOVE,
+                fetch = FetchType.LAZY)
+    @NotFound(action = NotFoundAction.IGNORE)
     @JoinTable(name = "USER_FRIEND",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "friend_id", referencedColumnName = "id"))
