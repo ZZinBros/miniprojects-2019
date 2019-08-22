@@ -1,5 +1,6 @@
 package com.woowacourse.zzinbros.comment.service;
 
+import com.woowacourse.zzinbros.BaseTest;
 import com.woowacourse.zzinbros.comment.domain.Comment;
 import com.woowacourse.zzinbros.comment.domain.repository.CommentRepository;
 import com.woowacourse.zzinbros.comment.exception.CommentNotFoundException;
@@ -25,7 +26,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @SpringBootTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class CommentServiceTest {
+class CommentServiceTest extends BaseTest {
     private static String USER_NAME = "name";
     private static String USER_EMAIL = "user@mail.com";
     private static String USER_PASSWORD = "asdfQWER1234!@#$";
