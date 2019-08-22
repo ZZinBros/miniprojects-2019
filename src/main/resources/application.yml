@@ -80,3 +80,10 @@ spring:
   output:
     ansi:
       enabled: detect
+
+
+zzinbros:
+  uploadto:
+    strategy: s3
+    uploadurl: zzinbros/images
+    downloadurl: https://zzinbros.s3.ap-northeast-2.amazonaws.com/images/
