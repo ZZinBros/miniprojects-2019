@@ -8,8 +8,8 @@ header ul.nav-left li {
 }
 
 .header {
-    background-color: #4267b2;
-    border-bottom: 1px solid #29487d;
+    background-color: #303030;
+    border-bottom: 1px solid #303030;
     color: white;
     height: 43px !important;
     top: 0px;
@@ -275,4 +275,16 @@ header ul.nav-left li {
 .header .header-container .nav-right>li>a {
     line-height: 43px;
     min-height: 43px;
+}
+
+.btn-tecobook {
+    background-color: #303030;
+    border-color: #303030;
+    color: #fff
+}
+
+.btn-tecobook.btn-inverse {
+    background-color: #757575;
+    border-color: #757575;
+    color: #fff
 }
