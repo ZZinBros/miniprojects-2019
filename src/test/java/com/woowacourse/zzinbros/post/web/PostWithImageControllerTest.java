@@ -17,7 +17,7 @@ class PostWithImageControllerTest extends AuthedWebTestClient {
     };
 
     @Test
-    void name() {
+    void 이미지_포함_포스트_등록() {
         multipartFilePost("/posts-with-images",
                 Arrays.asList("contents", "feed-image"),
                 "Contents", testResource)

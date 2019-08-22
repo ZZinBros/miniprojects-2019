@@ -2,15 +2,16 @@ package com.woowacourse.zzinbros.comment.controller;
 
 import com.woowacourse.zzinbros.comment.domain.Comment;
 import com.woowacourse.zzinbros.comment.dto.CommentRequestDto;
-import com.woowacourse.zzinbros.comment.exception.UnauthorizedException;
 import com.woowacourse.zzinbros.comment.service.CommentService;
 import com.woowacourse.zzinbros.post.domain.Post;
 import com.woowacourse.zzinbros.post.service.PostService;
 import com.woowacourse.zzinbros.user.domain.User;
 import com.woowacourse.zzinbros.user.service.UserService;
+import com.woowacourse.zzinbros.user.web.support.SessionInfo;
+import com.woowacourse.zzinbros.user.web.support.UserSession;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpSession;
 
 @RestController
 @RequestMapping("/comments")
@@ -25,37 +26,28 @@ public class CommentController {
         this.userService = userService;
     }
 
-    // TODO: 차후 UserService에서 현재 로그인된 유저를 가져오는 기능을 제공하면 삭제
-    private User getLoggedInUser(final HttpSession session) {
-        final User user = (User) session.getAttribute("loggedInUser");
-        if (user == null) {
-            throw new UnauthorizedException();
-        }
-        return user;
-    }
-
     @PostMapping
-    public Comment add(@RequestBody final CommentRequestDto dto, final HttpSession session) {
-        final User user = getLoggedInUser(session);
+    public ResponseEntity<Comment> add(@RequestBody final CommentRequestDto dto, @SessionInfo final UserSession userSession) {
+        final User user = userService.findLoggedInUser(userSession.getDto());
         final Post post = postService.read(dto.getPostId());
         final String contents = dto.getContents();
-        return commentService.add(user, post, contents);
+        return new ResponseEntity<>(commentService.add(user, post, contents), HttpStatus.CREATED);
     }
 
     @PutMapping
-    public Comment edit(@RequestBody final CommentRequestDto dto, final HttpSession session) {
-        final User user = getLoggedInUser(session);
-        return commentService.update(dto.getCommentId(), dto.getContents(), user);
+    public ResponseEntity<Comment> edit(@RequestBody final CommentRequestDto dto, @SessionInfo final UserSession userSession) {
+        final User user = userService.findLoggedInUser(userSession.getDto());
+        return new ResponseEntity<>(commentService.update(dto.getCommentId(), dto.getContents(), user), HttpStatus.OK);
     }
 
     @DeleteMapping
-    public boolean delete(@RequestBody final CommentRequestDto dto, final HttpSession session) {
-        final User user = getLoggedInUser(session);
+    public ResponseEntity<Boolean> delete(@RequestBody final CommentRequestDto dto, @SessionInfo final UserSession userSession) {
+        final User user = userService.findLoggedInUser(userSession.getDto());
         try {
             commentService.delete(dto.getCommentId(), user);
-            return true;
+            return new ResponseEntity<>(true, HttpStatus.OK);
         } catch (final Exception e) {
-            return false;
+            return new ResponseEntity<>(false, HttpStatus.FORBIDDEN);
         }
     }
 }

@@ -6,7 +6,9 @@ import com.woowacourse.zzinbros.post.domain.PostTest;
 import com.woowacourse.zzinbros.post.service.PostService;
 import com.woowacourse.zzinbros.user.domain.User;
 import com.woowacourse.zzinbros.user.domain.UserTest;
+import com.woowacourse.zzinbros.user.dto.UserResponseDto;
 import com.woowacourse.zzinbros.user.exception.UserNotFoundException;
+import com.woowacourse.zzinbros.user.service.FriendService;
 import com.woowacourse.zzinbros.user.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -19,7 +21,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -39,6 +43,9 @@ class PostPageControllerTest extends BaseTest {
 
     @MockBean
     PostService postService;
+
+    @MockBean
+    FriendService friendService;
 
     @Autowired
     PostPageController postPageController;
@@ -61,8 +68,14 @@ class PostPageControllerTest extends BaseTest {
                 new Post(PostTest.DEFAULT_CONTENT, baseUser),
                 new Post(PostTest.DEFAULT_CONTENT, baseUser)
         );
+
+        Set<UserResponseDto> friends = new HashSet<>(Arrays.asList(
+                new UserResponseDto(1L, "이름", "2@mail.com"),
+                new UserResponseDto(2L, "이름2", "3@mail.com")
+        ));
         given(userService.findUserById(BASE_ID)).willReturn(baseUser);
         given(postService.readAllByUser(baseUser)).willReturn(posts);
+        given(friendService.findFriendByUser(baseUser)).willReturn(friends);
 
         mockMvc.perform(get("/posts?author=" + BASE_ID))
                 .andExpect(status().isOk());

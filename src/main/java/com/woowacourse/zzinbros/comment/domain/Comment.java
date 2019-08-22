@@ -22,7 +22,7 @@ public class Comment {
     private User author;
 
     @ManyToOne
-    @OnDelete(action = OnDeleteAction.NO_ACTION)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Post post;
 
     @Lob
@@ -72,6 +72,11 @@ public class Comment {
         this.contents = contents;
     }
 
+    public void prepareToDelete() {
+        this.author = null;
+        this.post = null;
+    }
+
     public boolean isMatchUser(final User user) {
         return this.author.equals(user);
     }
@@ -81,10 +86,7 @@ public class Comment {
         if (this == another) return true;
         if (another == null || getClass() != another.getClass()) return false;
         final Comment comment = (Comment) another;
-        return id.equals(comment.id) &&
-                author.equals(comment.author) &&
-                post.equals(comment.post) &&
-                contents.equals(comment.contents);
+        return id.equals(comment.id);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.woowacourse.zzinbros.mediafile.web.support;
 
+import com.woowacourse.zzinbros.BaseTest;
 import com.woowacourse.zzinbros.user.domain.repository.UserRepository;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,7 @@ import org.springframework.web.reactive.function.BodyInserters;
 import java.util.List;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public abstract class AuthedWebTestClient {
+public abstract class AuthedWebTestClient extends BaseTest {
 
     @Autowired
     protected WebTestClient webTestClient;
@@ -22,7 +23,7 @@ public abstract class AuthedWebTestClient {
     private String loginCookie() {
         String cookie = webTestClient.post().uri("/login")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                .body(BodyInserters.fromFormData("email", "test@test.com")
+                .body(BodyInserters.fromFormData("email", "john123@example.com")
                         .with("password", "123456789"))
                 .exchange()
                 .returnResult(String.class).getResponseHeaders().getFirst("Set-Cookie");
@@ -63,12 +64,14 @@ public abstract class AuthedWebTestClient {
         return body;
     }
 
-    protected WebTestClient.RequestHeadersSpec multipartFilePost(String uri, List<String> keys, Object... paremeters) {
+    protected WebTestClient.RequestHeadersSpec multipartFilePost(String uri, List<String> keys, Object... parameters) {
         MultipartBodyBuilder bodyBuilder = new MultipartBodyBuilder();
         for (int i = 0; i < keys.size(); i++) {
-            bodyBuilder.part(keys.get(i), paremeters[i]);
+            bodyBuilder.part(keys.get(i), parameters[i]);
         }
+        String cookie = loginCookie();
         return webTestClient.post().uri(uri)
+                .header("Cookie", cookie)
                 .syncBody(bodyBuilder.build());
     }
 }

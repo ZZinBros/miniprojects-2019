@@ -20,8 +20,13 @@ spring:
     username: zzinbros
     password: 1234
 
----
+zzinbros:
+  uploadto:
+    strategy: s3
+    uploadurl: zzinbros/images
+    downloadurl: https://zzinbros.s3.ap-northeast-2.amazonaws.com/images/
 
+---
 spring:
   profiles: test
 
@@ -43,6 +48,12 @@ spring:
     driver-class-name: org.h2.Driver
 
 debug: true
+
+zzinbros:
+  uploadto:
+    strategy: s3
+    uploadurl: zzinbros/images
+    downloadurl: https://zzinbros.s3.ap-northeast-2.amazonaws.com/images/
 
 ---
 
@@ -69,3 +80,10 @@ spring:
   output:
     ansi:
       enabled: detect
+
+
+zzinbros:
+  uploadto:
+    strategy: s3
+    uploadurl: zzinbros/images
+    downloadurl: https://zzinbros.s3.ap-northeast-2.amazonaws.com/images/
