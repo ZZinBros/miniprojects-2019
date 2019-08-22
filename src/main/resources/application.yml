@@ -11,9 +11,12 @@ spring:
   jpa:
     hibernate.ddl-auto: update
     database: mysql
-    show-sql: true
-    properties.hibernate.format_sql: true
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+        use_sql_comments: true
 
   datasource:
     url: jdbc:mysql://localhost:3306/wootecobook?serverTimezone=UTC
@@ -23,7 +26,9 @@ spring:
   logging:
     level:
       root: INFO
-      org.springframework: WARN
+      org.hibernate: WARN
+      org.springframework.boot: WARN
+      com.woowacourse.zzinbros: DEBUG
 
   output.ansi.enabled: detect
 
@@ -35,7 +40,7 @@ spring:
   thymeleaf.cache: false
 
   jpa:
-    hibernate.ddl-auto: create
+    hibernate.ddl-auto: create-drop
     database-platform: org.hibernate.dialect.H2Dialect
     properties:
       hibernate:
@@ -51,9 +56,8 @@ spring:
 
   logging:
     level:
-      root: INFO
+      root: WARN
       com.woowacourse.zzinbros: DEBUG
-      org.springframework: WARN
 
   output.ansi.enabled: detect
 
@@ -74,10 +78,7 @@ spring:
 
   logging:
     level:
-      root: ERROR
-      com.woowacourse.zzinbros: WARN
-      org.springframework: WARN
-      org.hibernate: INFO
+      root: WARN
     file.max-history: 30
 
   output.ansi.enabled: detect
