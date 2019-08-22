@@ -1,8 +1,8 @@
 package com.woowacourse.zzinbros.post.service;
 
+import com.woowacourse.zzinbros.common.config.upload.UploadTo;
 import com.woowacourse.zzinbros.mediafile.MediaFile;
 import com.woowacourse.zzinbros.mediafile.MediaFileRepository;
-import com.woowacourse.zzinbros.mediafile.web.support.UploadTo;
 import com.woowacourse.zzinbros.post.domain.Post;
 import com.woowacourse.zzinbros.post.domain.repository.PostRepository;
 import com.woowacourse.zzinbros.post.dto.PostRequestDto;

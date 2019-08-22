@@ -1,4 +1,4 @@
-package com.woowacourse.zzinbros.mediafile.web.support;
+package com.woowacourse.zzinbros.common.config.upload;
 
 public interface UploadTo {
     String getExtension();
