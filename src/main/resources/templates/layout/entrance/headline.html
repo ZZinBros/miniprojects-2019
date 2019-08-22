@@ -1,0 +1,15 @@
+<header id="header" class="header navbar" th:fragment="entranceHeadline" xmlns:th="http://www.w3.org/1999/xhtml"
+        style="padding-bottom: 70px; padding-top: 10px">
+    <div class="header-container max-width-lg mx-auto">
+        <ul class="nav-left mrg-left-0">
+            <li>
+                <a class="mrg-top-10" href="/entrance">
+                    <img src="/images/logo/wootecobook.png" height="50px">
+                </a>
+            </li>
+        </ul>
+        <ul class="nav-right">
+            <th:block th:replace="layout/entrance/login-area"></th:block>
+        </ul>
+    </div>
+</header>

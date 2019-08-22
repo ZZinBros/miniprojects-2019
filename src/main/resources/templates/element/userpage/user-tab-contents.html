@@ -2,7 +2,7 @@
     <div role="tabpanel" class="tab-pane fade in active" id="default-tab-1">
         <div class="container-fluid max-width-lg mx-auto mrg-top-70 show">
             <div class="row">
-                <div th:replace="layout/user-page-info"></div>
+                <div th:replace="layout/userpage/user-page-info"></div>
                 <div th:replace="layout/center-container"></div>
             </div>
         </div>
@@ -11,7 +11,7 @@
         <div class="container-fluid max-width-lg mx-auto mrg-top-70" id="user-friend-list">
             <div class="row">
                 <div th:each="friend : ${friends}">
-                    <span th:replace="element/friend-card"></span>
+                    <span th:replace="element/userpage/friend-card"></span>
                 </div>
             </div>
         </div>

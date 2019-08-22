@@ -28,7 +28,7 @@ public class LoginController {
             loginSessionManager.setLoginSession(loginUserDto);
             return "redirect:/";
         } catch (UserException e) {
-            return "redirect:/login";
+            return "redirect:/entrance";
         }
     }
 }

@@ -13,7 +13,7 @@ public class UserControllerExceptionAdvice {
 
     @ExceptionHandler(UserRegisterException.class)
     public String handleUserException(UserException e, Model model) {
-        return "redirect:/signup";
+        return "redirect:/entrance";
     }
 
     @ExceptionHandler(UserEditPageNotFoundException.class)

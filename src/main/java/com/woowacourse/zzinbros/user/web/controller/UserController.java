@@ -40,7 +40,7 @@ public class UserController {
     public String register(UserRequestDto userRequestDto) {
         try {
             userService.register(userRequestDto);
-            return "redirect:/";
+            return "redirect:/entrance";
         } catch (UserException e) {
             throw new UserRegisterException(e.getMessage(), e);
         }
