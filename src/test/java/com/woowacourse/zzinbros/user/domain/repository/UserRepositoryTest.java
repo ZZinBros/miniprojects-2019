@@ -1,6 +1,6 @@
-package com.woowacourse.zzinbros.user.domain;
+package com.woowacourse.zzinbros.user.domain.repository;
 
-import com.woowacourse.zzinbros.user.domain.repository.UserRepository;
+import com.woowacourse.zzinbros.user.domain.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -8,30 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-class UserRepositoryTest {
-
-    private final static Map<Integer, User> SAMPLE_USERS;
-    private final static int SAMPLE_ONE = 1;
-    private final static int SAMPLE_TWO = 2;
-    private final static int SAMPLE_THREE = 3;
-    private final static int SAMPLE_FOUR = 4;
-
-    static {
-        SAMPLE_USERS = new HashMap<>();
-        SAMPLE_USERS.put(SAMPLE_ONE, new User(UserTest.BASE_NAME, "1@mail.com", UserTest.BASE_PASSWORD));
-        SAMPLE_USERS.put(SAMPLE_TWO, new User(UserTest.BASE_NAME, "2@mail.com", UserTest.BASE_PASSWORD));
-        SAMPLE_USERS.put(SAMPLE_THREE, new User(UserTest.BASE_NAME, "3@mail.com", UserTest.BASE_PASSWORD));
-        SAMPLE_USERS.put(SAMPLE_FOUR, new User(UserTest.BASE_NAME, "4@mail.com", UserTest.BASE_PASSWORD));
-    }
+class UserRepositoryTest extends UserBaseTest {
 
     @Autowired
     UserRepository userRepository;
