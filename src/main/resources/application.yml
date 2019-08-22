@@ -78,6 +78,6 @@ spring:
       com.woowacourse.zzinbros: WARN
       org.springframework: WARN
       org.hibernate: INFO
-    file.max-size: 128MB
+    file.max-history: 30
 
   output.ansi.enabled: detect
