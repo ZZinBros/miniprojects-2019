@@ -1,0 +1,18 @@
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="common/header::mainHead"></head>
+
+<body>
+<div id="wootecobook-app">
+    <header th:replace="layout/entrance/headline::entranceHeadline"></header>
+    <div class="container-fluid max-width-lg mx-auto mrg-top-70 cover-img bg" id="main-content">
+        <div class="row">
+            <div th:replace="layout/entrance/left-logo"></div>
+            <div th:replace="layout/entrance/signup-area"></div>
+        </div>
+    </div>
+</div>
+<th:block th:include="common/cdns"></th:block>
+</body>
+
+</html>

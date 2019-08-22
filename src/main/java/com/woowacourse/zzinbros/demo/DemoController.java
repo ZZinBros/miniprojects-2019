@@ -28,4 +28,9 @@ public class DemoController {
     public String login() {
         return "login";
     }
+
+    @GetMapping("/entrance")
+    public String enter() {
+        return "entrance";
+    }
 }
