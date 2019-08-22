@@ -30,12 +30,6 @@ zzinbros:
 spring:
   profiles: test
 
-zzinbros:
-  uploadto:
-    strategy: s3
-    uploadurl: zzinbros/images
-    downloadurl: https://zzinbros.s3.ap-northeast-2.amazonaws.com/images/
-
   thymeleaf.cache: false
 
   jpa:
@@ -54,6 +48,12 @@ zzinbros:
     driver-class-name: org.h2.Driver
 
 debug: true
+
+zzinbros:
+  uploadto:
+    strategy: s3
+    uploadurl: zzinbros/images
+    downloadurl: https://zzinbros.s3.ap-northeast-2.amazonaws.com/images/
 
 ---
 
