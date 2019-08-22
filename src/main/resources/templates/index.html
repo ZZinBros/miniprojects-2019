@@ -1,23 +1,25 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="common/header::mainHead"></head>
+<head>
+    <th:block th:replace="common/head"></th:block>
+</head>
 
 <body>
-    <div id="wootecobook-app">
-        <header th:replace="layout/headline::headline"></header>
-        <div class="container-fluid max-width-lg mx-auto mrg-top-70" id="main-content">
-            <div class="row">
-                <div th:replace="layout/left-profile"></div>
-                <div th:replace="layout/center-container"></div>
-                <div th:replace="layout/right-sidebar"></div>
-            </div>
+<div id="wootecobook-app">
+    <header th:replace="layout/headline::headline"></header>
+    <div class="container-fluid max-width-lg mx-auto mrg-top-70" id="main-content">
+        <div class="row">
+            <div th:replace="layout/left-profile"></div>
+            <div th:replace="layout/center-container"></div>
+            <div th:replace="layout/right-sidebar"></div>
         </div>
     </div>
-    <th:block th:include="common/cdns"></th:block>
-    <script src="/js/fetch-api.js"></script>
-    <script src="/js/social-feed.js"></script>
-    <script src="/js/post-like.js"></script>
-    <script src="/js/post-edit.js"></script>
+</div>
+<th:block th:include="common/cdns"></th:block>
+<script src="/js/fetch-api.js"></script>
+<script src="/js/social-feed.js"></script>
+<script src="/js/post-like.js"></script>
+<script src="/js/post-edit.js"></script>
 </body>
 
 </html>
