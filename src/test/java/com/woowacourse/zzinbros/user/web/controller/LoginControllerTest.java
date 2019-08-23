@@ -75,6 +75,6 @@ class LoginControllerTest extends BaseTest {
                 .andExpect(status().isFound())
                 .andReturn().getResponse().getHeader("Location");
 
-        assertTrue(url.equals("/login"));
+        assertTrue(url.equals("/entrance"));
     }
 }
