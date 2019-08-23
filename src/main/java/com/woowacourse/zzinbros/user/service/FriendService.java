@@ -1,6 +1,7 @@
 package com.woowacourse.zzinbros.user.service;
 
 import com.woowacourse.zzinbros.user.domain.Friend;
+import com.woowacourse.zzinbros.user.domain.FriendMatcher;
 import com.woowacourse.zzinbros.user.domain.User;
 import com.woowacourse.zzinbros.user.domain.repository.FriendRepository;
 import com.woowacourse.zzinbros.user.dto.FriendRequestDto;
@@ -18,10 +19,12 @@ public class FriendService {
 
     private final FriendRepository friendRepository;
     private final UserService userService;
+    private final FriendMatcher friendMatcher;
 
-    public FriendService(FriendRepository friendRepository, UserService userService) {
+    public FriendService(FriendRepository friendRepository, UserService userService, FriendMatcher friendMatcher) {
         this.friendRepository = friendRepository;
         this.userService = userService;
+        this.friendMatcher = friendMatcher;
     }
 
     public boolean sendFriendRequest(final UserResponseDto requestUser, final FriendRequestDto friendRequested) {
@@ -38,10 +41,6 @@ public class FriendService {
     public Set<UserResponseDto> findFriendByUser(final long id) {
         User owner = userService.findUserById(id);
         Set<Friend> friends = friendRepository.findByFrom(owner);
-        return friends.stream()
-                .filter(friend -> friend.isSameWithFrom(owner))
-                .map(friend -> friend.getTo())
-                .map(u -> new UserResponseDto(u.getId(), u.getName(), u.getEmail()))
-                .collect(Collectors.toSet());
+        return friendMatcher.parseFriends(friends, owner);
     }
 }
