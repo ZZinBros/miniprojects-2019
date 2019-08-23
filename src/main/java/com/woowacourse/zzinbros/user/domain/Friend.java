@@ -1,13 +1,10 @@
 package com.woowacourse.zzinbros.user.domain;
 
 import com.woowacourse.zzinbros.common.domain.BaseEntity;
-import org.hibernate.annotations.NotFound;
-import org.hibernate.annotations.NotFoundAction;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.Objects;
 
 @Table(
