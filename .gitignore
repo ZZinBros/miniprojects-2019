@@ -7,8 +7,9 @@ build
 !gradle/wrapper/gradle-wrapper.jar
 out/
 target/
-*images/
-/src/main/resources/static/images/*
+**/images/*
+!**/images/default/
+!**/images/logo/
 
 # Created by https://www.gitignore.io/
 ### Intellij ###
