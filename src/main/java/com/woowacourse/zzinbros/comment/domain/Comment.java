@@ -1,22 +1,20 @@
 package com.woowacourse.zzinbros.comment.domain;
 
+import com.woowacourse.zzinbros.common.domain.BaseEntity;
 import com.woowacourse.zzinbros.post.domain.Post;
 import com.woowacourse.zzinbros.user.domain.User;
-import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-import org.hibernate.annotations.UpdateTimestamp;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
-public class Comment {
-    @Id
-    @GeneratedValue
-    private Long id;
-
+public class Comment extends BaseEntity {
     @ManyToOne
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User author;
@@ -28,12 +26,6 @@ public class Comment {
     @Lob
     @Column(nullable = false)
     private String contents;
-
-    @CreationTimestamp
-    private LocalDateTime createdDateTime;
-
-    @UpdateTimestamp
-    private LocalDateTime updatedDateTime;
 
     public Comment() {
     }

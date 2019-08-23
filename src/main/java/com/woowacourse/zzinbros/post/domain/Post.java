@@ -1,32 +1,20 @@
 package com.woowacourse.zzinbros.post.domain;
 
+import com.woowacourse.zzinbros.common.domain.BaseEntity;
 import com.woowacourse.zzinbros.mediafile.MediaFile;
 import com.woowacourse.zzinbros.post.exception.UnAuthorizedException;
 import com.woowacourse.zzinbros.user.domain.User;
-import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.*;
 
 @Entity
-public class Post {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+public class Post extends BaseEntity {
     @Lob
     private String contents;
-
-    @CreationTimestamp
-    private LocalDateTime createDateTime;
-
-    @UpdateTimestamp
-    private LocalDateTime updateDateTime;
 
     @ManyToOne
     @OnDelete(action = OnDeleteAction.CASCADE)
@@ -87,11 +75,11 @@ public class Post {
     }
 
     public LocalDateTime getCreateDateTime() {
-        return createDateTime;
+        return createdDateTime;
     }
 
     public LocalDateTime getUpdateDateTime() {
-        return updateDateTime;
+        return updatedDateTime;
     }
 
     public User getAuthor() {

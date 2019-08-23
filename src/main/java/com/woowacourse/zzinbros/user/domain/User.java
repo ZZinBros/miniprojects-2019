@@ -1,27 +1,22 @@
 package com.woowacourse.zzinbros.user.domain;
 
+import com.woowacourse.zzinbros.common.domain.BaseEntity;
 import com.woowacourse.zzinbros.user.exception.IllegalUserArgumentException;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.validation.constraints.Email;
-import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Entity
-public class User {
+public class User extends BaseEntity {
     private static final int MIN_NAME_LENGTH = 2;
     private static final int MAX_NAME_LENGTH = 10;
     private static final int MIN_PASSWORD_LENGTH = 8;
     private static final int MAX_PASSWORD_LENGTH = 30;
     private static final String EMAIL_PATTERN = "^.+@.+$";
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
     @Column(name = "name", length = 20, nullable = false)
     private String name;
@@ -33,14 +28,7 @@ public class User {
     @Column(name = "password", nullable = false, length = MAX_PASSWORD_LENGTH)
     private String password;
 
-    @CreationTimestamp
-    private LocalDateTime createdTime;
-
-    @UpdateTimestamp
-    private LocalDateTime lastModifiedTime;
-
     public User() {
-
     }
 
     public User(String name, @Email String email, String password) {
