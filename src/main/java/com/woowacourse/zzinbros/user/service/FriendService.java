@@ -31,7 +31,7 @@ public class FriendService {
         throw new AlreadyFriendRequestExist("Already Friend Request");
     }
 
-    public Friend sendFriendRequest(final UserResponseDto requestUser, final FriendRequestDto friendRequested) {
+    public Friend sendFriendRequest1(final UserResponseDto requestUser, final FriendRequestDto friendRequested) {
         User from = userService.findUserById(requestUser.getId());
         User to = userService.findUserById(friendRequested.getRequestFriendId());
         if (!friendRepository.existsByFromAndTo(from, to)) {
@@ -40,14 +40,20 @@ public class FriendService {
         throw new AlreadyFriendRequestExist("Already Friend Request");
     }
 
-    public boolean checkFriend(final User user, final User other) {
-        return friendRepository.existsByFromAndTo(user, other) && friendRepository.existsByFromAndTo(other, user);
-    }
-
     public Set<UserResponseDto> findFriendByUser(final User user) {
         Set<Friend> friends = friendRepository.findByFrom(user);
         return friends.stream()
                 .filter(friend -> friend.isSameWithFrom(user))
+                .map(friend -> friend.getTo())
+                .map(u -> new UserResponseDto(u.getId(), u.getName(), u.getEmail()))
+                .collect(Collectors.toSet());
+    }
+
+    public Set<UserResponseDto> findFriendByUser1(final long id) {
+        User owner = userService.findUserById(id);
+        Set<Friend> friends = friendRepository.findByFrom(owner);
+        return friends.stream()
+                .filter(friend -> friend.isSameWithFrom(owner))
                 .map(friend -> friend.getTo())
                 .map(u -> new UserResponseDto(u.getId(), u.getName(), u.getEmail()))
                 .collect(Collectors.toSet());
