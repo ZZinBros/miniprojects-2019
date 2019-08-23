@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.woowacourse.zzinbros.user.domain.Friend;
 import com.woowacourse.zzinbros.user.domain.User;
 import com.woowacourse.zzinbros.user.domain.UserTest;
-import com.woowacourse.zzinbros.user.domain.repository.UserBaseTest;
+import com.woowacourse.zzinbros.user.domain.UserBaseTest;
 import com.woowacourse.zzinbros.user.dto.FriendRequestDto;
 import com.woowacourse.zzinbros.user.dto.UserResponseDto;
 import com.woowacourse.zzinbros.user.service.FriendService;

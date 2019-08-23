@@ -1,6 +1,7 @@
 package com.woowacourse.zzinbros.user.domain.repository;
 
 import com.woowacourse.zzinbros.user.domain.User;
+import com.woowacourse.zzinbros.user.domain.UserBaseTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
