@@ -11,18 +11,13 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class UserControllerExceptionAdvice {
 
-    @ExceptionHandler(UserRegisterException.class)
-    public String handleUserException(UserException e, Model model) {
+    @ExceptionHandler({UserRegisterException.class, UserNotLoggedInException.class})
+    public String handleUserException(Exception e) {
         return "redirect:/entrance";
     }
 
     @ExceptionHandler(UserEditPageNotFoundException.class)
     public String handleUserEditPageNotFoundException(UserException e) {
         return "redirect:/";
-    }
-
-    @ExceptionHandler(UserNotLoggedInException.class)
-    public String handleUserNotLoggedInExcpetion(UserNotLoggedInException e) {
-        return "redirect:/login";
     }
 }
