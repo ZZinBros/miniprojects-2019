@@ -33,7 +33,7 @@ public class PostPageController {
         try {
             User author = userService.findUserById(id);
             List<Post> posts = postService.readAllByUser(author);
-            Set<UserResponseDto> friends = friendService.findFriendByUser(author);
+            Set<UserResponseDto> friends = friendService.findFriendByUser(id);
             model.addAttribute("author", author);
             model.addAttribute("posts", posts);
             model.addAttribute("friends", friends);

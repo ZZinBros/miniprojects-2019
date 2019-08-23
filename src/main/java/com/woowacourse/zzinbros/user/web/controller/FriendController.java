@@ -1,7 +1,7 @@
 package com.woowacourse.zzinbros.user.web.controller;
 
-import com.woowacourse.zzinbros.user.domain.User;
 import com.woowacourse.zzinbros.user.dto.FriendRequestDto;
+import com.woowacourse.zzinbros.user.dto.UserResponseDto;
 import com.woowacourse.zzinbros.user.service.FriendService;
 import com.woowacourse.zzinbros.user.service.UserService;
 import com.woowacourse.zzinbros.user.web.support.SessionInfo;
@@ -28,14 +28,10 @@ public class FriendController {
     @PostMapping
     @ResponseStatus(HttpStatus.FOUND)
     public String addFriend(@RequestBody FriendRequestDto friendRequestDto, @SessionInfo UserSession userSession) {
-        final Long loginUserId = userSession.getDto().getId();
-        User from = userService.findUserById(loginUserId);
-        User to = userService.findUserById(friendRequestDto.getRequestFriendId());
+        final UserResponseDto loginUserDto = userSession.getDto();
         if (!userSession.matchId(friendRequestDto.getRequestFriendId())) {
-            friendService.sendFriendRequest(from, to);
-            friendService.sendFriendRequest(to, from);
+            friendService.sendFriendRequest(loginUserDto, friendRequestDto);
         }
         return "redirect:/posts?author=" + friendRequestDto.getRequestFriendId();
     }
-
 }

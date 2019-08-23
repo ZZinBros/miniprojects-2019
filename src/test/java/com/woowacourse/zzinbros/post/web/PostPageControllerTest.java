@@ -73,9 +73,10 @@ class PostPageControllerTest extends BaseTest {
                 new UserResponseDto(1L, "이름", "2@mail.com"),
                 new UserResponseDto(2L, "이름2", "3@mail.com")
         ));
+
         given(userService.findUserById(BASE_ID)).willReturn(baseUser);
         given(postService.readAllByUser(baseUser)).willReturn(posts);
-        given(friendService.findFriendByUser(baseUser)).willReturn(friends);
+        given(friendService.findFriendByUser(BASE_ID)).willReturn(friends);
 
         mockMvc.perform(get("/posts?author=" + BASE_ID))
                 .andExpect(status().isOk());
