@@ -2,6 +2,11 @@ spring:
   profiles:
     active: local
 
+---
+
+spring:
+  profiles: local
+
   thymeleaf.cache: false
 
   devtools:
@@ -11,14 +16,28 @@ spring:
   jpa:
     hibernate.ddl-auto: update
     database: mysql
-    show-sql: true
-    properties.hibernate.format_sql: true
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+        use_sql_comments: true
 
   datasource:
     url: jdbc:mysql://localhost:3306/wootecobook?serverTimezone=UTC
     username: zzinbros
     password: 1234
+
+  output.ansi.enabled: detect
+
+logging:
+  level:
+    root: INFO
+    com.woowacourse.zzinbros: DEBUG
+
+logback.access:
+  enabled: true
+  config: "classpath:logback-access.xml"
 
 zzinbros:
   uploadto:
@@ -27,13 +46,14 @@ zzinbros:
     downloadurl: https://zzinbros.s3.ap-northeast-2.amazonaws.com/images/
 
 ---
+
 spring:
   profiles: test
 
   thymeleaf.cache: false
 
   jpa:
-    hibernate.ddl-auto: create
+    hibernate.ddl-auto: create-drop
     database-platform: org.hibernate.dialect.H2Dialect
     properties:
       hibernate:
@@ -47,7 +67,12 @@ spring:
     password: sa
     driver-class-name: org.h2.Driver
 
-debug: true
+  output.ansi.enabled: detect
+
+logging:
+  level:
+    root: WARN
+    com.woowacourse.zzinbros: DEBUG
 
 zzinbros:
   uploadto:
@@ -70,17 +95,13 @@ spring:
     username: zzinbros
     password: 1234
 
-  logging:
-    level:
-      root: ERROR
-      com.woowacourse.zzinbros: WARN
-      org.springframework: WARN
-      org.hibernate: INFO
+  output.ansi.enabled: detect
 
-  output:
-    ansi:
-      enabled: detect
-
+logging:
+  level:
+    root: WARN
+    com.woowacourse.zzinbros: INFO
+  file.max-history: 30
 
 zzinbros:
   uploadto:
