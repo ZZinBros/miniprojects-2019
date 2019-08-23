@@ -3,7 +3,7 @@ package com.woowacourse.zzinbros.user.service;
 import com.woowacourse.zzinbros.user.domain.Friend;
 import com.woowacourse.zzinbros.user.domain.User;
 import com.woowacourse.zzinbros.user.domain.repository.FriendRepository;
-import com.woowacourse.zzinbros.user.domain.repository.UserBaseTest;
+import com.woowacourse.zzinbros.user.domain.UserBaseTest;
 import com.woowacourse.zzinbros.user.dto.UserResponseDto;
 import com.woowacourse.zzinbros.user.exception.AlreadyFriendRequestExist;
 import org.junit.jupiter.api.BeforeEach;
