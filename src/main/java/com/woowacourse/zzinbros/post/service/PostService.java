@@ -9,6 +9,7 @@ import com.woowacourse.zzinbros.post.exception.PostNotFoundException;
 import com.woowacourse.zzinbros.post.exception.UnAuthorizedException;
 import com.woowacourse.zzinbros.user.domain.User;
 import com.woowacourse.zzinbros.user.service.UserService;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -56,7 +57,7 @@ public class PostService {
     }
 
     public List<Post> readAll() {
-        return Collections.unmodifiableList(postRepository.findAll());
+        return Collections.unmodifiableList(postRepository.findAll(new Sort(Sort.Direction.DESC, "createdDateTime")));
     }
 
     public List<Post> readAllByUser(User user) {
