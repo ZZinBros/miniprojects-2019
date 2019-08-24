@@ -1,9 +1,12 @@
 package com.woowacourse.zzinbros.demo;
 
 import com.woowacourse.zzinbros.post.service.PostService;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+
+import static org.springframework.data.domain.Sort.*;
 
 @Controller
 public class DemoController {
@@ -15,7 +18,8 @@ public class DemoController {
 
     @GetMapping("/")
     public String demo(Model model) {
-        model.addAttribute("posts", postService.readAll());
+        Sort sort = by(Direction.DESC, "createdDateTime");
+        model.addAttribute("posts", postService.readAll(sort));
         return "index";
     }
 

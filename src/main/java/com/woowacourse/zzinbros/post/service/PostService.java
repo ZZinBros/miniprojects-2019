@@ -56,8 +56,8 @@ public class PostService {
         throw new UnAuthorizedException("작성자만 삭제할 수 있습니다.");
     }
 
-    public List<Post> readAll() {
-        return Collections.unmodifiableList(postRepository.findAll(new Sort(Sort.Direction.DESC, "createdDateTime")));
+    public List<Post> readAll(Sort sort) {
+        return Collections.unmodifiableList(postRepository.findAll(sort));
     }
 
     public List<Post> readAllByUser(User user) {
