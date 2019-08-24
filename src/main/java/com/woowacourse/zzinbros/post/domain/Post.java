@@ -4,6 +4,7 @@ import com.woowacourse.zzinbros.common.domain.BaseEntity;
 import com.woowacourse.zzinbros.mediafile.MediaFile;
 import com.woowacourse.zzinbros.post.exception.UnAuthorizedException;
 import com.woowacourse.zzinbros.user.domain.User;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -29,6 +30,7 @@ public class Post extends BaseEntity {
     private Set<PostLike> postLikes = new HashSet<>();
 
     @Column(columnDefinition = "integer default 0")
+    @ColumnDefault("0")
     private Integer countOfLike;
 
     public Post() {
