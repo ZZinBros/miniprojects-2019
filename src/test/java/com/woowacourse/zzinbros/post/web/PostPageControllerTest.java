@@ -26,6 +26,8 @@ import java.util.List;
 import java.util.Set;
 
 import static org.mockito.BDDMockito.given;
+import static org.springframework.data.domain.Sort.Direction;
+import static org.springframework.data.domain.Sort.by;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -74,7 +76,7 @@ class PostPageControllerTest extends BaseTest {
                 new UserResponseDto(2L, "이름2", "3@mail.com")
         ));
         given(userService.findUserById(BASE_ID)).willReturn(baseUser);
-        given(postService.readAllByUser(baseUser)).willReturn(posts);
+        given(postService.readAllByUser(baseUser, by(Direction.DESC, "createdDateTime"))).willReturn(posts);
         given(friendService.findFriendByUser(baseUser)).willReturn(friends);
 
         mockMvc.perform(get("/posts?author=" + BASE_ID))

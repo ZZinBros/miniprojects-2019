@@ -60,8 +60,8 @@ public class PostService {
         return Collections.unmodifiableList(postRepository.findAll(sort));
     }
 
-    public List<Post> readAllByUser(User user) {
-        return Collections.unmodifiableList(postRepository.findAllByAuthor(user));
+    public List<Post> readAllByUser(User user, Sort sort) {
+        return Collections.unmodifiableList(postRepository.findAllByAuthor(user, sort));
     }
 
     @Transactional
