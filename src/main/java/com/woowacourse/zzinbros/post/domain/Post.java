@@ -28,8 +28,8 @@ public class Post extends BaseEntity {
     @OneToMany(mappedBy = "post", cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
     private Set<PostLike> postLikes = new HashSet<>();
 
-    @Column
-    private int countOfLike;
+    @Column(columnDefinition = "integer default 0")
+    private Integer countOfLike;
 
     public Post() {
     }
@@ -99,6 +99,9 @@ public class Post extends BaseEntity {
     }
 
     public int getCountOfLike() {
+        if (countOfLike == null) {
+            return 0;
+        }
         return countOfLike;
     }
 
