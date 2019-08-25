@@ -29,7 +29,6 @@ public class Post extends BaseEntity {
     @OneToMany(mappedBy = "post", cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
     private Set<PostLike> postLikes = new HashSet<>();
 
-    @Column(columnDefinition = "integer default 0")
     @ColumnDefault("0")
     private Integer countOfLike;
 
