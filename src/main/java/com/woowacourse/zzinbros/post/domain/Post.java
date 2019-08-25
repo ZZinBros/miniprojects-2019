@@ -5,6 +5,7 @@ import com.woowacourse.zzinbros.mediafile.MediaFile;
 import com.woowacourse.zzinbros.post.exception.UnAuthorizedException;
 import com.woowacourse.zzinbros.user.domain.User;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -13,6 +14,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 @Entity
+@DynamicInsert
 public class Post extends BaseEntity {
     @Lob
     private String contents;
