@@ -1,7 +1,7 @@
 (function() {
     function onModifyClick(event) {
         const baseUrl = document.location.origin;
-        const contents = event.target.parentElement.parentElement.querySelector('textarea');
+        const contents = event.target.closest('.modal-content').querySelector('textarea');
         const url = baseUrl + "/posts/" + contents.dataset.postid;
         Api.put(url, { "contents": contents.value })
             .then(res => {
