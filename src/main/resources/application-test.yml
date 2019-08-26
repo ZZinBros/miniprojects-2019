@@ -1,0 +1,24 @@
+spring:
+    config.name: test
+    jpa:
+        database: h2
+        hibernate.ddl-auto: create-drop
+        database-platform: org.hibernate.dialect.H2Dialect
+        properties:
+            hibernate:
+                show_sql: true
+                format_sql: true
+                use_sql_comments: true
+    datasource:
+        url: jdbc:h2:mem:test
+        username: sa
+        password: sa
+        driver-class-name: org.h2.Driver
+    thymeleaf.cache: false
+logging.level:
+    root: warn
+    com.woowacourse.zzinbros: debug
+    org.hibernate.type.descriptor.sql: trace
+logback.access:
+    enabled: true
+    config: "classpath:logback-access.xml"
