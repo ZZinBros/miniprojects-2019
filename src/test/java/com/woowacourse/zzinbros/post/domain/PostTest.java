@@ -49,14 +49,13 @@ public class PostTest extends BaseTest {
     void 좋아요를_눌렀을_경우_테스트() {
         PostLike postLike = new PostLike(defaultPost, defaultUser);
         defaultPost.addLike(postLike);
-        assertThat(defaultPost.getPostLikes()).contains(postLike);
+        assertThat(defaultPost.getCountOfLike()).isEqualTo(INIT_LIKE + 1);
     }
 
     @Test
     void 좋아요_취소_테스트() {
         PostLike postLike = new PostLike(defaultPost, defaultUser);
-        defaultPost.addLike(postLike);
         defaultPost.removeLike(postLike);
-        assertThat(defaultPost.getPostLikes()).doesNotContain(postLike);
+        assertThat(defaultPost.getCountOfLike()).isEqualTo(INIT_LIKE - 1);
     }
 }

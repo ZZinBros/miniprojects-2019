@@ -109,7 +109,7 @@ public class PostServiceTest extends BaseTest {
         given(postLikeRepository.findByPostAndUser(defaultPost, defaultUser)).willReturn(postLike);
         doNothing().when(postLikeRepository).delete(postLike);
 
-        assertThat(postService.updateLike(DEFAULT_POST_ID, DEFAULT_USER_ID)).isEqualTo(INIT_LIKE);
+        assertThat(postService.updateLike(DEFAULT_POST_ID, DEFAULT_USER_ID)).isEqualTo(INIT_LIKE - 1);
     }
 
     @Test

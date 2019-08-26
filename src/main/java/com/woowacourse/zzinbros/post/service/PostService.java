@@ -72,10 +72,11 @@ public class PostService {
         if (Objects.isNull(postLike)) {
             postLike = new PostLike(post, user);
             post.addLike(postLike);
-            return post.getPostLikes().size();
+            postLikeRepository.save(new PostLike(post, user));
+            return post.getCountOfLike();
         }
         postLikeRepository.delete(postLike);
         post.removeLike(postLike);
-        return post.getPostLikes().size();
+        return post.getCountOfLike();
     }
 }

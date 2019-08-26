@@ -11,7 +11,9 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 @Entity
 @DynamicInsert
@@ -27,9 +29,6 @@ public class Post extends BaseEntity {
     @OneToMany
     @JoinColumn(name = "media_file_id", foreignKey = @ForeignKey(name = "post_to_media_file"))
     private List<MediaFile> mediaFiles = new ArrayList<>();
-
-    @OneToMany(mappedBy = "post", cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
-    private Set<PostLike> postLikes = new HashSet<>();
 
     @Column
     @ColumnDefault("0")
@@ -61,12 +60,10 @@ public class Post extends BaseEntity {
     }
 
     public void addLike(PostLike postLike) {
-        postLikes.add(postLike);
         countOfLike++;
     }
 
     public void removeLike(PostLike postLike) {
-        postLikes.remove(postLike);
         countOfLike--;
     }
 
@@ -96,10 +93,6 @@ public class Post extends BaseEntity {
 
     public void setMediaFiles(List<MediaFile> mediaFiles) {
         this.mediaFiles = mediaFiles;
-    }
-
-    public Set<PostLike> getPostLikes() {
-        return Collections.unmodifiableSet(postLikes);
     }
 
     public int getCountOfLike() {
