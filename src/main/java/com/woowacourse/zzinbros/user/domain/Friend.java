@@ -8,7 +8,7 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Table(
-        uniqueConstraints = @UniqueConstraint(columnNames = {"from_id", "to_id"})
+        uniqueConstraints = @UniqueConstraint(columnNames = {"from_id", "to_id"}, name = "UK_USER_FROM_AND_TO_ID")
 )
 @Entity
 public class Friend extends BaseEntity {
