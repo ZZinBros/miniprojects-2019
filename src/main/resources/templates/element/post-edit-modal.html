@@ -1,4 +1,4 @@
-<div aria-hidden="true" aria-labelledby="exampleModalLabel" class="modal fade" id="post-edit-modal"
+<div aria-hidden="true" aria-labelledby="exampleModalLabel" class="modal fade" th:id="'post-edit-modal' + ${post.id}"
      role="dialog" tabindex="-1">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -8,7 +8,7 @@
             <div class="modal-body">
                 <form>
                     <div>
-                        <textarea class="resize-none form-control border bottom resize-none" id="post-edit-content" th:data-postid="${post.id}" th:text="${post.contents}"></textarea>
+                        <textarea class="resize-none form-control border bottom resize-none" th:data-postid="${post.id}" th:text="${post.contents}"></textarea>
                     </div>
                 </form>
                 <ul class="composor-tools">
@@ -33,7 +33,7 @@
                 </ul>
             </div>
             <div class="modal-footer bg-lightgray">
-                <button class="btn btn-facebook btn-rounded text-bold font-size-13" type="button" id="post-edit-btn"> 저장 </button>
+                <button class="btn btn-facebook btn-rounded text-bold font-size-13 post-edit" type="button"> 저장 </button>
                 <button class="btn btn-secondary btn-rounded text-bold font-size-13" data-dismiss="modal" type="button">
                      취소
                 </button>

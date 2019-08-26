@@ -9,6 +9,7 @@ import com.woowacourse.zzinbros.post.exception.PostNotFoundException;
 import com.woowacourse.zzinbros.post.exception.UnAuthorizedException;
 import com.woowacourse.zzinbros.user.domain.User;
 import com.woowacourse.zzinbros.user.service.UserService;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -55,12 +56,12 @@ public class PostService {
         throw new UnAuthorizedException("작성자만 삭제할 수 있습니다.");
     }
 
-    public List<Post> readAll() {
-        return Collections.unmodifiableList(postRepository.findAll());
+    public List<Post> readAll(Sort sort) {
+        return Collections.unmodifiableList(postRepository.findAll(sort));
     }
 
-    public List<Post> readAllByUser(User user) {
-        return Collections.unmodifiableList(postRepository.findAllByAuthor(user));
+    public List<Post> readAllByUser(User user, Sort sort) {
+        return Collections.unmodifiableList(postRepository.findAllByAuthor(user, sort));
     }
 
     @Transactional

@@ -1,7 +1,7 @@
 (function() {
-    function onModifyClick() {
+    function onModifyClick(event) {
         const baseUrl = document.location.origin;
-        const contents = document.getElementById('post-edit-content');
+        const contents = event.target.closest('.modal-content').querySelector('textarea');
         const url = baseUrl + "/posts/" + contents.dataset.postid;
         Api.put(url, { "contents": contents.value })
             .then(res => {
@@ -12,5 +12,7 @@
                 }
             })
     }
-    document.getElementById("post-edit-btn").addEventListener("click", onModifyClick);
+    const postEdits = document.getElementsByClassName("post-edit");
+    Array.from(postEdits)
+        .map(element => element.addEventListener("click", onModifyClick));
 })();

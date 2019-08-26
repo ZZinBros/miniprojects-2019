@@ -4,6 +4,8 @@ import com.woowacourse.zzinbros.common.domain.BaseEntity;
 import com.woowacourse.zzinbros.mediafile.MediaFile;
 import com.woowacourse.zzinbros.post.exception.UnAuthorizedException;
 import com.woowacourse.zzinbros.user.domain.User;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -12,6 +14,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 @Entity
+@DynamicInsert
 public class Post extends BaseEntity {
     @Lob
     private String contents;
@@ -29,7 +32,8 @@ public class Post extends BaseEntity {
     private Set<PostLike> postLikes = new HashSet<>();
 
     @Column
-    private int countOfLike;
+    @ColumnDefault("0")
+    private Integer countOfLike;
 
     public Post() {
     }
@@ -99,6 +103,9 @@ public class Post extends BaseEntity {
     }
 
     public int getCountOfLike() {
+        if (countOfLike == null) {
+            return 0;
+        }
         return countOfLike;
     }
 

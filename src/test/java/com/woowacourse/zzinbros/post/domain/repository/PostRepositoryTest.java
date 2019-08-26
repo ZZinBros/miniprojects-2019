@@ -14,6 +14,8 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.springframework.data.domain.Sort.Direction;
+import static org.springframework.data.domain.Sort.by;
 
 @DataJpaTest
 class PostRepositoryTest {
@@ -33,7 +35,7 @@ class PostRepositoryTest {
         postRepository.save(post1);
         postRepository.save(post2);
 
-        List<Post> actual = postRepository.findAllByAuthor(savedUser);
+        List<Post> actual = postRepository.findAllByAuthor(savedUser, by(Direction.DESC, "createdDateTime"));
 
         assertEquals(2, actual.size());
 
@@ -44,7 +46,7 @@ class PostRepositoryTest {
     @DisplayName("User에 해당하는 Post가 없을 때 테스트")
     void findAllByUserWhenPostDoesntExist() {
         User savedUser = userRepository.save(new User(UserTest.BASE_NAME, UserTest.BASE_EMAIL, UserTest.BASE_PASSWORD));
-        List<Post> actual = postRepository.findAllByAuthor(savedUser);
+        List<Post> actual = postRepository.findAllByAuthor(savedUser, by(Direction.DESC, "createdDateTime"));
 
         assertEquals(0, actual.size());
     }
