@@ -11,9 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Set;
-import java.util.function.BiPredicate;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -44,5 +41,12 @@ public class FriendService {
         Set<Friend> friends = friendRepository.findByFrom(owner);
         return friendMatcher.collectFriends(friends, owner, (from, to) ->
                 friendRepository.existsByFromAndTo(from, to) && friendRepository.existsByFromAndTo(to, from));
+    }
+
+    public Set<UserResponseDto> findFriendRequestsByUser(final UserResponseDto loginUserDto) {
+        User owner = userService.findLoggedInUser(loginUserDto);
+        Set<Friend> friends = friendRepository.findByTo(owner);
+        return friendMatcher.collectFriendRequests(friends, owner, (from, to) ->
+                !friendRepository.existsByFromAndTo(from, to) && friendRepository.existsByFromAndTo(to, from));
     }
 }

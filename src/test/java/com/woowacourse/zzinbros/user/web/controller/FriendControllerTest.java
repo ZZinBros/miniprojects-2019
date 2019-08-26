@@ -16,11 +16,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -72,6 +74,19 @@ class FriendControllerTest extends UserBaseTest {
                 .content(new ObjectMapper().writeValueAsString(friendRequestDto))
                 .sessionAttr(UserSession.LOGIN_USER, LOGIN_USER_DTO))
                 .andExpect(status().isFound());
+
+        verify(friendService, times(0)).sendFriendRequest(LOGIN_USER_DTO, FRIEND_REQUEST_DTO);
+    }
+
+    @Test
+    @DisplayName("로그인 한 유저한테 온 친구 요청을 조회")
+    void friendRequestsGet() throws Exception {
+        FriendRequestDto friendRequestDto = new FriendRequestDto(LOGIN_USER_DTO.getId());
+
+        MvcResult mvcResult = mockMvc.perform(get("/friends/requests")
+                .sessionAttr(UserSession.LOGIN_USER, LOGIN_USER_DTO))
+                .andExpect(status().isOk())
+                .andReturn();
 
         verify(friendService, times(0)).sendFriendRequest(LOGIN_USER_DTO, FRIEND_REQUEST_DTO);
     }
