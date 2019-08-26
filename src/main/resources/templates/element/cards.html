@@ -1,4 +1,5 @@
-<div class="card widget-feed padding-15" th:each="post : ${posts}" xmlns:th="http://www.thymeleaf.org">
+<div class="card widget-feed padding-15" th:each="post : ${posts}" xmlns:th="http://www.thymeleaf.org"
+     th:data-post-id="${post.id}">
     <div th:replace="element/card-header"></div>
     <div th:replace="element/card-contents"></div>
     <ul th:replace="element/card-action"></ul>
