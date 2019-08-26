@@ -3,13 +3,13 @@
 
 # Ignore Gradle build output directory
 build
-.idea/
 !gradle/wrapper/gradle-wrapper.jar
 out/
 target/
 **/images/*
 !**/images/default/
 !**/images/logo/
+*.db
 
 # Created by https://www.gitignore.io/
 ### Intellij ###
