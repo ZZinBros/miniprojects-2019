@@ -5,10 +5,9 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
-import java.util.Objects;
 
 @Table(
-        uniqueConstraints = @UniqueConstraint(columnNames = {"from_id", "to_id"})
+        uniqueConstraints = @UniqueConstraint(columnNames = {"from_id", "to_id"}, name = "UK_USER_FROM_AND_TO_ID")
 )
 @Entity
 public class Friend extends BaseEntity {
@@ -36,8 +35,12 @@ public class Friend extends BaseEntity {
         return friend;
     }
 
-    public boolean isSameWithFrom(User from) {
+    boolean isSameWithFrom(User from) {
         return this.from.equals(from);
+    }
+
+    boolean isSameWithTo(User to) {
+        return this.to.equals(to);
     }
 
     public Long getId() {
@@ -50,19 +53,5 @@ public class Friend extends BaseEntity {
 
     public User getTo() {
         return to;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Friend)) return false;
-        Friend friend = (Friend) o;
-        return Objects.equals(to, friend.to) &&
-                Objects.equals(from, friend.from);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(to, from);
     }
 }

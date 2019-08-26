@@ -7,11 +7,11 @@ import com.woowacourse.zzinbros.user.service.UserService;
 import com.woowacourse.zzinbros.user.web.support.SessionInfo;
 import com.woowacourse.zzinbros.user.web.support.UserSession;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Set;
 
 @Controller
 @RequestMapping("/friends")
@@ -23,6 +23,12 @@ public class FriendController {
     public FriendController(UserService userService, FriendService friendService) {
         this.userService = userService;
         this.friendService = friendService;
+    }
+
+    @GetMapping("/requests")
+    public ResponseEntity<Set<UserResponseDto>> showFriendRequests(@SessionInfo UserSession session) {
+        Set<UserResponseDto> users = friendService.findFriendRequestsByUser(session.getDto());
+        return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
     @PostMapping

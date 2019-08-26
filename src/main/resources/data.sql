@@ -1,4 +1,7 @@
-insert into User(id, name , email, password) values (999, 'john', 'john123@example.com', '123456789');
-insert into User(id, name , email, password) values (1000, 'paul', 'paul123@example.com', '123456789');
-insert into Post(id, contents, author_id) values (999, 'ex1', 999);
-insert into Post(id, contents, author_id) values    (1000, 'ex2', 1000);
+insert into User(id, name, email, password) values (999, 'john', 'john123@example.com', '123456789');
+insert into User(id, name, email, password) values (1000, 'paul', 'paul123@example.com', '123456789');
+insert into User(id, name, email, password) values (777, 'test', 'test@test.com', '12345678');
+insert into Post(id, contents, count_of_like, author_id) values (999, 'ex1', 0, 999);
+insert into Post(id, contents, count_of_like, author_id) values (1000, 'ex2', 0, 1000);
+insert into Post(id, contents, count_of_like, author_id) values (777, 'test', 0, 777);
+insert into Post(id, contents, count_of_like, author_id) values (888, 'deleted', 0, 777);

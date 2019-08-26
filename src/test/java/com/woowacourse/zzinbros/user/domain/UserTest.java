@@ -11,9 +11,9 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class UserTest extends BaseTest {
-    public static final String BASE_NAME = "테스트";
-    public static final String BASE_EMAIL = "test@test.com";
-    public static final String BASE_PASSWORD = "123qweASD!";
+    public static final String BASE_NAME = "test";
+    public static final String BASE_EMAIL = "test@example.com";
+    public static final String BASE_PASSWORD = "12345678";
 
     private User user;
 

@@ -1,8 +1,7 @@
-package com.woowacourse.zzinbros.mediafile.web.support;
+package com.woowacourse.zzinbros.comment;
 
 import com.woowacourse.zzinbros.BaseTest;
 import com.woowacourse.zzinbros.user.domain.repository.UserRepository;
-import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
@@ -24,27 +23,27 @@ public abstract class AuthedWebTestClient extends BaseTest {
     private String loginCookie() {
         String cookie = webTestClient.post().uri("/login")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                .body(BodyInserters.fromFormData("email", "john123@example.com")
-                        .with("password", "123456789"))
+                .body(BodyInserters.fromFormData("email", "test@test.com")
+                        .with("password", "12345678"))
                 .exchange()
                 .returnResult(String.class).getResponseHeaders().getFirst("Set-Cookie");
         return cookie;
     }
 
-    protected WebTestClient.RequestBodySpec post(String uri) {
+    protected WebTestClient.RequestBodySpec post(String uri, MediaType mediaType) {
         String cookie = loginCookie();
         return webTestClient.post()
                 .uri(uri)
                 .header("Cookie", cookie)
-                .contentType(MediaType.APPLICATION_FORM_URLENCODED);
+                .contentType(mediaType);
     }
 
-    protected WebTestClient.RequestBodySpec put(String uri) {
+    protected WebTestClient.RequestBodySpec put(String uri, MediaType mediaType) {
         String cookie = loginCookie();
         return webTestClient.put()
                 .uri(uri)
                 .header("Cookie", cookie)
-                .contentType(MediaType.APPLICATION_FORM_URLENCODED);
+                .contentType(mediaType);
     }
 
     protected WebTestClient.RequestHeadersSpec get(String uri) {
@@ -55,14 +54,6 @@ public abstract class AuthedWebTestClient extends BaseTest {
     protected WebTestClient.RequestHeadersSpec delete(String uri) {
         String cookie = loginCookie();
         return webTestClient.delete().uri(uri).header("Cookie", cookie);
-    }
-
-    protected <T> BodyInserters.FormInserter<String> params(Class<T> classType, String... parameters) {
-        BodyInserters.FormInserter<String> body = BodyInserters.fromFormData(Strings.EMPTY, Strings.EMPTY);
-        for (int i = 1; i < classType.getDeclaredFields().length; i++) {
-            body.with(classType.getDeclaredFields()[i].getName(), parameters[i - 1]);
-        }
-        return body;
     }
 
     protected WebTestClient.RequestHeadersSpec multipartFilePost(String uri, List<String> keys, Object... parameters) {

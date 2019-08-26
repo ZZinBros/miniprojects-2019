@@ -1,20 +1,16 @@
 package com.woowacourse.zzinbros.post.domain;
 
-import com.woowacourse.zzinbros.user.domain.User;
-import org.hibernate.annotations.CreationTimestamp;
+import com.woowacourse.zzinbros.common.domain.BaseEntity;
+import com.woowacourse.zzinbros.user.domain.User; 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-import org.hibernate.annotations.UpdateTimestamp;
 
-import javax.persistence.*;
-import java.time.LocalDateTime;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Entity
-public class PostLike {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class PostLike extends BaseEntity {
 
     @ManyToOne
     @OnDelete(action = OnDeleteAction.CASCADE)
@@ -25,12 +21,6 @@ public class PostLike {
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "user_id")
     private User user;
-
-    @CreationTimestamp
-    private LocalDateTime createDateTime;
-
-    @UpdateTimestamp
-    private LocalDateTime updateDateTime;
 
     protected PostLike() {
     }
@@ -50,13 +40,5 @@ public class PostLike {
 
     public User getUser() {
         return user;
-    }
-
-    public LocalDateTime getCreateDateTime() {
-        return createDateTime;
-    }
-
-    public LocalDateTime getUpdateDateTime() {
-        return updateDateTime;
     }
 }

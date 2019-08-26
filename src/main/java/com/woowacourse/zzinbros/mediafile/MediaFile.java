@@ -1,16 +1,11 @@
 package com.woowacourse.zzinbros.mediafile;
 
+import com.woowacourse.zzinbros.common.domain.BaseEntity;
+
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 
 @Entity
-public class MediaFile {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+public class MediaFile extends BaseEntity {
     private String url;
 
     protected MediaFile() {

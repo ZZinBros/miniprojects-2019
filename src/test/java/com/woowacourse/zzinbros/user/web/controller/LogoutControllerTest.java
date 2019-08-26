@@ -17,7 +17,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -48,7 +48,7 @@ class LogoutControllerTest extends BaseTest {
     @Test
     @DisplayName("정상 로그아웃 테스트")
     void logoutTestWhenLogin() throws Exception {
-        mockMvc.perform(get("/logout")
+        mockMvc.perform(post("/logout")
                 .sessionAttr(UserSession.LOGIN_USER, loginUserDto))
                 .andExpect(status().is3xxRedirection());
     }
@@ -56,7 +56,7 @@ class LogoutControllerTest extends BaseTest {
     @Test
     @DisplayName("로그인 안했을 때 로그아웃 요청하면 인덱스 페이지로 redirect")
     void logoutTestWhenNotLogin() throws Exception {
-        mockMvc.perform(get("/logout"))
+        mockMvc.perform(post("/logout"))
                 .andExpect(status().isFound());
     }
 }

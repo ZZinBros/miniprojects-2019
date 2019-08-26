@@ -6,7 +6,6 @@ import com.woowacourse.zzinbros.user.exception.IllegalUserArgumentException;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.validation.constraints.Email;
-import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -93,20 +92,5 @@ public class User extends BaseEntity {
 
     public String getPassword() {
         return password;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof User)) return false;
-        User user = (User) o;
-        return name.equals(user.name) &&
-                email.equals(user.email) &&
-                password.equals(user.password);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(name, email, password);
     }
 }

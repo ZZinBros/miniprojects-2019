@@ -1,12 +1,12 @@
 package com.woowacourse.zzinbros.post.web;
 
-import com.woowacourse.zzinbros.mediafile.web.support.AuthedWebTestClient;
+import com.woowacourse.zzinbros.comment.AuthedWebTestClient;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.io.ByteArrayResource;
 
 import java.util.Arrays;
 
-class PostWithImageControllerTest extends AuthedWebTestClient {
+class AcceptancePostWithImageControllerTest extends AuthedWebTestClient {
 
     private ByteArrayResource testResource = new ByteArrayResource(new byte[]{1, 2, 3}) {
         @Override

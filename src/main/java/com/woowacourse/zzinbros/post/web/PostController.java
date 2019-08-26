@@ -25,22 +25,24 @@ public class PostController {
     }
 
     @PostMapping
-    public Post create(@RequestBody PostRequestDto dto, @SessionInfo UserSession userSession) {
+    public ResponseEntity<Post> create(@RequestBody PostRequestDto dto, @SessionInfo UserSession userSession) {
         UserResponseDto loginUserDto = userSession.getDto();
-        return postService.add(dto, loginUserDto.getId());
+        Post post = postService.add(dto, loginUserDto.getId());
+        return new ResponseEntity<>(post, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public Post modify(@PathVariable long id, @RequestBody PostRequestDto dto, @SessionInfo UserSession userSession) {
+    public ResponseEntity<Post> modify(@PathVariable long id, @RequestBody PostRequestDto dto, @SessionInfo UserSession userSession) {
         UserResponseDto loginUserDto = userSession.getDto();
-        return postService.update(id, dto, loginUserDto.getId());
+        Post post = postService.update(id, dto, loginUserDto.getId());
+        return new ResponseEntity<>(post, HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Post> remove(@PathVariable long id, @SessionInfo UserSession userSession) {
         UserResponseDto loginUserDto = userSession.getDto();
         postService.delete(id, loginUserDto.getId());
-        return new ResponseEntity<>(null, HttpStatus.OK);
+        return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
     }
 
     @PutMapping("/{id}/like")

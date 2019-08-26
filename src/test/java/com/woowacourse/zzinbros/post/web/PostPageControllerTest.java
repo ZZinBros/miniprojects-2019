@@ -77,7 +77,7 @@ class PostPageControllerTest extends BaseTest {
         ));
 
         given(userService.findUserById(BASE_ID)).willReturn(baseUser);
-        given(postService.readAllByUser(baseUser, sort)).willReturn(posts);
+        given(postService.readAllByUser(baseUser, by(Direction.DESC, "createdDateTime"))).willReturn(posts);
         given(friendService.findFriendByUser(BASE_ID)).willReturn(friends);
 
         mockMvc.perform(get("/posts?author=" + BASE_ID))

@@ -34,20 +34,16 @@ public class PostControllerTest extends BaseTest {
     private static final long DEFAULT_USER_ID = 999L;
     private static final long DEFAULT_POST_ID = 999L;
     private static final String POST_URL = "/posts/";
-
+    @InjectMocks
+    private PostController postController;
+    @Mock
+    private PostService postService;
     private Post defaultPost;
     private User defaultUser;
     private UserResponseDto loginUserDto;
     private PostRequestDto postRequestDto;
-
     @Autowired
     private MockMvc mockMvc;
-
-    @InjectMocks
-    PostController postController;
-
-    @Mock
-    PostService postService;
 
     @BeforeEach
     void setUp() {
@@ -73,7 +69,7 @@ public class PostControllerTest extends BaseTest {
                 .content(new ObjectMapper().writeValueAsString(postRequestDto))
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .accept(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(status().isOk());
+                .andExpect(status().isCreated());
 
         verify(postService, times(1)).add(postRequestDto, DEFAULT_USER_ID);
     }
@@ -90,7 +86,7 @@ public class PostControllerTest extends BaseTest {
                 .content(new ObjectMapper().writeValueAsString(updatePostDto))
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .accept(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(status().isOk());
+                .andExpect(status().isAccepted());
 
         verify(postService, times(1)).update(DEFAULT_POST_ID, updatePostDto, DEFAULT_USER_ID);
     }
@@ -101,7 +97,7 @@ public class PostControllerTest extends BaseTest {
 
         mockMvc.perform(delete(POST_URL + DEFAULT_POST_ID)
                 .sessionAttr(UserSession.LOGIN_USER, loginUserDto))
-                .andExpect(status().isOk());
+                .andExpect(status().isNoContent());
 
         verify(postService, times(1)).delete(DEFAULT_POST_ID, DEFAULT_USER_ID);
     }

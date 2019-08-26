@@ -10,4 +10,6 @@ public interface FriendRepository extends JpaRepository<Friend, Long> {
     Set<Friend> findByFrom(User from);
 
     boolean existsByFromAndTo(User me, User other);
+
+    Set<Friend> findByTo(User owner);
 }

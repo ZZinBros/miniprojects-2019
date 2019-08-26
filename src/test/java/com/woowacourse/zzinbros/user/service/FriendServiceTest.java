@@ -75,21 +75,56 @@ class FriendServiceTest extends UserBaseTest {
 
         Friend friend1 = mockingId(Friend.of(me, first), 1L);
         Friend friend2 = mockingId(Friend.of(me, second), 2L);
+        Friend friend3 = mockingId(Friend.of(first, me), 3L);
 
         Set<Friend> friends = new HashSet<>(Arrays.asList(
                 friend1,
-                friend2
+                friend2,
+                friend3
         ));
 
         Set<UserResponseDto> expected = new HashSet<>(Arrays.asList(
-                new UserResponseDto(first.getId(), first.getName(), first.getEmail()),
-                new UserResponseDto(second.getId(), second.getName(), second.getEmail())
+                new UserResponseDto(first.getId(), first.getName(), first.getEmail())
         ));
 
         given(userService.findUserById(SAMPLE_ONE)).willReturn(me);
         given(friendRepository.findByFrom(me)).willReturn(friends);
+        given(friendRepository.existsByFromAndTo(me, first)).willReturn(true);
+        given(friendRepository.existsByFromAndTo(first, me)).willReturn(true);
+        given(friendRepository.existsByFromAndTo(me, second)).willReturn(true);
+        given(friendRepository.existsByFromAndTo(second, me)).willReturn(false);
 
         Set<UserResponseDto> actual = friendService.findFriendByUser(SAMPLE_ONE);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void findFriendRequestsByUser() {
+        User me = userSampleOf(SAMPLE_ONE);
+        User first = userSampleOf(SAMPLE_TWO);
+        User second = userSampleOf(SAMPLE_THREE);
+
+        Friend friend2 = mockingId(Friend.of(second, me), 2L);
+        Friend friend3 = mockingId(Friend.of(first, me), 3L);
+
+        Set<Friend> friends = new HashSet<>(Arrays.asList(
+                friend2,
+                friend3
+        ));
+
+        Set<UserResponseDto> expected = new HashSet<>(Arrays.asList(
+                new UserResponseDto(second.getId(), second.getName(), second.getEmail()),
+                new UserResponseDto(first.getId(), first.getName(), first.getEmail())
+        ));
+
+        given(userService.findLoggedInUser(LOGIN_USER_DTO)).willReturn(me);
+        given(friendRepository.findByTo(me)).willReturn(friends);
+        given(friendRepository.existsByFromAndTo(me, first)).willReturn(false);
+        given(friendRepository.existsByFromAndTo(first, me)).willReturn(true);
+        given(friendRepository.existsByFromAndTo(me, second)).willReturn(false);
+        given(friendRepository.existsByFromAndTo(second, me)).willReturn(true);
+
+        Set<UserResponseDto> actual = friendService.findFriendRequestsByUser(LOGIN_USER_DTO);
         assertEquals(expected, actual);
     }
 }

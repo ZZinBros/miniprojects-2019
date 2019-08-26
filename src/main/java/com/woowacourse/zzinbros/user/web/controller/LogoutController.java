@@ -4,7 +4,7 @@ import com.woowacourse.zzinbros.user.web.support.LoginSessionManager;
 import com.woowacourse.zzinbros.user.web.support.SessionInfo;
 import com.woowacourse.zzinbros.user.web.support.UserSession;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -17,7 +17,7 @@ public class LogoutController {
         this.loginSessionManager = loginSessionManager;
     }
 
-    @GetMapping
+    @PostMapping
     public String logout(@SessionInfo UserSession userSessoin) {
         loginSessionManager.clearSession();
         return "redirect:/";

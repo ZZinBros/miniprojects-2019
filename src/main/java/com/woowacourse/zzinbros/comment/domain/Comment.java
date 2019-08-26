@@ -11,7 +11,6 @@ import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import java.time.LocalDateTime;
-import java.util.Objects;
 
 @Entity
 public class Comment extends BaseEntity {
@@ -70,20 +69,7 @@ public class Comment extends BaseEntity {
     }
 
     public boolean isMatchUser(final User user) {
-        return this.author.equals(user);
-    }
-
-    @Override
-    public boolean equals(final Object another) {
-        if (this == another) return true;
-        if (another == null || getClass() != another.getClass()) return false;
-        final Comment comment = (Comment) another;
-        return id.equals(comment.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, author, post, contents);
+        return this.author.isAuthor(user);
     }
 
     @Override
