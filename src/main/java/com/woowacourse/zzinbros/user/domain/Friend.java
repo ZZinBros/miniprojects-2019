@@ -36,8 +36,12 @@ public class Friend extends BaseEntity {
         return friend;
     }
 
-    public boolean isSameWithFrom(User from) {
+    boolean isSameWithFrom(User from) {
         return this.from.equals(from);
+    }
+
+    boolean isSameWithTo(User to) {
+        return this.to.equals(to);
     }
 
     public Long getId() {

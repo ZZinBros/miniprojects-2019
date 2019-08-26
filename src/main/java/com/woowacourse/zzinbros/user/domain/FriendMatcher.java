@@ -24,7 +24,7 @@ public class FriendMatcher {
             User owner,
             BiPredicate<User, User> predicate) {
         return friends.stream()
-                .filter(friend -> !friend.isSameWithFrom(owner))
+                .filter(friend -> friend.isSameWithTo(owner))
                 .filter(friend -> predicate.test(owner, friend.getFrom()))
                 .map(Friend::getFrom)
                 .map(u -> new UserResponseDto(u.getId(), u.getName(), u.getEmail()))
