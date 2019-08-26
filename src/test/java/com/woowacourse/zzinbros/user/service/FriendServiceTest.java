@@ -75,19 +75,23 @@ class FriendServiceTest extends UserBaseTest {
 
         Friend friend1 = mockingId(Friend.of(me, first), 1L);
         Friend friend2 = mockingId(Friend.of(me, second), 2L);
+        Friend friend3 = mockingId(Friend.of(first, me), 3L);
 
         Set<Friend> friends = new HashSet<>(Arrays.asList(
                 friend1,
-                friend2
+                friend2,
+                friend3
         ));
 
         Set<UserResponseDto> expected = new HashSet<>(Arrays.asList(
-                new UserResponseDto(first.getId(), first.getName(), first.getEmail()),
-                new UserResponseDto(second.getId(), second.getName(), second.getEmail())
+                new UserResponseDto(first.getId(), first.getName(), first.getEmail())
         ));
 
         given(userService.findUserById(SAMPLE_ONE)).willReturn(me);
         given(friendRepository.findByFrom(me)).willReturn(friends);
+        given(friendRepository.existsByFromAndTo(me, first)).willReturn(true);
+        given(friendRepository.existsByFromAndTo(first, me)).willReturn(true);
+        given(friendRepository.existsByFromAndTo(me, second)).willReturn(true);
 
         Set<UserResponseDto> actual = friendService.findFriendByUser(SAMPLE_ONE);
         assertEquals(expected, actual);

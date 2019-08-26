@@ -33,7 +33,8 @@ public class PostPageController {
     public String showPage(@RequestParam("author") final Long id, Model model) {
         try {
             User author = userService.findUserById(id);
-            List<Post> posts = postService.readAllByUser(author);
+            Sort sort = Sort.by(Sort.Direction.DESC, "createdDateTime");
+            List<Post> posts = postService.readAllByUser(author, sort);
             Set<UserResponseDto> friends = friendService.findFriendByUser(id);
             model.addAttribute("author", author);
             model.addAttribute("posts", posts);

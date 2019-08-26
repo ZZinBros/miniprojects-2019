@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Set;
+import java.util.function.BiPredicate;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,7 +34,6 @@ public class FriendService {
         User to = userService.findUserById(friendRequested.getRequestFriendId());
         if (!friendRepository.existsByFromAndTo(from, to)) {
             friendRepository.save(Friend.of(from, to));
-            friendRepository.save(Friend.of(to, from));
             return true;
         }
         throw new AlreadyFriendRequestExist("Already Friend Request");
@@ -41,6 +42,7 @@ public class FriendService {
     public Set<UserResponseDto> findFriendByUser(final long id) {
         User owner = userService.findUserById(id);
         Set<Friend> friends = friendRepository.findByFrom(owner);
-        return friendMatcher.parseFriends(friends, owner);
+        return friendMatcher.collectFriends(friends, owner, (from, to) ->
+                friendRepository.existsByFromAndTo(from, to) && friendRepository.existsByFromAndTo(to, from));
     }
 }
