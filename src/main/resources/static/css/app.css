@@ -2781,9 +2781,12 @@ blockquote:before {
     color: #333
 }
 
+.widget-feed .comment .comment-items {
+    border-bottom: 1px solid #e6ecf5;
+}
+
 .widget-feed .comment .comment-item {
-    padding: 30px 0;
-    border-bottom: 1px solid #e6ecf5
+    padding: 15px 0;
 }
 
 .widget-feed .comment .add-comment textarea {
@@ -5955,8 +5958,7 @@ blockquote:before {
 }
 
 .widget-feed .comment .comment-item {
-    padding: 30px 0;
-    border-bottom: 1px solid #e6ecf5
+    padding: 15px 0;
 }
 
 .widget-feed .comment .add-comment textarea {
