@@ -100,7 +100,6 @@ class FriendServiceTest extends UserBaseTest {
 
     @Test
     void findFriendRequestsByUser() {
-
         User me = userSampleOf(SAMPLE_ONE);
         User first = userSampleOf(SAMPLE_TWO);
         User second = userSampleOf(SAMPLE_THREE);
@@ -114,12 +113,13 @@ class FriendServiceTest extends UserBaseTest {
         ));
 
         Set<UserResponseDto> expected = new HashSet<>(Arrays.asList(
-                new UserResponseDto(second.getId(), second.getName(), second.getEmail())
+                new UserResponseDto(second.getId(), second.getName(), second.getEmail()),
+                new UserResponseDto(first.getId(), first.getName(), first.getEmail())
         ));
 
         given(userService.findLoggedInUser(LOGIN_USER_DTO)).willReturn(me);
         given(friendRepository.findByTo(me)).willReturn(friends);
-        given(friendRepository.existsByFromAndTo(me, first)).willReturn(true);
+        given(friendRepository.existsByFromAndTo(me, first)).willReturn(false);
         given(friendRepository.existsByFromAndTo(first, me)).willReturn(true);
         given(friendRepository.existsByFromAndTo(me, second)).willReturn(false);
         given(friendRepository.existsByFromAndTo(second, me)).willReturn(true);

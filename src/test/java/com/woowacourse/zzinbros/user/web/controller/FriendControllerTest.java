@@ -1,8 +1,11 @@
 package com.woowacourse.zzinbros.user.web.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.woowacourse.zzinbros.user.domain.Friend;
+import com.woowacourse.zzinbros.user.domain.User;
 import com.woowacourse.zzinbros.user.domain.UserBaseTest;
 import com.woowacourse.zzinbros.user.dto.FriendRequestDto;
+import com.woowacourse.zzinbros.user.dto.UserResponseDto;
 import com.woowacourse.zzinbros.user.service.FriendService;
 import com.woowacourse.zzinbros.user.service.UserService;
 import com.woowacourse.zzinbros.user.web.support.UserArgumentResolver;
@@ -19,6 +22,12 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
+import static com.woowacourse.zzinbros.common.domain.TestBaseMock.mockingId;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -81,13 +90,32 @@ class FriendControllerTest extends UserBaseTest {
     @Test
     @DisplayName("로그인 한 유저한테 온 친구 요청을 조회")
     void friendRequestsGet() throws Exception {
-        FriendRequestDto friendRequestDto = new FriendRequestDto(LOGIN_USER_DTO.getId());
+        User me = userSampleOf(SAMPLE_ONE);
+        User first = userSampleOf(SAMPLE_TWO);
+        User second = userSampleOf(SAMPLE_THREE);
+
+        Friend friend2 = mockingId(Friend.of(second, me), 2L);
+        Friend friend3 = mockingId(Friend.of(first, me), 3L);
+
+        Set<Friend> friends = new HashSet<>(Arrays.asList(
+                friend2,
+                friend3
+        ));
+
+        Set<UserResponseDto> expected = new HashSet<>(Arrays.asList(
+                new UserResponseDto(second.getId(), second.getName(), second.getEmail()),
+                new UserResponseDto(first.getId(), first.getName(), first.getEmail())
+        ));
+
+        given(friendService.findFriendRequestsByUser(LOGIN_USER_DTO)).willReturn(expected);
 
         MvcResult mvcResult = mockMvc.perform(get("/friends/requests")
                 .sessionAttr(UserSession.LOGIN_USER, LOGIN_USER_DTO))
                 .andExpect(status().isOk())
                 .andReturn();
 
-        verify(friendService, times(0)).sendFriendRequest(LOGIN_USER_DTO, FRIEND_REQUEST_DTO);
+        String actual = mvcResult.getResponse().getContentAsString();
+        assertEquals(new ObjectMapper().writeValueAsString(expected), actual);
+        verify(friendService, times(1)).findFriendRequestsByUser(LOGIN_USER_DTO);
     }
 }
