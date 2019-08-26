@@ -64,7 +64,7 @@ class CommentServiceTest extends BaseTest {
     }
 
     @Test
-    void 댓글_수정() {
+    void 댓글_수정() throws CommentNotFoundException, UnauthorizedException {
         comment = commentService.update(comment.getId(), NEW_CONTENTS, user);
         assertThat(comment.getContents()).isEqualTo(NEW_CONTENTS);
     }
@@ -82,7 +82,7 @@ class CommentServiceTest extends BaseTest {
     }
 
     @Test
-    void 댓글_삭제() {
+    void 댓글_삭제() throws CommentNotFoundException, UnauthorizedException {
         final Comment newComment = commentService.add(user, post, NEW_CONTENTS);
         commentService.delete(newComment.getId(), user);
         assertThatThrownBy(() -> commentService.findById(newComment.getId()))

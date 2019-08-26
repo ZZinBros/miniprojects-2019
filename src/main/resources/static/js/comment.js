@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 const createdComment = {
     contents: 'test contents',
@@ -11,7 +11,7 @@ const COMMENTAPP = (function () {
                 <img class="thumb-img img-circle" src="images/default/eastjun_profile.jpg" alt="">
                 <div class="info">
                     <div class="bg-lightgray border-radius-18 padding-10 max-width-100">
-                        <a href="" class="title text-bold inline-block text-link-color">${comment.author.name}</a>
+                        <a href="" class="title text-bold inline-block text-link-color">${comment.authorName}</a>
                         <span>${comment.contents}</span>
                     </div>
                     <div class="font-size-12 pdd-left-10 pdd-top-5">
@@ -19,7 +19,7 @@ const COMMENTAPP = (function () {
                         <span>·</span>
                         <span class="pointer text-link-color">답글 달기</span>
                         <span>·</span>
-                        <span class="pointer">2시간</span>
+                        <span class="pointer">${comment.createdDateTime}</span>
                     </div>
                 </div>
             </li>`
@@ -65,7 +65,7 @@ const COMMENTAPP = (function () {
         };
 
         return {
-            add: add,
+            add
         }
     };
 
@@ -75,7 +75,7 @@ const COMMENTAPP = (function () {
     };
 
     return {
-        init: init,
+        init
     };
 })();
 
