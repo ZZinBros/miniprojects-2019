@@ -1,5 +1,5 @@
-<ul class="feed-action border bottom d-flex">
-    <li class="text-center flex-grow-1 like" th:data-postid="${post.id}">
+<ul class="feed-action border bottom d-flex" th:data-postid="${post.id}">
+    <li class="text-center flex-grow-1 like">
         <button class="btn btn-default no-border pdd-vertical-0 no-mrg width-100" >
             <i class="fa fa-thumbs-o-up font-size-16"></i>
             <span class="font-size-13">좋아요</span>
@@ -11,10 +11,12 @@
             <span  class="font-size-13">댓글</span>
         </button>
     </li>
-    <li class="text-center flex-grow-1">
-        <button class="btn btn-default no-border pdd-vertical-0 no-mrg width-100">
+    <li class="text-center flex-grow-1 share">
+        <button class="btn btn-default no-border pdd-vertical-0 no-mrg width-100"
+                th:attr="data-target='#post-share-modal' + ${post.id}" data-toggle="modal">
             <i class="fa fa-share font-size-16"></i>
             <span class="font-size-13">공유하기</span>
         </button>
+        <th:block th:include="element/post-share-modal"/>
     </li>
 </ul>

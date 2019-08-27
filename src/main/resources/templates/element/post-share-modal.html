@@ -1,0 +1,57 @@
+<div aria-hidden="true" aria-labelledby="게시물 공유" class="modal fade" th:id="'post-share-modal' + ${post.id}"
+     role="dialog" tabindex="-1">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-lightgray border">
+                <h5 class="width-100 pdd-btm-5 text-bold">게시물 공유</h5>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <textarea class="resize-none form-control border bottom resize-none" th:data-postid="${post.id}"
+                              placeholder="하고 싶은 말을 남겨주세요..."></textarea>
+                </div>
+                <div class="feed-header">
+                    <ul class="list-unstyled list-info">
+                        <li>
+                            <img alt="" class="thumb-img img-circle" src="images/default/eastjun_profile.jpg">
+                            <div class="info">
+                                <p class="title no-pdd-vertical text-semibold inline-block"
+                                   th:text="${post.author.name}">eastjun</p>
+                                <span class="sub-title">15시간</span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="feed-body no-pdd">
+                    <p>
+                        <span th:text="${post.contents}"> 해리와 션의 MVC 패턴 </span> <br>
+                    </p>
+                    <div class="feed-body feed-image" th:each="img : ${post.mediaFiles}">
+                        <img alt="메롱" th:src="${img.url}">
+                    </div>
+                </div>
+                <ul class="composor-tools">
+                    <li class="bg-lightgray border-radius-round mrg-right-5 inline-block">
+                        <a class="pdd-vertical-5 pdd-horizon-10 pointer">
+                            <div class="icons tag-friend"></div>
+                            <span class="icon-name font-size-13 text-bold"> 친구 태그하기</span>
+                        </a>
+                    </li>
+                    <li class="bg-lightgray border-radius-round mrg-right-5 inline-block">
+                        <a class="pdd-vertical-5 pdd-horizon-10 pointer">
+                            <div class="icons feeling-activity"></div>
+                            <span class="icon-name font-size-13 text-bold"> 기분/활동</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="modal-footer bg-lightgray">
+                <button class="btn btn-facebook btn-rounded text-bold font-size-13 post-share" type="button"> 게시
+                </button>
+                <button class="btn btn-secondary btn-rounded text-bold font-size-13" data-dismiss="modal" type="button">
+                    취소
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

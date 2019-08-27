@@ -5,7 +5,7 @@
         if (event.target.tagName !== "LI") {
             return event.target.parentElement.click();
         }
-        const postId = event.target.dataset.postid;
+        const postId = event.target.parentElement.dataset.postid;
         const url = baseUrl + "/posts/" + postId + "/like";
 
         Api.put(url, {})

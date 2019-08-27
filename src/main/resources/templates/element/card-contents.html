@@ -1,4 +1,4 @@
-<div class="feed-body no-pdd" xmlns:th="http://www.thymeleaf.org">
+<div class="feed-body no-pdd">
     <p>
         <span th:text="${post.contents}"> 해리와 션의 MVC 패턴 </span> <br>
     </p>
@@ -6,3 +6,26 @@
         <img alt="메롱" th:src="${img.url}">
     </div>
 </div>
+
+<th:block th:if="${post.sharedPost}" xmlns:th="http://www.thymeleaf.org">
+    <div class="feed-header border top">
+        <ul class="list-unstyled list-info">
+            <li>
+                <img alt="" class="thumb-img img-circle" src="images/default/eastjun_profile.jpg">
+                <div class="info">
+                    <a class="title no-pdd-vertical text-semibold inline-block" href=""
+                       th:text="${post.sharedPost.author.name}">eastjun</a>
+                    <span class="sub-title">15시간</span>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="feed-body no-pdd">
+        <p>
+            <span th:text="${post.sharedPost.contents}"> 해리와 션의 MVC 패턴 </span> <br>
+        </p>
+        <div class="feed-body feed-image" th:each="img : ${post.sharedPost.mediaFiles}">
+            <img alt="메롱" th:src="${img.url}">
+        </div>
+    </div>
+</th:block>
