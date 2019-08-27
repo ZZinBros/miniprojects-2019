@@ -14,6 +14,9 @@ public class CommentResponseDto {
     private LocalDateTime createdDateTime;
     private LocalDateTime updatedDateTime;
 
+    public CommentResponseDto() {
+    }
+
     public CommentResponseDto(final Comment comment) {
         this.commentId = comment.getId();
         this.authorId = comment.getAuthor().getId();

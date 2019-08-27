@@ -8,7 +8,7 @@ public class UserSession {
 
     private UserResponseDto loginUserDto;
 
-    UserSession(UserResponseDto loginUserDto) {
+    public UserSession(UserResponseDto loginUserDto) {
         this.loginUserDto = loginUserDto;
     }
 
