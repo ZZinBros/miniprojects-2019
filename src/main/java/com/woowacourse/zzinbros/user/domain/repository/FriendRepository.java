@@ -7,9 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Set;
 
 public interface FriendRepository extends JpaRepository<Friend, Long> {
-    Set<Friend> findByFrom(User from);
+    Set<Friend> findBySender(User sender);
 
-    boolean existsByFromAndTo(User me, User other);
-
-    Set<Friend> findByTo(User owner);
+    boolean existsBySenderAndReceiver(User sender, User receiver);
 }

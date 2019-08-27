@@ -3,7 +3,6 @@ package com.woowacourse.zzinbros.user.web.controller;
 import com.woowacourse.zzinbros.user.dto.FriendRequestDto;
 import com.woowacourse.zzinbros.user.dto.UserResponseDto;
 import com.woowacourse.zzinbros.user.service.FriendService;
-import com.woowacourse.zzinbros.user.service.UserService;
 import com.woowacourse.zzinbros.user.web.support.SessionInfo;
 import com.woowacourse.zzinbros.user.web.support.UserSession;
 import org.springframework.http.HttpStatus;
@@ -17,11 +16,9 @@ import java.util.Set;
 @RequestMapping("/friends")
 public class FriendController {
 
-    private UserService userService;
     private FriendService friendService;
 
-    public FriendController(UserService userService, FriendService friendService) {
-        this.userService = userService;
+    public FriendController(FriendService friendService) {
         this.friendService = friendService;
     }
 
@@ -30,7 +27,6 @@ public class FriendController {
         Set<UserResponseDto> users = friendService.findFriendRequestsByUser(session.getDto());
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
-
     @PostMapping
     @ResponseStatus(HttpStatus.FOUND)
     public String addFriend(@RequestBody FriendRequestDto friendRequestDto, @SessionInfo UserSession userSession) {

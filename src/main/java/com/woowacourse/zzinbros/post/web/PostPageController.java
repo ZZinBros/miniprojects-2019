@@ -35,10 +35,12 @@ public class PostPageController {
             User author = userService.findUserById(id);
             Sort sort = Sort.by(Sort.Direction.DESC, "createdDateTime");
             List<Post> posts = postService.readAllByUser(author, sort);
-            Set<UserResponseDto> friends = friendService.findFriendByUser(id);
+            Set<UserResponseDto> friends = friendService.findFriendsByUser(id);
+            Set<UserResponseDto> requests = friendService.findFriendRequestsByUserId(id);
             model.addAttribute("author", author);
             model.addAttribute("posts", posts);
             model.addAttribute("friends", friends);
+            model.addAttribute("requests", requests);
             return "user-page";
         } catch (UserNotFoundException e) {
             return "redirect:/";
