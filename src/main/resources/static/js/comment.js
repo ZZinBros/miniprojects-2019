@@ -1,11 +1,6 @@
 'use strict';
 
-const createdComment = {
-    contents: 'test contents',
-    author: 'test author'
-};
-
-const COMMENTAPP = (function () {
+const CommentApp = (function () {
     const commentTemplate = function (comment) {
         return `<li class="comment-item">
                 <img class="thumb-img img-circle" src="images/default/eastjun_profile.jpg" alt="">
@@ -48,15 +43,15 @@ const COMMENTAPP = (function () {
         const add = function (event) {
             event.stopPropagation();
 
-            let parentPost = event.target.closest(".card");
-            let postId = parentPost.dataset.postId;
-            let commentArea = event.target.closest(".add-comment");
-            let commentTextArea = commentArea.querySelector("textarea");
-            let commentContents = commentTextArea.value;
+            const parentPost = event.target.closest(".card");
+            const postId = parentPost.dataset.postId;
+            const commentArea = event.target.closest(".add-comment");
+            const commentTextArea = commentArea.querySelector("textarea");
+            const contents = commentTextArea.value;
 
             Api.post(`/comments`, {
-                postId: postId,
-                contents: commentContents
+                postId,
+                contents
             }).then(res => res.json())
                 .then(createdComment => {
                     let comments = event.target.closest(".comment").querySelector(".comment-items");
@@ -79,4 +74,4 @@ const COMMENTAPP = (function () {
     };
 })();
 
-COMMENTAPP.init();
+CommentApp.init();
