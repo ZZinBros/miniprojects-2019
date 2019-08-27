@@ -34,7 +34,7 @@ public class FriendService {
         throw new AlreadyFriendRequestExist("Already Friend Request");
     }
 
-    public Set<UserResponseDto> findFriendByUser(final long id) {
+    public Set<UserResponseDto> findFriendsByUser(final long id) {
         User owner = userService.findUserById(id);
         return collectToUserResponseDto(owner.getFriends());
     }

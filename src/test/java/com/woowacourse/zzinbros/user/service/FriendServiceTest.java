@@ -83,7 +83,7 @@ class FriendServiceTest extends UserBaseTest {
 
         given(userService.findUserById(SAMPLE_ONE)).willReturn(me);
 
-        Set<UserResponseDto> actual = friendService.findFriendByUser(SAMPLE_ONE);
+        Set<UserResponseDto> actual = friendService.findFriendsByUser(SAMPLE_ONE);
         assertEquals(expected, actual);
     }
 
