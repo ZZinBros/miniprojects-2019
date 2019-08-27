@@ -28,7 +28,6 @@ public class FriendController {
         Set<UserResponseDto> users = friendService.findFriendRequestsByUser(session.getDto());
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
-//    public ResponseEntity<>
     @PostMapping
     @ResponseStatus(HttpStatus.FOUND)
     public String addFriend(@RequestBody FriendRequestDto friendRequestDto, @SessionInfo UserSession userSession) {
