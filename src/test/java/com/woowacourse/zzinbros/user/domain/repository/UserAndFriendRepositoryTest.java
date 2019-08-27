@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -18,6 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DataJpaTest
+@ActiveProfiles("test")
 class UserAndFriendRepositoryTest extends UserBaseTest {
 
     @Autowired
@@ -27,11 +29,11 @@ class UserAndFriendRepositoryTest extends UserBaseTest {
     FriendRepository friendRepository;
 
     @Test
-    @DisplayName("정상적으로 친구 추가 후 조회 테스트")
+    @DisplayName("친구 요청 추가 후 Friend 객체에서 확인")
     void friendAddTest() {
-        User me = userRepository.save(SAMPLE_USERS.get(SAMPLE_ONE));
-        User first = userRepository.save(SAMPLE_USERS.get(SAMPLE_TWO));
-        User second = userRepository.save(SAMPLE_USERS.get(SAMPLE_THREE));
+        User me = userRepository.save(userSampleOf(SAMPLE_ONE));
+        User first = userRepository.save(userSampleOf(SAMPLE_TWO));
+        User second = userRepository.save(userSampleOf(SAMPLE_THREE));
 
         Friend firstFriend = friendRepository.save(Friend.of(me, first));
         Friend secondFriend = friendRepository.save(Friend.of(me, second));
@@ -40,12 +42,35 @@ class UserAndFriendRepositoryTest extends UserBaseTest {
                 firstFriend,
                 secondFriend
         ));
-        Set<Friend> actualByMe = friendRepository.findByFrom(me);
-        Set<Friend> actualByFirst = friendRepository.findByFrom(first);
+        Set<Friend> actualByMe = friendRepository.findBySender(me);
+        Set<Friend> actualByFirst = friendRepository.findBySender(first);
 
         assertEquals(2, actualByMe.size());
         assertEquals(expected, actualByMe);
         assertEquals(0, actualByFirst.size());
+    }
+
+    @Test
+    @DisplayName("친구 추가 후 User 객체에서 확인")
+    void friendAddTest2() {
+        User me = userRepository.save(userSampleOf(SAMPLE_ONE));
+        User first = userRepository.save(userSampleOf(SAMPLE_TWO));
+        User second = userRepository.save(userSampleOf(SAMPLE_THREE));
+
+        friendRepository.save(Friend.of(me, first));
+        friendRepository.save(Friend.of(first, me));
+        friendRepository.save(Friend.of(me, second));
+
+        User checkedMe = userRepository.findById(me.getId()).get();
+        User checkedFirst = userRepository.findById(first.getId()).get();
+        User checkedSecond = userRepository.findById(second.getId()).get();
+
+        assertEquals(2, checkedMe.getFollowing().size());
+        assertEquals(1, checkedMe.getFollowedBy().size());
+        assertEquals(1, checkedFirst.getFollowing().size());
+        assertEquals(1, checkedFirst.getFollowedBy().size());
+        assertEquals(0, checkedSecond.getFollowing().size());
+        assertEquals(1, checkedSecond.getFollowedBy().size());
     }
 
     @Test
@@ -64,20 +89,21 @@ class UserAndFriendRepositoryTest extends UserBaseTest {
     @Test
     @DisplayName("중복된 Friend를 저장했을 때 True를 반환하는지 확인")
     void existsByFromAndToWhenAlreadyExists() {
-        User me = userRepository.save(SAMPLE_USERS.get(SAMPLE_ONE));
-        User other = userRepository.save(SAMPLE_USERS.get(SAMPLE_TWO));
+        User me = userRepository.save(userSampleOf(SAMPLE_ONE));
+        User other = userRepository.save(userSampleOf(SAMPLE_TWO));
 
         friendRepository.save(Friend.of(me, other));
 
-        assertTrue(friendRepository.existsByFromAndTo(me, other));
+        assertTrue(friendRepository.existsBySenderAndReceiver(me, other));
     }
 
     @Test
-    @DisplayName("친구 관계가 설정됬을 때 회원 삭제를 했을 경우")
+    @DisplayName("친구 관계인 회원을 탈퇴했을 때")
     void deleteTest() {
         User me = userRepository.save(SAMPLE_USERS.get(SAMPLE_ONE));
         User first = userRepository.save(SAMPLE_USERS.get(SAMPLE_TWO));
         friendRepository.save(Friend.of(me, first));
+        friendRepository.save(Friend.of(first, me));
 
         userRepository.deleteById(me.getId());
 

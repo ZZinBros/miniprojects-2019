@@ -7,51 +7,54 @@ import org.hibernate.annotations.OnDeleteAction;
 import javax.persistence.*;
 
 @Table(
-        uniqueConstraints = @UniqueConstraint(columnNames = {"from_id", "to_id"}, name = "UK_USER_FROM_AND_TO_ID")
+        uniqueConstraints = @UniqueConstraint(
+                columnNames = {"sender_id", "receiver_id"},
+                name = "UK_USER_SENDER_AND_RECEIVER")
 )
 @Entity
 public class Friend extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "to_Id", foreignKey = @ForeignKey(name = "FRIEND_TO_OTHER"), updatable = false, nullable = false)
+    @JoinColumn(name = "sender_Id",
+            foreignKey = @ForeignKey(name = "FRIEND_TO_SENDER"),
+            updatable = false,
+            nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private User to;
+    private User sender;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "from_Id", foreignKey = @ForeignKey(name = "FRIEND_TO_MASTER"), updatable = false, nullable = false)
+    @JoinColumn(name = "receiver_Id",
+            foreignKey = @ForeignKey(name = "FRIEND_TO_RECEIVER"),
+            updatable = false,
+            nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private User from;
+    private User receiver;
+
 
     protected Friend() {
     }
 
-    private Friend(User from, User other) {
-        this.from = from;
-        this.to = other;
+    public Friend(User sender, User receiver) {
+        this.sender = sender;
+        this.receiver = receiver;
     }
 
-    public static Friend of(User from, User to) {
-        Friend friend = new Friend(from, to);
+    public static Friend of(User user, User another) {
+        Friend friend = new Friend(user, another);
+        user.getFollowing().add(friend);
+        another.getFollowedBy().add(friend);
         return friend;
-    }
-
-    boolean isSameWithFrom(User from) {
-        return this.from.equals(from);
-    }
-
-    boolean isSameWithTo(User to) {
-        return this.to.equals(to);
     }
 
     public Long getId() {
         return id;
     }
 
-    public User getFrom() {
-        return from;
+    public User getSender() {
+        return sender;
     }
 
-    public User getTo() {
-        return to;
+    public User getReceiver() {
+        return receiver;
     }
 }

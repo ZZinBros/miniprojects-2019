@@ -70,7 +70,7 @@ class FriendControllerTest extends UserBaseTest {
                 .sessionAttr(UserSession.LOGIN_USER, LOGIN_USER_DTO))
                 .andExpect(status().isFound());
 
-        verify(friendService, times(2)).sendFriendRequest(from, to);
+        verify(friendService, times(1)).sendFriendRequest(LOGIN_USER_DTO, FRIEND_REQUEST_DTO);
     }
 
     @Test

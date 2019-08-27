@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Set;
 
 import static org.mockito.BDDMockito.given;
+import static org.springframework.data.domain.Sort.by;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -36,7 +37,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class PostPageControllerTest extends BaseTest {
 
     private static final Long BASE_ID = 1L;
-    private static final Sort sort = Sort.by(Sort.Direction.DESC,"createdDateTime");
+    private static final Sort sort = by(Sort.Direction.DESC, "createdDateTime");
 
     MockMvc mockMvc;
 
@@ -77,7 +78,8 @@ class PostPageControllerTest extends BaseTest {
         ));
 
         given(userService.findUserById(BASE_ID)).willReturn(baseUser);
-        given(postService.readAllByUser(baseUser, by(Direction.DESC, "createdDateTime"))).willReturn(posts);
+        given(postService.readAllByUser(baseUser, by(Sort.Direction.DESC, "createdDateTime")))
+                .willReturn(posts);
         given(friendService.findFriendByUser(BASE_ID)).willReturn(friends);
 
         mockMvc.perform(get("/posts?author=" + BASE_ID))

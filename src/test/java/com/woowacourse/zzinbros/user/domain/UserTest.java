@@ -1,21 +1,39 @@
 package com.woowacourse.zzinbros.user.domain;
 
-import com.woowacourse.zzinbros.BaseTest;
+import com.woowacourse.zzinbros.user.domain.repository.FriendRepository;
+import com.woowacourse.zzinbros.user.domain.repository.UserRepository;
 import com.woowacourse.zzinbros.user.exception.IllegalUserArgumentException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.context.ActiveProfiles;
+
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class UserTest extends BaseTest {
+@DataJpaTest
+@ActiveProfiles("test")
+public class UserTest extends UserBaseTest {
     public static final String BASE_NAME = "test";
     public static final String BASE_EMAIL = "test@example.com";
     public static final String BASE_PASSWORD = "12345678";
 
+
     private User user;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private FriendRepository friendRepository;
 
     @BeforeEach
     public void setUp() {
@@ -73,5 +91,36 @@ public class UserTest extends BaseTest {
     @DisplayName("비밀번호 체크")
     public void matchPassword() {
         assertTrue(user.matchPassword(BASE_PASSWORD));
+    }
+
+    @Test
+    @DisplayName("친구 요청 반환")
+    public void userFollowedByTest() {
+        User me = userRepository.save(userSampleOf(SAMPLE_ONE));
+        User first = userRepository.save(userSampleOf(SAMPLE_TWO));
+        User second = userRepository.save(userSampleOf(SAMPLE_THREE));
+
+        friendRepository.save(Friend.of(first, me));
+        friendRepository.save(Friend.of(second, me));
+
+        Set<User> expected = new HashSet<>(Arrays.asList(first, second));
+
+        assertEquals(expected, me.getRequestSenders());
+    }
+
+    @Test
+    @DisplayName("친구 목록 반환")
+    public void friendFindsByTest() {
+        User me = userRepository.save(userSampleOf(SAMPLE_ONE));
+        User first = userRepository.save(userSampleOf(SAMPLE_TWO));
+        User second = userRepository.save(userSampleOf(SAMPLE_THREE));
+
+        friendRepository.save(Friend.of(first, me));
+        friendRepository.save(Friend.of(second, me));
+        friendRepository.save(Friend.of(me, first));
+
+        Set<User> expected = new HashSet<>(Arrays.asList(first));
+
+        assertEquals(expected, me.getFriends());
     }
 }
