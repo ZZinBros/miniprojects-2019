@@ -18,7 +18,7 @@ public class LogoutController {
     }
 
     @PostMapping
-    public String logout(@SessionInfo UserSession userSessoin) {
+    public String logout(@SessionInfo UserSession userSession) {
         loginSessionManager.clearSession();
         return "redirect:/";
     }
