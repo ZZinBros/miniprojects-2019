@@ -38,6 +38,7 @@ public class UserBaseTest {
     }
 
     protected static User userSampleOf(final int sampleNumber) {
-        return SAMPLE_USERS.get(sampleNumber);
+        User temp =  SAMPLE_USERS.get(sampleNumber);
+        return mockingId(new User(temp.getName(), temp.getEmail(), temp.getPassword()), temp.getId());
     }
 }

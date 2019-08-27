@@ -113,18 +113,24 @@ public class User extends BaseEntity {
     }
 
     public Set<User> getRequestSenders() {
+        Set<User> requests = collectSenders();
+        requests.removeAll(collectReceivers());
+        return requests;
+    }
+
+    private Set<User> collectSenders() {
         return followedBy.stream()
                 .map(Friend::getSender)
                 .collect(Collectors.toSet());
     }
 
     public Set<User> getFriends() {
-        Set<User> intersection = new HashSet<>(getReceivers());
-        intersection.retainAll(getRequestSenders());
+        Set<User> intersection = collectReceivers();
+        intersection.retainAll(collectSenders());
         return intersection;
     }
 
-    private Set<User> getReceivers() {
+    private Set<User> collectReceivers() {
         return following.stream()
                 .map(Friend::getReceiver)
                 .collect(Collectors.toSet());

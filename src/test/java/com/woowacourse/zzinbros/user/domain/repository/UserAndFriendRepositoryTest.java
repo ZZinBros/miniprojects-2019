@@ -29,7 +29,7 @@ class UserAndFriendRepositoryTest extends UserBaseTest {
     FriendRepository friendRepository;
 
     @Test
-    @DisplayName("친구 요청 추가 후 Friend 객체에서 확인")
+    @DisplayName("친구 요청 추가 후 Friend 객체에서 확인할 수 있다")
     void friendAddAndCheckFriend() {
         User me = userRepository.save(userSampleOf(SAMPLE_ONE));
         User first = userRepository.save(userSampleOf(SAMPLE_TWO));
@@ -51,7 +51,7 @@ class UserAndFriendRepositoryTest extends UserBaseTest {
     }
 
     @Test
-    @DisplayName("친구 추가 후 User 객체에서 확인")
+    @DisplayName("친구 추가 후 User 객체에서 확인할 수 있다")
     void friendAddAndCheckUser() {
         User me = userRepository.save(userSampleOf(SAMPLE_ONE));
         User first = userRepository.save(userSampleOf(SAMPLE_TWO));
@@ -74,7 +74,7 @@ class UserAndFriendRepositoryTest extends UserBaseTest {
     }
 
     @Test
-    @DisplayName("중복된 Friend를 저장했을 때 예외가 발생하는지 확인")
+    @DisplayName("중복된 Friend를 저장했을 때 예외가 발생한다")
     void friendAddWhenAlreadyExists() {
         User me = userRepository.save(SAMPLE_USERS.get(SAMPLE_ONE));
         User other = userRepository.save(SAMPLE_USERS.get(SAMPLE_TWO));
@@ -86,7 +86,7 @@ class UserAndFriendRepositoryTest extends UserBaseTest {
     }
 
     @Test
-    @DisplayName("중복된 Friend를 저장했을 때 True를 반환하는지 확인")
+    @DisplayName("중복된 Friend를 저장했을 때 True를 반환한다")
     void existsByFromAndToWhenAlreadyExists() {
         User me = userRepository.save(userSampleOf(SAMPLE_ONE));
         User other = userRepository.save(userSampleOf(SAMPLE_TWO));

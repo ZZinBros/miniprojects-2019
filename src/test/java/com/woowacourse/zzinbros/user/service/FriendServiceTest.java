@@ -37,6 +37,7 @@ class FriendServiceTest extends UserBaseTest {
     private FriendService friendService;
 
     @Test
+    @DisplayName("친구 요청을 성공적으로 수행한다")
     void sendFriendSuccessTest() {
         User from = userSampleOf(SAMPLE_ONE);
         User to = userSampleOf(SAMPLE_TWO);
@@ -54,7 +55,8 @@ class FriendServiceTest extends UserBaseTest {
     }
 
     @Test
-    void requestFailWhenUserExistsTest() {
+    @DisplayName("이미 존재하는 친구 요청이 있을 때 추가할 때 예외가 발생한다")
+    void requestFailWhenUserExists() {
         User from = userSampleOf(SAMPLE_ONE);
         User to = userSampleOf(SAMPLE_TWO);
 
@@ -67,7 +69,7 @@ class FriendServiceTest extends UserBaseTest {
     }
 
     @Test
-    @DisplayName("User에 따른 친구 리스트 반환")
+    @DisplayName("User에 따른 친구 리스트 반환한다")
     void findFriendsByUser() {
         User me = userSampleOf(SAMPLE_ONE);
         User first = userSampleOf(SAMPLE_TWO);
@@ -88,7 +90,7 @@ class FriendServiceTest extends UserBaseTest {
     }
 
     @Test
-    @DisplayName("유저가 받은 친구 요청을 반환")
+    @DisplayName("유저가 받은 친구 요청을 반환한다")
     void findFriendRequestsByUser() {
         User me = userSampleOf(SAMPLE_ONE);
         User first = userSampleOf(SAMPLE_TWO);

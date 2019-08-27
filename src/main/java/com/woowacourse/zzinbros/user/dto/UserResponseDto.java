@@ -1,8 +1,9 @@
 package com.woowacourse.zzinbros.user.dto;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class UserResponseDto {
+public class UserResponseDto implements Serializable {
     private Long id;
     private String name;
     private String email;
