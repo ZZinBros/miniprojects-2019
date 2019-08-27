@@ -4,7 +4,7 @@
         <span class="font-size-14 lh-2-1 countOfLike" th:text="${post.countOfLike}">67</span>
     </li>
     <li class="float-right">
-        <span  class="font-size-13">공유 78회</span>
+        <span class="font-size-13" th:text="'공유 ' + ${post.countOfShared} + '회'">공유 78회</span>
     </li>
     <li class="float-right mrg-right-15">
         <span class="font-size-13">댓글 2개</span>
