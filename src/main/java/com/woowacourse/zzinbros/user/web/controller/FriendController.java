@@ -28,7 +28,6 @@ public class FriendController {
         Set<UserResponseDto> users = friendService.findFriendRequestsByUser(session.getDto());
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
-//
 //    @GetMapping("/requests/status")
 //    public ResponseEntity<>
     @PostMapping
