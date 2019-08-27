@@ -13,7 +13,6 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Entity
 @DynamicInsert
@@ -30,9 +29,16 @@ public class Post extends BaseEntity {
     @JoinColumn(name = "media_file_id", foreignKey = @ForeignKey(name = "post_to_media_file"))
     private List<MediaFile> mediaFiles = new ArrayList<>();
 
-    @Column
+    @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JoinColumn(name = "shared_post_id")
+    private Post sharedPost;
+
     @ColumnDefault("0")
     private Integer countOfLike;
+
+    @ColumnDefault("0")
+    private Integer countOfShared;
 
     public Post() {
     }
@@ -41,6 +47,15 @@ public class Post extends BaseEntity {
         this.contents = contents;
         this.author = author;
         this.countOfLike = 0;
+        this.countOfShared = 0;
+    }
+
+    public Post(String contents, User author, Post sharedPost) {
+        this.contents = contents;
+        this.author = author;
+        this.sharedPost = sharedPost;
+        this.countOfLike = 0;
+        this.countOfShared = 0;
     }
 
     public Post update(Post post) {
@@ -59,12 +74,16 @@ public class Post extends BaseEntity {
         this.mediaFiles.add(mediaFile);
     }
 
-    public void addLike(PostLike postLike) {
+    public void addLike() {
         countOfLike++;
     }
 
-    public void removeLike(PostLike postLike) {
+    public void removeLike() {
         countOfLike--;
+    }
+
+    public void share() {
+        this.countOfShared++;
     }
 
     public Long getId() {
@@ -100,5 +119,13 @@ public class Post extends BaseEntity {
             return 0;
         }
         return countOfLike;
+    }
+
+    public Post getSharedPost() {
+        return sharedPost;
+    }
+
+    public Integer getCountOfShared() {
+        return countOfShared;
     }
 }

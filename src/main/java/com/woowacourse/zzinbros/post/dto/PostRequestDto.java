@@ -7,6 +7,7 @@ import java.util.Objects;
 
 public class PostRequestDto {
     private String contents;
+    private long sharedPostId;
 
     public PostRequestDto() {
     }
@@ -19,8 +20,20 @@ public class PostRequestDto {
         this.contents = contents;
     }
 
+    public long getSharedPostId() {
+        return sharedPostId;
+    }
+
+    public void setSharedPostId(long sharedPostId) {
+        this.sharedPostId = sharedPostId;
+    }
+
     public Post toEntity(User user) {
         return new Post(contents, user);
+    }
+
+    public Post toEntity(User user, Post sharedPost) {
+        return new Post(contents, user, sharedPost);
     }
 
     @Override

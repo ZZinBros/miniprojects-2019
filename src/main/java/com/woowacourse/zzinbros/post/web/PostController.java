@@ -50,4 +50,11 @@ public class PostController {
         UserResponseDto loginUserDto = userSession.getDto();
         return postService.updateLike(id, loginUserDto.getId());
     }
+
+    @PostMapping("/share")
+    public ResponseEntity<Post> share(@RequestBody PostRequestDto dto, @SessionInfo UserSession userSession) {
+        UserResponseDto loginUserDto = userSession.getDto();
+        Post post = postService.add(dto, loginUserDto.getId(), dto.getSharedPostId());
+        return new ResponseEntity<>(post, HttpStatus.CREATED);
+    }
 }
