@@ -109,4 +109,25 @@ class FriendServiceTest extends UserBaseTest {
         Set<UserResponseDto> actual = friendService.findFriendRequestsByUser(LOGIN_USER_DTO);
         assertEquals(expected, actual);
     }
+
+    @Test
+    @DisplayName("유저가 받은 친구 요청을 반환한다")
+    void findFriendRequestsByID() {
+        User me = userSampleOf(SAMPLE_ONE);
+        User first = userSampleOf(SAMPLE_TWO);
+        User second = userSampleOf(SAMPLE_THREE);
+
+        mockingId(Friend.of(second, me), 2L);
+        mockingId(Friend.of(first, me), 3L);
+
+        Set<UserResponseDto> expected = new HashSet<>(Arrays.asList(
+                new UserResponseDto(second.getId(), second.getName(), second.getEmail()),
+                new UserResponseDto(first.getId(), first.getName(), first.getEmail())
+        ));
+
+        given(userService.findUserById(LOGIN_USER_DTO.getId())).willReturn(me);
+
+        Set<UserResponseDto> actual = friendService.findFriendRequestsByUserId(LOGIN_USER_DTO.getId());
+        assertEquals(expected, actual);
+    }
 }

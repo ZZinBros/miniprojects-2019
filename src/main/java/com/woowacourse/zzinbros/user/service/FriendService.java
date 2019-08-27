@@ -44,6 +44,11 @@ public class FriendService {
         return collectToUserResponseDto(owner.getRequestSenders());
     }
 
+    public Set<UserResponseDto> findFriendRequestsByUserId(final long id) {
+        User owner = userService.findUserById(id);
+        return collectToUserResponseDto(owner.getRequestSenders());
+    }
+
     private Set<UserResponseDto> collectToUserResponseDto(Set<User> users) {
         return users.stream()
                 .map(user -> new UserResponseDto(user.getId(), user.getName(), user.getEmail()))

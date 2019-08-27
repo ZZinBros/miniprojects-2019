@@ -5,10 +5,15 @@
          id="cover-profile-img"
          src="http://imgc.1300k.com/aaaaaib/goods/215024/68/215024686366_4.jpg?640">
     <span th:text="${author.name}" id="user-name-in-cover">Zzinbros</span>
-    <button th:if="${session.loggedInUser != null && session.loggedInUser.id != author.id}"
+    <button th:if="${session.loggedInUser != null && session.loggedInUser.id != author.id
+    && !friends.contains(session.loggedInUser) && !requests.contains(session.loggedInUser)}"
             class="btn btn-lg btn-tecobook btn-inverse btn-rounded"
             id="add-friend-btn" th:data-user-id="${author.id}">
         친구 추가
+    </button>
+    <button th:if="${session.loggedInUser != null && requests.contains(session.loggedInUser)}"
+            class="btn btn-lg btn-tecobook btn-inverse btn-rounded" id="friend-request-btn"disabled>
+        친구 요청
     </button>
     <button th:if="${session.loggedInUser != null && friends.contains(session.loggedInUser)}" id="friend-btn"
             class="btn btn-lg btn-tecobook btn-inverse btn-rounded" disabled>
