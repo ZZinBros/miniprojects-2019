@@ -3,8 +3,10 @@ package com.woowacourse.zzinbros.post.service;
 import com.woowacourse.zzinbros.BaseTest;
 import com.woowacourse.zzinbros.post.domain.Post;
 import com.woowacourse.zzinbros.post.domain.PostLike;
+import com.woowacourse.zzinbros.post.domain.SharedPost;
 import com.woowacourse.zzinbros.post.domain.repository.PostLikeRepository;
 import com.woowacourse.zzinbros.post.domain.repository.PostRepository;
+import com.woowacourse.zzinbros.post.domain.repository.SharedPostRepository;
 import com.woowacourse.zzinbros.post.dto.PostRequestDto;
 import com.woowacourse.zzinbros.post.exception.UnAuthorizedException;
 import com.woowacourse.zzinbros.user.domain.User;
@@ -40,10 +42,15 @@ public class PostServiceTest extends BaseTest {
     private PostLikeRepository postLikeRepository;
 
     @Mock
+    private SharedPostRepository sharedPostRepository;
+
+    @Mock
     private UserService userService;
 
     @InjectMocks
     private PostService postService;
+
+    private PostRequestDto postRequestDto;
 
     @BeforeEach
     void setUp() {
@@ -52,23 +59,20 @@ public class PostServiceTest extends BaseTest {
         defaultPost = new Post(DEFAULT_CONTENT, defaultUser);
         given(postRepository.findById(DEFAULT_POST_ID)).willReturn(Optional.of(defaultPost));
         given(userService.findUserById(DEFAULT_USER_ID)).willReturn(defaultUser);
+        postRequestDto = new PostRequestDto();
+        postRequestDto.setContents(DEFAULT_CONTENT);
     }
 
     @Test
     void 게시글_작성() {
         given(postRepository.save(defaultPost)).willReturn(defaultPost);
-        PostRequestDto dto = new PostRequestDto();
-        dto.setContents(DEFAULT_CONTENT);
-
-        assertThat(postService.add(dto, DEFAULT_USER_ID)).isEqualTo(defaultPost);
+        assertThat(postService.add(postRequestDto, DEFAULT_USER_ID)).isEqualTo(defaultPost);
     }
 
     @Test
     void 게시글_수정() {
-        PostRequestDto dto = new PostRequestDto();
-        dto.setContents(NEW_CONTENT);
-
-        assertThat(postService.update(DEFAULT_POST_ID, dto, DEFAULT_USER_ID)).isEqualTo(new Post(NEW_CONTENT, defaultUser));
+        postRequestDto.setContents(NEW_CONTENT);
+        assertThat(postService.update(DEFAULT_POST_ID, postRequestDto, DEFAULT_USER_ID)).isEqualTo(new Post(NEW_CONTENT, defaultUser));
     }
 
     @Test
@@ -116,5 +120,15 @@ public class PostServiceTest extends BaseTest {
     void 좋아요를_누르지_않은_상태에서_좋아요를_눌렀을_경우_확인() {
         given(postLikeRepository.findByPostAndUser(defaultPost, defaultUser)).willReturn(null);
         assertThat(postService.updateLike(DEFAULT_POST_ID, DEFAULT_USER_ID)).isEqualTo(INIT_LIKE + 1);
+    }
+
+    @Test
+    @DisplayName("게시물 공유하는지 검증")
+    void sharePost() {
+        Post post = new Post(DEFAULT_CONTENT, defaultUser, defaultPost);
+        given(postRepository.findById(1000L)).willReturn(Optional.of(post));
+        given(sharedPostRepository.save(new SharedPost(defaultUser, post))).willReturn(new SharedPost(defaultUser, post));
+        given(postRepository.save(post)).willReturn(post);
+        assertThat(postService.add(postRequestDto, DEFAULT_USER_ID, 1000L)).isEqualTo(post);
     }
 }

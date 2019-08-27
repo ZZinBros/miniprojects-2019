@@ -4,6 +4,7 @@ import com.woowacourse.zzinbros.BaseTest;
 import com.woowacourse.zzinbros.post.exception.UnAuthorizedException;
 import com.woowacourse.zzinbros.user.domain.User;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -17,6 +18,7 @@ public class PostTest extends BaseTest {
     public static final String DEFAULT_EMAIL = "john123@example.com";
     public static final String DEFAULT_PASSWORD = "123456789";
     public static final int INIT_LIKE = 0;
+    public static final int INIT_SHARED = 0;
 
     private User defaultUser;
     private Post defaultPost;
@@ -47,15 +49,20 @@ public class PostTest extends BaseTest {
 
     @Test
     void 좋아요를_눌렀을_경우_테스트() {
-        PostLike postLike = new PostLike(defaultPost, defaultUser);
         defaultPost.addLike();
         assertThat(defaultPost.getCountOfLike()).isEqualTo(INIT_LIKE + 1);
     }
 
     @Test
     void 좋아요_취소_테스트() {
-        PostLike postLike = new PostLike(defaultPost, defaultUser);
         defaultPost.removeLike();
         assertThat(defaultPost.getCountOfLike()).isEqualTo(INIT_LIKE - 1);
+    }
+
+    @Test
+    @DisplayName("게시글 공유횟수 증가하는지 확인")
+    void sharePost() {
+        defaultPost.share();
+        assertThat(defaultPost.getCountOfShared()).isEqualTo(INIT_SHARED + 1);
     }
 }

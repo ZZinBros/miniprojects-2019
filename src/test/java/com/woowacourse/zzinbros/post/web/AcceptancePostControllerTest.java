@@ -57,4 +57,24 @@ public class AcceptancePostControllerTest extends AuthedWebTestClient {
                 .expectStatus().is3xxRedirection()
                 .expectHeader().valueMatches("Location", ".*(/)");
     }
+
+    @Test
+    void 게시글_공유() {
+        PostRequestDto postRequestDto = new PostRequestDto();
+        postRequestDto.setContents("post");
+        postRequestDto.setSharedPostId(999L);
+        post("/posts/share", MediaType.APPLICATION_JSON_UTF8)
+                .body(Mono.just(postRequestDto), PostRequestDto.class)
+                .exchange()
+                .expectStatus().isCreated()
+                .expectBody()
+                .jsonPath("$.contents").isEqualTo("post")
+                .jsonPath("$.sharedPost.id").isEqualTo(999L);
+
+        get("/posts/999")
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody()
+                .jsonPath("$.countOfShared").isEqualTo(1);
+    }
 }
