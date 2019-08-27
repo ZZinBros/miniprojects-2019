@@ -10,7 +10,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 @Entity
-public class SharingUser extends BaseEntity {
+public class SharedPost extends BaseEntity {
 
     @ManyToOne
     @OnDelete(action = OnDeleteAction.CASCADE)
@@ -22,10 +22,10 @@ public class SharingUser extends BaseEntity {
     @JoinColumn(name = "post_id")
     private Post post;
 
-    protected SharingUser() {
+    protected SharedPost() {
     }
 
-    public SharingUser(User user, Post post) {
+    public SharedPost(User user, Post post) {
         this.user = user;
         this.post = post;
     }
