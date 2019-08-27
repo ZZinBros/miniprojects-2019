@@ -17,11 +17,9 @@ import java.util.Set;
 @RequestMapping("/friends")
 public class FriendController {
 
-    private UserService userService;
     private FriendService friendService;
 
-    public FriendController(UserService userService, FriendService friendService) {
-        this.userService = userService;
+    public FriendController(FriendService friendService) {
         this.friendService = friendService;
     }
 
@@ -30,7 +28,9 @@ public class FriendController {
         Set<UserResponseDto> users = friendService.findFriendRequestsByUser(session.getDto());
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
-
+//
+//    @GetMapping("/requests/status")
+//    public ResponseEntity<>
     @PostMapping
     @ResponseStatus(HttpStatus.FOUND)
     public String addFriend(@RequestBody FriendRequestDto friendRequestDto, @SessionInfo UserSession userSession) {
