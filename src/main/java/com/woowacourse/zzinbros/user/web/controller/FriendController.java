@@ -36,8 +36,7 @@ public class FriendController {
             @SessionInfo UserSession userSession,
             @PathVariable("id") long id) {
         final UserResponseDto loginUserDto = userSession.getDto();
-        //@TODO friendService 테스트 하려면 할 것
-        friendService.deleteFriend(loginUserDto, id);
+        friendService.deleteFriends(loginUserDto, id);
         return new ResponseEntity<>(null, HttpStatus.OK);
     }
 }
