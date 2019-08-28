@@ -2,102 +2,149 @@ package com.woowacourse.zzinbros.comment.service;
 
 import com.woowacourse.zzinbros.BaseTest;
 import com.woowacourse.zzinbros.comment.domain.Comment;
+import com.woowacourse.zzinbros.comment.domain.repository.CommentRepository;
+import com.woowacourse.zzinbros.comment.dto.CommentRequestDto;
 import com.woowacourse.zzinbros.comment.exception.CommentNotFoundException;
 import com.woowacourse.zzinbros.comment.exception.UnauthorizedException;
 import com.woowacourse.zzinbros.post.domain.Post;
-import com.woowacourse.zzinbros.post.dto.PostRequestDto;
 import com.woowacourse.zzinbros.post.service.PostService;
 import com.woowacourse.zzinbros.user.domain.User;
-import com.woowacourse.zzinbros.user.dto.UserRequestDto;
+import com.woowacourse.zzinbros.user.dto.UserResponseDto;
 import com.woowacourse.zzinbros.user.service.UserService;
-import org.junit.jupiter.api.BeforeAll;
+import com.woowacourse.zzinbros.user.web.support.UserSession;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
-import java.util.List;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-
-@SpringBootTest
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class CommentServiceTest extends BaseTest {
-    private static String USER_NAME = "name";
-    private static String USER_EMAIL = "user@mail.com";
-    private static String USER_PASSWORD = "asdfQWER1234!@#$";
-    private static String POST_CONTENTS = "post contents";
     private static String COMMENT_CONTENTS = "comment contents";
-    private static String NEW_CONTENTS = "new contents";
+    private static long USER_ID = 1L;
+    private static long WRONG_USER_ID = 10L;
+    private static long POST_ID = 2L;
+    private static long COMMENT_ID = 3L;
+    private static long WRONG_COMMENT_ID = 30L;
 
+    @Mock
     private User user;
-    private User wrongUser;
-    private Post post;
-    private Comment comment;
 
-    @Autowired
-    private CommentService commentService;
+    @Mock
+    private UserSession userSession;
 
-    @Autowired
-    private UserService userService;
+    @Mock
+    private UserSession wrongUserSession;
 
-    @Autowired
-    private PostService postService;
+    @Mock
+    private UserResponseDto loginUserDto;
 
-    @BeforeAll
+    @Mock
+    private UserResponseDto wrongLoginUserDto;
+
+    @Mock
+    private CommentRequestDto commentRequestDto;
+
+    @Mock
+    private CommentRequestDto wrongCommentRequestDto;
+
+    @Mock
+    CommentRepository commentRepository;
+
+    @Mock
+    UserService userService;
+
+    @Mock
+    PostService postService;
+
+    @InjectMocks
+    CommentService commentService;
+
+    @Mock
+    Post post;
+
+    @Mock
+    Comment comment;
+
+    @BeforeEach
     void setUp() {
-        user = userService.register(new UserRequestDto(USER_NAME, USER_EMAIL, USER_PASSWORD));
-        wrongUser = userService.register(new UserRequestDto("wrong", "not@mail.net", "123456789"));
-        final PostRequestDto postRequestDto = new PostRequestDto();
-        postRequestDto.setContents(POST_CONTENTS);
-        post = postService.add(postRequestDto, user.getId());
-        comment = commentService.add(user, post, COMMENT_CONTENTS);
+        MockitoAnnotations.initMocks(this);
+
+        when(loginUserDto.getId()).thenReturn(USER_ID);
+        when(userSession.getDto()).thenReturn(loginUserDto);
+        when(userService.findLoggedInUser(loginUserDto)).thenReturn(user);
+        when(post.getId()).thenReturn(POST_ID);
+        when(postService.read(POST_ID)).thenReturn(post);
+
+        when(comment.isMatchUser(user)).thenReturn(true);
+        when(comment.getId()).thenReturn(COMMENT_ID);
+        when(commentRequestDto.getCommentId()).thenReturn(COMMENT_ID);
+        when(commentRequestDto.getContents()).thenReturn(COMMENT_CONTENTS);
+        when(commentRepository.save(any())).thenReturn(comment);
+        when(commentRepository.findById(COMMENT_ID)).thenReturn(java.util.Optional.of(comment));
+
+        when(wrongLoginUserDto.getId()).thenReturn(WRONG_USER_ID);
+        when(wrongUserSession.getDto()).thenReturn(wrongLoginUserDto);
+        when(userService.findLoggedInUser(wrongLoginUserDto)).thenThrow(new UnauthorizedException());
+        when(wrongCommentRequestDto.getCommentId()).thenReturn(WRONG_COMMENT_ID);
+        when(commentRepository.findById(WRONG_COMMENT_ID)).thenThrow(new CommentNotFoundException());
     }
 
     @Test
-    void 댓글_달기() {
-        comment = commentService.add(user, post, COMMENT_CONTENTS);
-        assertThat(comment.getAuthor()).isEqualTo(user);
-        assertThat(comment.getPost()).isEqualTo(post);
-        assertThat(comment.getContents()).isEqualTo(COMMENT_CONTENTS);
+    @DisplayName("댓글 달기")
+    void add() {
+        commentService.add(commentRequestDto, userSession);
+        verify(commentRepository).save(any(Comment.class));
     }
 
     @Test
-    void 댓글_수정() {
-        comment = commentService.update(comment.getId(), NEW_CONTENTS, user);
-        assertThat(comment.getContents()).isEqualTo(NEW_CONTENTS);
+    @DisplayName("댓글 수정")
+    void update() {
+        commentService.update(commentRequestDto, userSession);
+        verify(comment).update(COMMENT_CONTENTS);
     }
 
     @Test
-    void 댓글_다른_사용자_수정시도() {
-        assertThatThrownBy(() -> commentService.update(comment.getId(), NEW_CONTENTS, wrongUser))
-                .isInstanceOf(UnauthorizedException.class);
+    @DisplayName("다른 사용자의 댓글 수정 시도")
+    void update_fail_by_another_user() {
+        try {
+            commentService.update(commentRequestDto, wrongUserSession);
+        } catch (final UnauthorizedException ignored) {}
+        verify(comment, never()).update(COMMENT_CONTENTS);
     }
 
     @Test
-    void 댓글_목록_Post별로() {
-        final List<Comment> commentList = commentService.findByPost(post);
-        assertThat(commentList.isEmpty()).isFalse();
+    @DisplayName("Post별로 댓글 받아오기")
+    void get_comments_by_post() {
+        commentService.findByPost(POST_ID);
+        verify(commentRepository).findByPost(any(Post.class));
     }
 
     @Test
-    void 댓글_삭제() {
-        final Comment newComment = commentService.add(user, post, NEW_CONTENTS);
-        commentService.delete(newComment.getId(), user);
-        assertThatThrownBy(() -> commentService.findById(newComment.getId()))
-                .isInstanceOf(CommentNotFoundException.class);
+    @DisplayName("댓글 삭제")
+    void delete() {
+        commentService.delete(commentRequestDto, userSession);
+        verify(commentRepository).delete(any(Comment.class));
     }
 
     @Test
-    void 없는_댓글_삭제시도() {
-        assertThatThrownBy(() -> commentService.delete(comment.getId() + 123L, user))
-                .isInstanceOf(CommentNotFoundException.class);
+    @DisplayName("없는 댓글 삭제 시도")
+    void delete_wrong_comment_id() {
+        try {
+            commentService.delete(wrongCommentRequestDto, userSession);
+        } catch (final CommentNotFoundException ignored) {}
+        verify(commentRepository, never()).delete(any(Comment.class));
     }
 
     @Test
-    void 댓글_다른_사용자_삭제시도() {
-        assertThatThrownBy(() -> commentService.delete(comment.getId(), wrongUser))
-                .isInstanceOf(UnauthorizedException.class);
+    @DisplayName("남의 댓글 삭제 시도")
+    void delete_fail_by_another_user() {
+        try {
+            commentService.delete(commentRequestDto, wrongUserSession);
+        } catch (final UnauthorizedException ignored) {}
+        verify(commentRepository, never()).delete(any(Comment.class));
     }
 }

@@ -22,3 +22,4 @@ logging.level:
 logback.access:
     enabled: true
     config: "classpath:logback-access.xml"
+server.servlet.session.persistent: false

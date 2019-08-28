@@ -1,10 +1,12 @@
 package com.woowacourse.zzinbros.comment.exception;
 
-public class CommentNotFoundException extends RuntimeException {
-    public CommentNotFoundException() {
-    }
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.server.ResponseStatusException;
 
-    public CommentNotFoundException(final String message) {
-        super(message);
+@ResponseStatus(HttpStatus.NOT_FOUND)
+public class CommentNotFoundException extends ResponseStatusException {
+    public CommentNotFoundException() {
+        super(HttpStatus.NOT_FOUND);
     }
 }

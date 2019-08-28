@@ -10,15 +10,17 @@ spring:
                 format_sql: true
                 use_sql_comments: true
     datasource:
-        url: jdbc:h2:mem:test
-        username: sa
-        password: sa
         driver-class-name: org.h2.Driver
+        url: "jdbc:h2:file:./testdb"
     thymeleaf.cache: false
+    h2.console.enabled: true
 logging.level:
     root: warn
+    sql: debug
     com.woowacourse.zzinbros: debug
+    org.springframework.boot.test: debug
     org.hibernate.type.descriptor.sql: trace
 logback.access:
     enabled: true
     config: "classpath:logback-access.xml"
+server.servlet.session.persistent: false
