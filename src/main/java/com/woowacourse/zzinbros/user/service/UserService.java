@@ -12,6 +12,9 @@ import com.woowacourse.zzinbros.user.exception.UserNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @Transactional
 public class UserService {
@@ -69,6 +72,13 @@ public class UserService {
             return new UserResponseDto(user.getId(), user.getName(), user.getEmail());
         }
         throw new UserLoginException("비밀번호가 다릅니다");
+    }
+
+    public List<UserResponseDto> readAll() {
+        List<User> users = userRepository.findAll();
+        return users.stream()
+                .map(user -> new UserResponseDto(user.getId(), user.getName(), user.getEmail()))
+                .collect(Collectors.toList());
     }
 
     private User findUserByEmail(String email) {
