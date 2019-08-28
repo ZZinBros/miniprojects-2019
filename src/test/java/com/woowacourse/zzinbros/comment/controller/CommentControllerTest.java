@@ -5,13 +5,13 @@ import com.woowacourse.zzinbros.BaseTest;
 import com.woowacourse.zzinbros.comment.domain.Comment;
 import com.woowacourse.zzinbros.comment.dto.CommentRequestDto;
 import com.woowacourse.zzinbros.comment.exception.CommentNotFoundException;
+import com.woowacourse.zzinbros.comment.exception.UnauthorizedException;
 import com.woowacourse.zzinbros.comment.service.CommentService;
 import com.woowacourse.zzinbros.post.domain.Post;
 import com.woowacourse.zzinbros.post.exception.PostNotFoundException;
 import com.woowacourse.zzinbros.post.service.PostService;
 import com.woowacourse.zzinbros.user.domain.User;
 import com.woowacourse.zzinbros.user.dto.UserResponseDto;
-import com.woowacourse.zzinbros.user.exception.UserNotFoundException;
 import com.woowacourse.zzinbros.user.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -32,6 +32,7 @@ import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -53,6 +54,7 @@ class CommentControllerTest extends BaseTest {
     private Comment mockComment = new Comment(mockUser, mockPost, MOCK_CONTENTS);
     private String commentRequestDto;
     private UserResponseDto mockUserDto = new UserResponseDto(MOCK_ID, mockUser.getName(), mockUser.getEmail());
+    private UserResponseDto mockWrongUserDto = new UserResponseDto(MOCK_ID + 10L, mockUser.getName(), mockUser.getEmail());
 
     private MockMvc mockMvc;
 
@@ -135,7 +137,7 @@ class CommentControllerTest extends BaseTest {
         given(userService.findLoggedInUser(any())).willReturn(mockUser);
         given(commentService.update(any(), any())).willReturn(mockComment);
 
-        mockMvc.perform(put(COMMENTS_PATH)
+        mockMvc.perform(put(COMMENTS_PATH + "/" + MOCK_ID)
                 .content(commentRequestDto)
                 .sessionAttr(LOGIN_USER, mockUserDto)
                 .contentType(MediaType.APPLICATION_JSON_UTF8))
@@ -148,7 +150,7 @@ class CommentControllerTest extends BaseTest {
         given(userService.findLoggedInUser(any())).willReturn(mockUser);
         given(commentService.update(any(), any())).willThrow(new CommentNotFoundException());
 
-        mockMvc.perform(put(COMMENTS_PATH)
+        mockMvc.perform(put(COMMENTS_PATH + "/" + MOCK_ID)
                 .content(commentRequestDto)
                 .sessionAttr(LOGIN_USER, mockUserDto)
                 .contentType(MediaType.APPLICATION_JSON_UTF8))
@@ -158,21 +160,19 @@ class CommentControllerTest extends BaseTest {
     @Test
     @DisplayName("댓글 삭제 성공")
     void delete_mapping_success() throws Exception {
-        mockMvc.perform(delete(COMMENTS_PATH)
-                .content(commentRequestDto)
+        mockMvc.perform(delete(COMMENTS_PATH + "/" + MOCK_ID)
                 .sessionAttr(LOGIN_USER, mockUserDto)
                 .contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(status().isNoContent());
     }
 
     @Test
-    @DisplayName("로그인되지 않은 사용자의 댓글 편집 거부")
+    @DisplayName("로그인되지 않은 사용자의 댓글 삭제 거부")
     void delete_mapping_fail_by_auth() throws Exception {
-        given(userService.findLoggedInUser(any())).willThrow(UserNotFoundException.class);
+        given(commentService.delete(anyLong(), any())).willThrow(UnauthorizedException.class);
 
-        mockMvc.perform(delete(POSTS_PATH)
-                .content(commentRequestDto)
-                .sessionAttr(LOGIN_USER, mockUserDto)
+        mockMvc.perform(delete(COMMENTS_PATH + "/" + MOCK_ID)
+                .sessionAttr(LOGIN_USER, mockWrongUserDto)
                 .contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(status().is4xxClientError());
     }

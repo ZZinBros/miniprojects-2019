@@ -21,7 +21,8 @@ public class CommentControllerExceptionAdvice extends ResponseEntityExceptionHan
     public ResponseEntity<CommentResponseDto> handleResponseStatusException(final ResponseStatusException exception) {
         LOG.info("HTTP status: {}", exception.getStatus());
         LOG.info("{}", exception.getClass().getSimpleName());
-        return new ResponseEntity<>(new CommentResponseDto(exception), exception.getStatus());
+        final HttpStatus status = resolveAnnotatedResponseStatus(exception);
+        return new ResponseEntity<>(new CommentResponseDto(exception), status);
     }
 
     // https://stackoverflow.com/a/51358263

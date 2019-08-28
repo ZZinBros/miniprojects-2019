@@ -32,25 +32,37 @@ public class CommentController {
     }
 
     @PostMapping
-    public ResponseEntity<CommentResponseDto> add(@PathVariable final Long postId, @RequestBody final CommentRequestDto requestDto, @SessionInfo final UserSession userSession) {
+    public ResponseEntity<CommentResponseDto> add(
+            @PathVariable final Long postId,
+            @RequestBody final CommentRequestDto requestDto,
+            @SessionInfo final UserSession userSession
+    ) {
         requestDto.setPostId(postId);
         final Comment comment = commentService.add(requestDto, userSession);
         final CommentResponseDto responseDto = new CommentResponseDto(comment);
         return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
-    } // TODO: 코드의 반복되는 패턴을 합칠 수 있을까?
+    }
 
-    @PutMapping
-    public ResponseEntity<CommentResponseDto> edit(@PathVariable final Long postId, @RequestBody final CommentRequestDto requestDto, @SessionInfo final UserSession session) {
+    @PutMapping("/{commentId}")
+    public ResponseEntity<CommentResponseDto> edit(
+            @PathVariable final Long postId,
+            @PathVariable final Long commentId,
+            @RequestBody final CommentRequestDto requestDto,
+            @SessionInfo final UserSession session
+    ) {
         requestDto.setPostId(postId);
+        requestDto.setCommentId(commentId);
         final Comment comment = commentService.update(requestDto, session);
         final CommentResponseDto responseDto = new CommentResponseDto(comment);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
-    @DeleteMapping
-    public ResponseEntity<CommentResponseDto> delete(@PathVariable final Long postId, @RequestBody final CommentRequestDto requestDto, @SessionInfo final UserSession session) {
-        requestDto.setPostId(postId);
-        commentService.delete(requestDto, session);
+    @DeleteMapping("/{commentId}")
+    public ResponseEntity<CommentResponseDto> delete(
+            @PathVariable final Long commentId,
+            @SessionInfo final UserSession session
+    ) {
+        commentService.delete(commentId, session);
         return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
     }
 }
