@@ -94,7 +94,7 @@ public class FriendService {
                 .collect(Collectors.toSet());
     }
 
-    public void deleteFriend(UserResponseDto loginUserDto, long friendId) {
+    public void deleteFriends(UserResponseDto loginUserDto, long friendId) {
         User owner = userService.findLoggedInUser(loginUserDto);
         User friend = userService.findUserById(friendId);
         friendRepository.deleteByOwnerAndSlave(owner, friend);
