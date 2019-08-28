@@ -15,9 +15,9 @@
                 disabled id="friend-request-btn" th:if="${requestStatus}">
             친구 요청
         </button>
-        <button class="btn btn-lg btn-tecobook btn-inverse btn-rounded" disabled
-                id="friend-btn" th:if="${friendStatus}">
-            <i class="ti-check">친구</i>
+        <button class="btn btn-lg btn-tecobook btn-inverse btn-rounded"
+                id="friend-btn" th:if="${friendStatus}" th:data-user-id="${author.id}">
+            <i class="ti-check">친구 삭제</i>
         </button>
     </span>
 
