@@ -52,22 +52,22 @@ const CommentApp = (function () {
             const commentAddBtns = document.getElementsByClassName('comment-add-btn');
 
             Array.from(commentAddBtns)
-                .map(commentAddBtn => commentAddBtn.addEventListener('click', commentService.add));
+                 .map(commentAddBtn => commentAddBtn.addEventListener('click', commentService.add));
         };
 
         const editComment = function () {
             Array.from(commentsItems)
-                .map(commentItem => commentItem.addEventListener('click', commentService.editMode))
+                 .map(commentItem => commentItem.addEventListener('click', commentService.editMode));
             Array.from(commentsItems)
-                .map(commentItem => commentItem.addEventListener('click', commentService.cancelEditMode))
+                 .map(commentItem => commentItem.addEventListener('click', commentService.cancelEditMode));
             Array.from(commentsItems)
-                .map(commentItem => commentItem.addEventListener('click', commentService.edit));
+                 .map(commentItem => commentItem.addEventListener('click', commentService.edit));
         };
 
         const deleteComment = function () {
             Array.from(commentsItems)
-                .map(commentItem => commentItem.addEventListener('click', commentService.deleteComment));
-        }
+                 .map(commentItem => commentItem.addEventListener('click', commentService.deleteComment));
+        };
 
         const init = function () {
             addComment();
@@ -90,16 +90,13 @@ const CommentApp = (function () {
             const commentTextArea = commentArea.querySelector("textarea");
             const contents = commentTextArea.value;
 
-            // Api.post(`posts/${postId}/comments`, {
-            Api.post(`/comments`, {
-                postId,
-                contents
-            }).then(res => res.json())
-                .then(createdComment => {
-                    const comments = event.target.closest(".comment").querySelector(".comment-items");
-                    comments.insertAdjacentHTML('beforeend', commentTemplate(createdComment));
-                    commentTextArea.value = "";
-                });
+            Api.post(`posts/${postId}/comments`, {contents})
+               .then(res => res.json())
+               .then(createdComment => {
+                   const comments = event.target.closest(".comment").querySelector(".comment-items");
+                   comments.insertAdjacentHTML('beforeend', commentTemplate(createdComment));
+                   commentTextArea.value = "";
+               });
         };
 
         const editMode = function (event) {
@@ -125,43 +122,41 @@ const CommentApp = (function () {
 
             commentInfo.removeAttribute('style');
             commentInput.setAttribute('style', 'display: none');
-        }
+        };
 
         const edit = function (event) {
             if (event.target.classList.contains('edit-pointer')) {
+                const postId = event.target.closest('.post').dataset.postId;
                 const commentItem = event.target.closest('.comment-item');
                 const commentId = commentItem.dataset.commentId;
                 const commentInput = event.target.closest('.comment-input').querySelector('input');
                 const contents = commentInput.value;
 
-                // Api.put(`posts/${postId}/comments`, {
-                Api.put(`/comments`, {
-                    commentId,
-                    contents
-                }).then(res => res.json())
-                    .then(updatedCommnet => {
-                        const commentContents = commentItem.querySelector('.comment-contents');
-                        commentContents.innerText = updatedCommnet.contents;
-                        cancelEditModeBy(event.target);
-                    })
+                Api.put(`posts/${postId}/comments/${commentId}`, {contents})
+                   .then(res => res.json())
+                   .then(updatedComment => {
+                       const commentContents = commentItem.querySelector('.comment-contents');
+                       commentContents.innerText = updatedComment.contents;
+                       cancelEditModeBy(event.target);
+                   })
             }
         };
 
         const deleteComment = function (event) {
+            const postId = event.target.closest('.post').dataset.postId;
             const commentItem = event.target.closest('.comment-item');
             const commentId = commentItem.dataset.commentId;
 
             const clicked = event.target.closest('a');
             if ((clicked !== null) && clicked.classList.contains('comment-delete-btn')) {
-                Api.delete(`/comments`, {
-                    commentId
-                }).then(res => {
-                    if (res.ok) {
-                        console.log(res);
-                    }
-                })
+                Api.delete(`posts/${postId}/comments/${commentId}`)
+                   .then(res => {
+                       if (res.ok) {
+                           commentItem.remove();
+                       }
+                   })
             }
-        }
+        };
 
         return {
             add,
