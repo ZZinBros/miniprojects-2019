@@ -10,8 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Set;
-
 @Controller
 @RequestMapping("/friends")
 public class FriendController {
@@ -22,12 +20,6 @@ public class FriendController {
         this.friendService = friendService;
     }
 
-    @GetMapping("/requests")
-    public ResponseEntity<Set<UserResponseDto>> showFriendRequests(@SessionInfo UserSession session) {
-        Set<UserResponseDto> users = friendService.findFriendRequestsByUser(session.getDto());
-        return new ResponseEntity<>(users, HttpStatus.OK);
-    }
-
     @PostMapping
     @ResponseStatus(HttpStatus.FOUND)
     public String requestFriend(@RequestBody FriendRequestDto friendRequestDto, @SessionInfo UserSession userSession) {
@@ -36,5 +28,16 @@ public class FriendController {
             friendService.registerFriend(loginUserDto, friendRequestDto);
         }
         return "redirect:/posts?author=" + friendRequestDto.getRequestFriendId();
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseBody
+    public ResponseEntity<UserResponseDto> requestFriend(
+            @SessionInfo UserSession userSession,
+            @PathVariable("id") long id) {
+        final UserResponseDto loginUserDto = userSession.getDto();
+        //@TODO friendService 테스트 하려면 할 것
+        friendService.deleteFriend(loginUserDto, id);
+        return new ResponseEntity<>(null, HttpStatus.OK);
     }
 }

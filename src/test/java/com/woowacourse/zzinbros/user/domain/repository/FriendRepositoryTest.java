@@ -4,16 +4,19 @@ import com.woowacourse.zzinbros.BaseTest;
 import com.woowacourse.zzinbros.user.domain.Friend;
 import com.woowacourse.zzinbros.user.domain.User;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 @DataJpaTest
 class FriendRepositoryTest extends BaseTest {
     @Autowired
     FriendRepository friendRepository;
+
     @Autowired
     private UserRepository userRepository;
     private User user1;
@@ -43,5 +46,14 @@ class FriendRepositoryTest extends BaseTest {
     @Test
     void name() {
         assertThat(friendRepository.findAllByOwner(user1).size()).isEqualTo(2);
+    }
+
+    @Test
+    @DisplayName("owner와 slave로 친구 삭제")
+    void deleteByOwnerAndSlave() {
+        friendRepository.deleteByOwnerAndSlave(user2, user3);
+        friendRepository.deleteByOwnerAndSlave(user3, user2);
+        assertFalse(friendRepository.existsByOwnerAndSlave(user2, user3));
+        assertFalse(friendRepository.existsByOwnerAndSlave(user3, user2));
     }
 }
