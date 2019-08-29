@@ -39,7 +39,7 @@ public class PostPageController {
             User author = userService.findUserById(authorId);
             Sort sort = Sort.by(Sort.Direction.DESC, "createdDateTime");
             List<Post> posts = postService.readAllByUser(author, sort);
-            Set<UserResponseDto> friends = friendService.findFriendsByUser(authorId);
+            Set<UserResponseDto> friends = friendService.findFriendsByUserId(authorId);
 
             model.addAttribute("author", author);
             model.addAttribute("posts", posts);

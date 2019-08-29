@@ -10,6 +10,14 @@ import reactor.core.publisher.Mono;
 public class AcceptanceFriendControllerTest extends AuthedWebTestClient {
 
     @Test
+    @DisplayName("친구 조회")
+    void getFriends() {
+        get("/friends")
+                .exchange()
+                .expectStatus().isOk();
+    }
+
+    @Test
     void 친구_추가() {
         post("/friends", MediaType.APPLICATION_JSON_UTF8)
                 .body(Mono.just(new FriendRequestDto(999L)), FriendRequestDto.class)

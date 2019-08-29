@@ -72,7 +72,7 @@ class FriendServiceTest extends UserBaseTest {
         Set<Friend> friends = new HashSet<>(Arrays.asList(new Friend(userSampleOf(1), userSampleOf(2))));
         given(friendRepository.findAllByOwner(userSampleOf(1))).willReturn(friends);
 
-        assertThat(friendService.findFriendsByUser(1L)).isEqualTo(friendService.friendToUserResponseDto(friends));
+        assertThat(friendService.findFriendsByUserId(1L)).isEqualTo(friendService.friendToUserResponseDto(friends));
     }
 
     @Test
