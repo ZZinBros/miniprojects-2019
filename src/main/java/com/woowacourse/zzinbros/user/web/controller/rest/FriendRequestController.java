@@ -1,8 +1,5 @@
 package com.woowacourse.zzinbros.user.web.controller.rest;
 
-import com.woowacourse.zzinbros.user.domain.FriendRequest;
-import com.woowacourse.zzinbros.user.domain.User;
-import com.woowacourse.zzinbros.user.dto.FriendResponseMessageDto;
 import com.woowacourse.zzinbros.user.dto.UserResponseDto;
 import com.woowacourse.zzinbros.user.service.FriendService;
 import com.woowacourse.zzinbros.user.web.support.SessionInfo;
