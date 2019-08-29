@@ -1,8 +1,23 @@
-(function() {
+(function () {
     const onAddPostClick = () => {
         const contents = document.getElementById('post-content').value;
+        const displayStrategyText = document.getElementsByClassName('ti-check')[0].previousElementSibling.textContent;
+
+        let displayStrategy;
+        switch (displayStrategyText) {
+            case '전체 공개':
+                displayStrategy = 1;
+                break;
+            case '친구만':
+                displayStrategy = 2;
+                break;
+            case '나만 보기':
+                displayStrategy = 3;
+                break;
+        }
+
         const url = document.location.href;
-        Api.post(`${url}/posts`, { contents })
+        Api.post(`${url}/posts`, {"contents": contents, "displayStrategy": displayStrategy})
             .then(res => {
                 if (res.redirected) {
                     window.location.href = res.url
@@ -10,7 +25,14 @@
                     window.location.reload();
                 }
             })
-    }
+    };
+
+    const onDisplayStrategyHilight = (event) => {
+        event.target.closest('ul').querySelector('.ti-check').classList.remove('ti-check');
+        event.target.closest('li').querySelectorAll('span')[1].classList.add('ti-check');
+        document.getElementById('feed-add-display-btn').querySelector('span').innerText
+            = event.target.closest('li').querySelector('span').textContent;
+    };
 
     function handleFiles(files) {
         const preview = document.getElementById("feed-image-preview");
@@ -46,4 +68,6 @@
     });
 
     document.getElementById("feed-add-btn").addEventListener("click", onAddPostClick);
+
+    document.getElementById('post-display-dropdown').addEventListener("click", e => onDisplayStrategyHilight(e))
 })();
