@@ -7387,3 +7387,11 @@ button:disabled {
     margin-left: auto !important;
     margin-right: auto !important;
 }
+
+.dot {
+    height: 10px;
+    width: 10px;
+    background-color: #de2825;
+    border-radius: 50%;
+    display: inline-block;
+}
