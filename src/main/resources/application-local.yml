@@ -1,25 +1,26 @@
 spring:
-  config.name: local
-  jpa:
-    database: mysql
-    hibernate.ddl-auto: update
-    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
-    properties:
-      hibernate:
-        show_sql: true
-        format_sql: true
-        use_sql_comments: true
-  datasource:
-    url: jdbc:mysql://localhost:3306/wootecobook?serverTimezone=UTC
-    username: zzinbros
-    password: 1234
-  thymeleaf.cache: false
+    config.name: local
+    jpa:
+        database: mysql
+        hibernate.ddl-auto: update
+        database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+        properties:
+            hibernate:
+                show_sql: true
+                format_sql: true
+                use_sql_comments: true
+    datasource:
+        url: jdbc:mysql://localhost:3306/wootecobook?serverTimezone=UTC
+        username: zzinbros
+        password: 1234
+    thymeleaf.cache: false
 logging.level:
-  root: info
-  sql: debug
-  com.woowacourse.zzinbros: debug
-  org.hibernate.type.descriptor.sql: trace
+    root: info
+    sql: debug
+    web: debug
+    com.woowacourse.zzinbros: debug
+    org.hibernate.type.descriptor.sql: trace
 logback.access:
-  enabled: true
-  config: "classpath:logback-access.xml"
+    enabled: true
+    config: "classpath:logback-access-full.xml"
 server.servlet.session.persistent: false

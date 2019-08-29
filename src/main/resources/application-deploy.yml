@@ -11,6 +11,10 @@ spring:
 logging:
     level:
         root: warn
+        sql: info
         web: info
         com.woowacourse.zzinbros: info
     file.max-history: 30
+logback.access:
+    enabled: true
+    config: "classpath:logback-access-simple.xml"
