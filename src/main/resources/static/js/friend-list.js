@@ -77,7 +77,7 @@
             });
     };
 
-    if (requestScrollBar !== null) {
+    if (requestScrollBar) {
         addElementsToScrollBar(requestScrollBar, '/friends-requests', addFriendRequest, notifyFriendRequest);
         addElementsToScrollBar(friendsScrollBar, '/friends', addFriend, () => {
         });
