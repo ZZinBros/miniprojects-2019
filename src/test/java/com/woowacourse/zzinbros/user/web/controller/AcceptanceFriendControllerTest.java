@@ -31,6 +31,6 @@ public class AcceptanceFriendControllerTest extends AuthedWebTestClient {
     void friendDelete() {
         delete("/friends/444")
                 .exchange()
-                .expectStatus().isOk();
+                .expectStatus().isNoContent();
     }
 }
