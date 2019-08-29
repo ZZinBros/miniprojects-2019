@@ -4,7 +4,7 @@
         Api.post('/friends', {requestFriendId})
             .then(res => {
                 if(res.redirected) {
-                    window.location.href = res.url;
+                    window.location.reload();
                 }
             });
     };
