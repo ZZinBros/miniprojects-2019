@@ -1,4 +1,4 @@
-package com.woowacourse.zzinbros.comment;
+package com.woowacourse.zzinbros.common.domain;
 
 import com.woowacourse.zzinbros.BaseTest;
 import com.woowacourse.zzinbros.user.domain.repository.UserRepository;
@@ -64,6 +64,18 @@ public abstract class AuthedWebTestClient extends BaseTest {
         String cookie = loginCookie();
         webTestClient = webTestClient.mutate().responseTimeout(Duration.ofSeconds(10)).build();
         return webTestClient.post().uri(uri)
+                .header("Cookie", cookie)
+                .syncBody(bodyBuilder.build());
+    }
+
+    protected WebTestClient.RequestHeadersSpec multipartFilePut(String uri, List<String> keys, Object... parameters) {
+        MultipartBodyBuilder bodyBuilder = new MultipartBodyBuilder();
+        for (int i = 0; i < keys.size(); i++) {
+            bodyBuilder.part(keys.get(i), parameters[i]);
+        }
+        String cookie = loginCookie();
+        webTestClient = webTestClient.mutate().responseTimeout(Duration.ofSeconds(10)).build();
+        return webTestClient.put().uri(uri)
                 .header("Cookie", cookie)
                 .syncBody(bodyBuilder.build());
     }

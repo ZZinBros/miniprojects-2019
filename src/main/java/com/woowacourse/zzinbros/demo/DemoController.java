@@ -2,6 +2,8 @@ package com.woowacourse.zzinbros.demo;
 
 import com.woowacourse.zzinbros.post.service.PostService;
 import com.woowacourse.zzinbros.user.service.UserService;
+import com.woowacourse.zzinbros.user.web.support.SessionInfo;
+import com.woowacourse.zzinbros.user.web.support.UserSession;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,7 +22,7 @@ public class DemoController {
     }
 
     @GetMapping("/")
-    public String demo(Model model) {
+    public String demo(Model model, @SessionInfo UserSession userSession) {
         Sort sort = by(Direction.DESC, "createdDateTime");
         model.addAttribute("posts", postService.readAll(sort));
         model.addAttribute("users", userService.readAll());

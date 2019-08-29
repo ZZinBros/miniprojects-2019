@@ -5,22 +5,23 @@ spring:
         hibernate.ddl-auto: create-drop
         database-platform: org.hibernate.dialect.H2Dialect
         properties:
-            hibernate:
-                show_sql: true
-                format_sql: true
-                use_sql_comments: true
-    datasource:
-        driver-class-name: org.h2.Driver
-        url: "jdbc:h2:file:./testdb"
+          hibernate:
+            show_sql: true
+            format_sql: true
+            use_sql_comments: true
+  datasource:
+      driver-class-name: org.h2.Driver
+      url: "jdbc:h2:file:./testdb"
     thymeleaf.cache: false
     h2.console.enabled: true
 logging.level:
     root: warn
     sql: debug
+    web: debug
     com.woowacourse.zzinbros: debug
     org.springframework.boot.test: debug
     org.hibernate.type.descriptor.sql: trace
 logback.access:
     enabled: true
-    config: "classpath:logback-access.xml"
+    config: "classpath:logback-access-full.xml"
 server.servlet.session.persistent: false

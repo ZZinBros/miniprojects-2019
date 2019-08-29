@@ -3,7 +3,7 @@
                 height: 40%;">
     <img class="img-circle"
          id="cover-profile-img"
-         src="http://imgc.1300k.com/aaaaaib/goods/215024/68/215024686366_4.jpg?640">
+         th:src="${author.profile.url}">
     <span id="user-name-in-cover" th:text="${author.name}">Zzinbros</span>
     <span th:if="${!isMypage}">
         <button class="btn btn-lg btn-tecobook btn-inverse btn-rounded"

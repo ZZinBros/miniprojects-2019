@@ -59,14 +59,15 @@ public class CommentService {
     }
 
     @Transactional
-    public void delete(final CommentRequestDto requestDto, final UserSession session) {
+    public boolean delete(final long commentId, final UserSession session) {
         final User user = userService.findLoggedInUser(session.getDto());
         final Comment comment = commentRepository
-                .findById(requestDto.getCommentId())
+                .findById(commentId)
                 .orElseThrow(CommentNotFoundException::new);
         checkMatchedUser(comment, user);
         comment.prepareToDelete();
         commentRepository.delete(comment);
+        return true;
     }
 
     private void checkMatchedUser(final Comment comment, final User user) {

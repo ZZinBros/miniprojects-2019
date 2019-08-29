@@ -20,6 +20,9 @@ public class UploadToLocal extends AbstractUploadTo {
 
     @Override
     public String save() {
+        if (file == null) {
+            return null;
+        }
         try {
             String saveName = hashFileName() + getExtension();
             file.transferTo(new File(uploadUrl + saveName));

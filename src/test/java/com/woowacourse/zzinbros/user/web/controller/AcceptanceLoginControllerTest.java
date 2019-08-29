@@ -1,6 +1,6 @@
 package com.woowacourse.zzinbros.user.web.controller;
 
-import com.woowacourse.zzinbros.comment.AuthedWebTestClient;
+import com.woowacourse.zzinbros.common.domain.AuthedWebTestClient;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.reactive.function.BodyInserters;
 

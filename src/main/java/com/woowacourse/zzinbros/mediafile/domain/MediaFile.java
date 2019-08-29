@@ -1,4 +1,4 @@
-package com.woowacourse.zzinbros.mediafile;
+package com.woowacourse.zzinbros.mediafile.domain;
 
 import com.woowacourse.zzinbros.common.domain.BaseEntity;
 

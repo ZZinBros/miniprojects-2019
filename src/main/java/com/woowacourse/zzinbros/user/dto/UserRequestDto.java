@@ -1,5 +1,6 @@
 package com.woowacourse.zzinbros.user.dto;
 
+import com.woowacourse.zzinbros.mediafile.domain.MediaFile;
 import com.woowacourse.zzinbros.user.domain.User;
 
 import java.util.Objects;
@@ -22,6 +23,10 @@ public class UserRequestDto {
 
     public User toEntity() {
         return new User(name, email, password);
+    }
+
+    public User toEntity(MediaFile mediaFile) {
+        return new User(name, email, password, mediaFile);
     }
 
     @Override

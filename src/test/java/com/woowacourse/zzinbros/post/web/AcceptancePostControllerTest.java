@@ -1,6 +1,6 @@
 package com.woowacourse.zzinbros.post.web;
 
-import com.woowacourse.zzinbros.comment.AuthedWebTestClient;
+import com.woowacourse.zzinbros.common.domain.AuthedWebTestClient;
 import com.woowacourse.zzinbros.post.dto.PostRequestDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;

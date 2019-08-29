@@ -126,7 +126,7 @@ class CommentServiceTest extends BaseTest {
     @Test
     @DisplayName("댓글 삭제")
     void delete() {
-        commentService.delete(commentRequestDto, userSession);
+        commentService.delete(commentRequestDto.getCommentId(), userSession);
         verify(commentRepository).delete(any(Comment.class));
     }
 
@@ -134,7 +134,7 @@ class CommentServiceTest extends BaseTest {
     @DisplayName("없는 댓글 삭제 시도")
     void delete_wrong_comment_id() {
         try {
-            commentService.delete(wrongCommentRequestDto, userSession);
+            commentService.delete(wrongCommentRequestDto.getCommentId(), userSession);
         } catch (final CommentNotFoundException ignored) {}
         verify(commentRepository, never()).delete(any(Comment.class));
     }
@@ -143,7 +143,7 @@ class CommentServiceTest extends BaseTest {
     @DisplayName("남의 댓글 삭제 시도")
     void delete_fail_by_another_user() {
         try {
-            commentService.delete(commentRequestDto, wrongUserSession);
+            commentService.delete(commentRequestDto.getCommentId(), wrongUserSession);
         } catch (final UnauthorizedException ignored) {}
         verify(commentRepository, never()).delete(any(Comment.class));
     }
