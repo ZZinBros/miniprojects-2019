@@ -79,7 +79,6 @@
 
     if (requestScrollBar) {
         addElementsToScrollBar(requestScrollBar, '/friends-requests', addFriendRequest, notifyFriendRequest);
-        addElementsToScrollBar(friendsScrollBar, '/friends', addFriend, () => {
-        });
+        addElementsToScrollBar(friendsScrollBar, '/friends', addFriend, () => {});
     }
 })();
