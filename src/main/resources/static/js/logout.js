@@ -9,7 +9,7 @@
         };
 
         const logoutAnchor = document.getElementById('logout-anchor');
-        if (logoutAnchor !== null) {
+        if (logoutAnchor) {
             logoutAnchor.addEventListener('click', handleLogout);
         }
     }
