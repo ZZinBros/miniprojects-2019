@@ -10,7 +10,7 @@
     };
 
     const deleteBtn = document.getElementById("friend-btn");
-    if (deleteBtn !== null) {
+    if (deleteBtn) {
         deleteBtn.addEventListener("click", deleteFriend);
     }
 })();
