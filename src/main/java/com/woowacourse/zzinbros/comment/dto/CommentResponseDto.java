@@ -13,6 +13,7 @@ public class CommentResponseDto {
     private String errorMessage;
     private LocalDateTime createdDateTime;
     private LocalDateTime updatedDateTime;
+    private String profile;
 
     public CommentResponseDto() {
     }
@@ -24,6 +25,7 @@ public class CommentResponseDto {
         this.contents = comment.getContents();
         this.createdDateTime = comment.getCreatedDateTime();
         this.updatedDateTime = comment.getUpdatedDateTime();
+        this.profile = comment.getAuthor().getProfile().getUrl();
     }
 
     public CommentResponseDto(final Exception exception) {
@@ -86,5 +88,13 @@ public class CommentResponseDto {
 
     public void setUpdatedDateTime(final LocalDateTime updatedDateTime) {
         this.updatedDateTime = updatedDateTime;
+    }
+
+    public String getProfile() {
+        return profile;
+    }
+
+    public void setProfile(String profile) {
+        this.profile = profile;
     }
 }

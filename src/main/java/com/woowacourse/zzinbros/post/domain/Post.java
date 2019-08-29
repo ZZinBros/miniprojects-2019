@@ -1,7 +1,7 @@
 package com.woowacourse.zzinbros.post.domain;
 
 import com.woowacourse.zzinbros.common.domain.BaseEntity;
-import com.woowacourse.zzinbros.mediafile.MediaFile;
+import com.woowacourse.zzinbros.mediafile.domain.MediaFile;
 import com.woowacourse.zzinbros.post.exception.UnAuthorizedException;
 import com.woowacourse.zzinbros.user.domain.User;
 import org.hibernate.annotations.ColumnDefault;
@@ -11,8 +11,6 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 import static com.woowacourse.zzinbros.post.domain.DisplayStrategy.ALL;
 
@@ -27,9 +25,9 @@ public class Post extends BaseEntity {
     @JoinColumn(name = "author_id", foreignKey = @ForeignKey(name = "post_to_user"))
     private User author;
 
-    @OneToMany
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "media_file_id", foreignKey = @ForeignKey(name = "post_to_media_file"))
-    private List<MediaFile> mediaFiles = new ArrayList<>();
+    private MediaFile mediaFiles;
 
     @ManyToOne
     @OnDelete(action = OnDeleteAction.CASCADE)
@@ -82,7 +80,7 @@ public class Post extends BaseEntity {
     }
 
     public void addMediaFiles(MediaFile mediaFile) {
-        this.mediaFiles.add(mediaFile);
+        this.mediaFiles = mediaFile;
     }
 
     public void addLike() {
@@ -117,12 +115,8 @@ public class Post extends BaseEntity {
         return author;
     }
 
-    public List<MediaFile> getMediaFiles() {
-        return new ArrayList<>(mediaFiles);
-    }
-
-    public void setMediaFiles(List<MediaFile> mediaFiles) {
-        this.mediaFiles = mediaFiles;
+    public MediaFile getMediaFiles() {
+        return mediaFiles;
     }
 
     public int getCountOfLike() {

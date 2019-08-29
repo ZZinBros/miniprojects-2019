@@ -37,12 +37,11 @@ class FriendRepositoryTest extends BaseTest {
         friendRepository.save(new Friend(user3, user2));
         friend3 = friendRepository.save(new Friend(user3, user1));
         friendRepository.save(new Friend(user1, user3));
+        friendRepository.flush();
     }
 
     @Test
     void name() {
-        System.out.println(friendRepository.findAllByOwner(user1));
-
         assertThat(friendRepository.findAllByOwner(user1).size()).isEqualTo(2);
     }
 }

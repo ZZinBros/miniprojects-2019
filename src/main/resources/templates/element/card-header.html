@@ -1,7 +1,7 @@
 <div class="feed-header" xmlns:th="http://www.thymeleaf.org">
     <ul class="list-unstyled list-info">
         <li>
-            <img alt="" class="thumb-img img-circle" src="images/default/eastjun_profile.jpg">
+            <img alt="" class="thumb-img img-circle" th:src="${post.author.profile.url}">
             <div class="info">
                 <a class="title no-pdd-vertical text-semibold inline-block" href="" th:text="${post.author.name}">eastjun</a>
                 <span class="sub-title">15시간</span>
@@ -12,7 +12,7 @@
                 </a>
                 <ul class="dropdown-menu">
                     <li>
-                        <a class="pointer" th:attr="data-target='#post-edit-modal' + ${post.id}" data-toggle="modal">
+                        <a class="pointer" data-toggle="modal" th:attr="data-target='#post-edit-modal' + ${post.id}">
                             <i class="ti-pencil pdd-right-10 text-dark"></i>
                             <span class="">게시글 수정</span>
                         </a>
@@ -47,4 +47,6 @@
             })
             .catch(error => console.log(error));
     }
+
+
 </script>

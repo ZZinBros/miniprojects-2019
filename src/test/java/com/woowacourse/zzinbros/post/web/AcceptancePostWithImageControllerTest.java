@@ -1,6 +1,6 @@
 package com.woowacourse.zzinbros.post.web;
 
-import com.woowacourse.zzinbros.comment.AuthedWebTestClient;
+import com.woowacourse.zzinbros.common.domain.AuthedWebTestClient;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.io.ByteArrayResource;
 

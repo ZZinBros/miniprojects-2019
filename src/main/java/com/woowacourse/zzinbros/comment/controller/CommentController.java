@@ -35,8 +35,7 @@ public class CommentController {
     public ResponseEntity<CommentResponseDto> add(
             @PathVariable final Long postId,
             @RequestBody final CommentRequestDto requestDto,
-            @SessionInfo final UserSession userSession
-    ) {
+            @SessionInfo final UserSession userSession) {
         requestDto.setPostId(postId);
         final Comment comment = commentService.add(requestDto, userSession);
         final CommentResponseDto responseDto = new CommentResponseDto(comment);
@@ -48,8 +47,7 @@ public class CommentController {
             @PathVariable final Long postId,
             @PathVariable final Long commentId,
             @RequestBody final CommentRequestDto requestDto,
-            @SessionInfo final UserSession session
-    ) {
+            @SessionInfo final UserSession session) {
         requestDto.setPostId(postId);
         requestDto.setCommentId(commentId);
         final Comment comment = commentService.update(requestDto, session);
@@ -60,8 +58,7 @@ public class CommentController {
     @DeleteMapping("/{commentId}")
     public ResponseEntity<CommentResponseDto> delete(
             @PathVariable final Long commentId,
-            @SessionInfo final UserSession session
-    ) {
+            @SessionInfo final UserSession session) {
         commentService.delete(commentId, session);
         return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
     }
