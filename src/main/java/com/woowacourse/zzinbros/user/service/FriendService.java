@@ -104,4 +104,11 @@ public class FriendService {
         friendRepository.deleteByOwnerAndSlave(owner, friend);
         friendRepository.deleteByOwnerAndSlave(friend, owner);
     }
+
+    public void deleteFriendRequest(UserResponseDto loginUserDto, long friendId) {
+        User sender = userService.findLoggedInUser(loginUserDto);
+        User receiver = userService.findUserById(friendId);
+        friendRequestRepository.deleteBySenderAndReceiver(sender, receiver);
+        friendRequestRepository.deleteBySenderAndReceiver(receiver, sender);
+    }
 }
