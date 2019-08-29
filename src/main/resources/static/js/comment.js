@@ -11,8 +11,8 @@ const CommentApp = (function () {
                     </div>
                     <a aria-expanded="false" class="pointer absolute top-0 right-0" data-toggle="dropdown">
                     <span class="btn-icon text-dark">
-                                            <i class="ti-more font-size-16"></i>
-                                        </span>
+                        <i class="ti-more font-size-16"></i>
+                    </span>
                     </a>
                     <ul class="dropdown-menu">
                         <li>
@@ -33,7 +33,7 @@ const CommentApp = (function () {
                         <span>·</span>
                         <span class="pointer text-link-color">답글 달기</span>
                         <span>·</span>
-                        <span class="pointer">${comment.createdDateTime}</span>
+                        <span data-timestamp="${comment.createdDateTime}" class="pointer timestamp">${comment.createdDateTime}</span>
                     </div>
                 </div>
                 <div class="comment-input bg-lightgray border-radius-18 padding-10 max-width-100" style="display: none;">
@@ -96,6 +96,7 @@ const CommentApp = (function () {
                    const comments = event.target.closest(".comment").querySelector(".comment-items");
                    comments.insertAdjacentHTML('beforeend', commentTemplate(createdComment));
                    commentTextArea.value = "";
+                   updateTimeStrings();
                });
         };
 
