@@ -5,11 +5,21 @@
 
     const addFriendRequest = (element, req) => {
 
-        const handleSubmit = (event) => {
+        const handleAddFriend = (event) => {
             const requestFriendId = event.target.parentElement.value;
             Api.post('/friends', {requestFriendId})
                 .then(res => {
                     if (res.redirected) {
+                        window.location.reload();
+                    }
+                });
+        };
+
+        const handleDeleteFriendRequest = (event) => {
+            const requestFriendId = event.target.parentElement.value;
+            Api.delete('/friends-requests/' + requestFriendId)
+                .then(res => {
+                    if (res.ok) {
                         window.location.reload();
                     }
                 });
@@ -23,11 +33,15 @@
 
         li.insertAdjacentElement('afterbegin', span);
 
-        const submitBtn = document.createElement('button');
-        submitBtn.innerText = '추가';
-        submitBtn.addEventListener('click', handleSubmit);
+        const addBtn = document.createElement('button');
+        addBtn.innerText = '추가';
+        addBtn.addEventListener('click', handleAddFriend);
+        const rejectBtn = document.createElement('button');
+        rejectBtn.innerText = '거절';
+        rejectBtn.addEventListener('click', handleDeleteFriendRequest);
 
-        li.insertAdjacentElement('beforeend', submitBtn);
+        li.insertAdjacentElement('beforeend', addBtn);
+        li.insertAdjacentElement('beforeend', rejectBtn);
 
         element.insertAdjacentElement('beforeend', li);
     };
@@ -65,6 +79,7 @@
 
     if (requestScrollBar !== null) {
         addElementsToScrollBar(requestScrollBar, '/friends-requests', addFriendRequest, notifyFriendRequest);
-        addElementsToScrollBar(friendsScrollBar, '/friends', addFriend, () => {});
+        addElementsToScrollBar(friendsScrollBar, '/friends', addFriend, () => {
+        });
     }
 })();
