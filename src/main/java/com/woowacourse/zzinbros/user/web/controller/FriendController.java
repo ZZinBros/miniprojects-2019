@@ -47,6 +47,6 @@ public class FriendController {
             @PathVariable("id") long id) {
         final UserResponseDto loginUserDto = userSession.getDto();
         friendService.deleteFriends(loginUserDto, id);
-        return new ResponseEntity<>(null, HttpStatus.OK);
+        return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
     }
 }
