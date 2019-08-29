@@ -17,10 +17,11 @@ spring:
 logging.level:
     root: warn
     sql: debug
+    web: debug
     com.woowacourse.zzinbros: debug
     org.springframework.boot.test: debug
     org.hibernate.type.descriptor.sql: trace
 logback.access:
     enabled: true
-    config: "classpath:logback-access.xml"
+    config: "classpath:logback-access-full.xml"
 server.servlet.session.persistent: false
