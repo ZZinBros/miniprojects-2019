@@ -10,7 +10,7 @@
     };
 
     const friendAddBtn = document.getElementById("add-friend-btn");
-    if (friendAddBtn !== null) {
+    if (friendAddBtn) {
         friendAddBtn.addEventListener('click', sendFriendRequest);
     }
 })();
