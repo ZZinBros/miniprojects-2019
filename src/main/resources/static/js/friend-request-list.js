@@ -1,4 +1,7 @@
 (function() {
+    const scrollBar = document.getElementById('requests-scroll-bar');
+    const notificationLabel = document.getElementById('friend-requests-notification');
+
     const handleSubmit = (event) => {
         const requestFriendId = event.target.parentElement.value;
         Api.post('/friends', {requestFriendId})
@@ -30,10 +33,16 @@
     const addFriendRequests = (element) => {
         Api.get('/friends-requests')
             .then(res => res.json())
-            .then(array => array.forEach((json) => addFriendRequest(element, json)));
+            .then(array => {
+                if (array.length > 0) {
+                    array.forEach((json) => addFriendRequest(element, json));
+                    const span = document.createElement('span');
+                    span.classList.add('dot', 'mrg-vertical-10', 'mrg-horizon-15');
+                    notificationLabel.insertAdjacentElement('beforeend', span);
+                }
+            });
     };
 
-    const scrollBar = document.getElementById('requests-scroll-bar');
     if (scrollBar !== null) {
         addFriendRequests(scrollBar);
     }
