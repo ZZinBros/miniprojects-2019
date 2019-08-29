@@ -1,5 +1,6 @@
 package com.woowacourse.zzinbros.post.service;
 
+import com.woowacourse.zzinbros.post.domain.DisplayStrategy;
 import com.woowacourse.zzinbros.post.domain.Post;
 import com.woowacourse.zzinbros.post.domain.PostLike;
 import com.woowacourse.zzinbros.post.domain.SharedPost;
@@ -10,27 +11,29 @@ import com.woowacourse.zzinbros.post.dto.PostRequestDto;
 import com.woowacourse.zzinbros.post.exception.PostNotFoundException;
 import com.woowacourse.zzinbros.post.exception.UnAuthorizedException;
 import com.woowacourse.zzinbros.user.domain.User;
+import com.woowacourse.zzinbros.user.service.FriendService;
 import com.woowacourse.zzinbros.user.service.UserService;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Service
 public class PostService {
     private final UserService userService;
+    private final FriendService friendService;
     private final PostRepository postRepository;
     private final PostLikeRepository postLikeRepository;
     private final SharedPostRepository sharedPostRepository;
 
     public PostService(UserService userService,
+                       FriendService friendService,
                        PostRepository postRepository,
                        PostLikeRepository postLikeRepository,
                        SharedPostRepository sharedPostRepository) {
         this.userService = userService;
+        this.friendService = friendService;
         this.postRepository = postRepository;
         this.postLikeRepository = postLikeRepository;
         this.sharedPostRepository = sharedPostRepository;
@@ -75,12 +78,35 @@ public class PostService {
         throw new UnAuthorizedException("작성자만 삭제할 수 있습니다.");
     }
 
-    public List<Post> readAll(Sort sort) {
-        return Collections.unmodifiableList(postRepository.findAll(sort));
+    public List<Post> readAll(long userId, Sort sort) {
+        User loginUser = userService.findUserById(userId);
+        Set<User> friends = friendService.findFriendEntitiesByUser(userId);
+        List<Post> posts = postRepository.findAllByDisplayStrategy(DisplayStrategy.ALL, sort);
+
+        for (User friend : friends) {
+            posts.addAll(postRepository.findAllByDisplayStrategyAndAuthor(DisplayStrategy.FRIEND, friend, sort));
+        }
+
+        posts.addAll(postRepository.findAllByDisplayStrategyAndAuthor(DisplayStrategy.ONLY_ME, loginUser, sort));
+
+        posts.sort(Comparator.comparing(Post::getCreateDateTime).reversed());
+        return Collections.unmodifiableList(posts);
     }
 
-    public List<Post> readAllByUser(User user, Sort sort) {
-        return Collections.unmodifiableList(postRepository.findAllByAuthor(user, sort));
+    public List<Post> readAllByUser(User user, long loginUserId, Sort sort) {
+        List<Post> posts = new ArrayList<>();
+        if (user.getId() == loginUserId) {
+            posts.addAll(postRepository.findAllByAuthor(user, sort));
+            return Collections.unmodifiableList(posts);
+        }
+
+        posts.addAll(postRepository.findAllByDisplayStrategyAndAuthor(DisplayStrategy.ALL, user, sort));
+        if (friendService.isMyFriend(loginUserId, user.getId())) {
+            posts.addAll(postRepository.findAllByDisplayStrategyAndAuthor(DisplayStrategy.FRIEND, user, sort));
+        }
+
+        posts.sort(Comparator.comparing(Post::getCreateDateTime).reversed());
+        return Collections.unmodifiableList(posts);
     }
 
     @Transactional
