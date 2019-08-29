@@ -1,6 +1,6 @@
 const TIMESTAMP_UPDATE_INTERVAL = 10000; // 10초마다 글자 업데이트
 
-// Moment 라이브러리의 로케일 설정
+// Moment 라이브러리의 전역 로케일 설정
 moment.locale(document.documentElement.lang);
 
 const updateTimeStrings = () => {
