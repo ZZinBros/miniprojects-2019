@@ -33,7 +33,7 @@ const CommentApp = (function () {
                         <span>·</span>
                         <span class="pointer text-link-color">답글 달기</span>
                         <span>·</span>
-                        <span class="pointer">${comment.createdDateTime}</span>
+                        <span>${comment.createdDateTime}</span>
                     </div>
                 </div>
                 <div class="comment-input bg-lightgray border-radius-18 padding-10 max-width-100" style="display: none;">
@@ -44,15 +44,38 @@ const CommentApp = (function () {
             </li>`
     };
 
+    //TODO: 이전 댓글 가져오는 기능 차후에 추가
+    const showPassedCommentBtn = `<span class="passed-comment-pointer pointer text-link-color margin-20">
+                  이전 댓글 보기
+                </span>`
+
     const CommentController = function () {
         const commentService = new CommentService();
-        const commentsItems = document.getElementsByClassName("comment-items");
+        const commentsItems = document.getElementsByClassName('comment-items');
+
+        const initComments = function () {
+            const posts = document.getElementsByClassName('post');
+
+            for (let post of posts) {
+                let postId = post.dataset.postId;
+
+                Api.get(`/posts/${postId}/comments`)
+                    .then(res => res.json())
+                    .then(fetchedComments => {
+                        const commentItems = post.querySelector('.comment-items');
+
+                        for (let comment of fetchedComments) {
+                            commentItems.insertAdjacentHTML('beforeend', commentTemplate(comment));
+                        }
+                })
+            }
+        }
 
         const addComment = function () {
             const commentAddBtns = document.getElementsByClassName('comment-add-btn');
 
             Array.from(commentAddBtns)
-                 .map(commentAddBtn => commentAddBtn.addEventListener('click', commentService.add));
+                 .map(commentAddBtn => commentAddBtn.addEventListener('click', commentService.addComment));
         };
 
         const editComment = function () {
@@ -61,7 +84,7 @@ const CommentApp = (function () {
             Array.from(commentsItems)
                  .map(commentItem => commentItem.addEventListener('click', commentService.cancelEditMode));
             Array.from(commentsItems)
-                 .map(commentItem => commentItem.addEventListener('click', commentService.edit));
+                 .map(commentItem => commentItem.addEventListener('click', commentService.editComment));
         };
 
         const deleteComment = function () {
@@ -70,6 +93,7 @@ const CommentApp = (function () {
         };
 
         const init = function () {
+            initComments();
             addComment();
             editComment();
             deleteComment();
@@ -81,7 +105,7 @@ const CommentApp = (function () {
     };
 
     const CommentService = function () {
-        const add = function (event) {
+        const addComment = function (event) {
             event.stopPropagation();
 
             const parentPost = event.target.closest(".card");
@@ -124,7 +148,7 @@ const CommentApp = (function () {
             commentInput.setAttribute('style', 'display: none');
         };
 
-        const edit = function (event) {
+        const editComment = function (event) {
             if (event.target.classList.contains('edit-pointer')) {
                 const postId = event.target.closest('.post').dataset.postId;
                 const commentItem = event.target.closest('.comment-item');
@@ -159,10 +183,10 @@ const CommentApp = (function () {
         };
 
         return {
-            add,
+            addComment,
             editMode,
             cancelEditMode,
-            edit,
+            editComment,
             deleteComment
         }
     };
