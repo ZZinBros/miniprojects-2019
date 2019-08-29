@@ -80,7 +80,7 @@
 //        given(userService.findUserById(BASE_ID)).willReturn(baseUser);
 //        given(postService.readAllByUser(baseUser, by(Sort.Direction.DESC, "createdDateTime")))
 //                .willReturn(posts);
-//        given(friendService.findFriendsByUser(BASE_ID)).willReturn(friends);
+//        given(friendService.findFriendsByUserId(BASE_ID)).willReturn(friends);
 //
 //        mockMvc.perform(get("/posts?author=" + BASE_ID))
 //                .andExpect(status().isOk());

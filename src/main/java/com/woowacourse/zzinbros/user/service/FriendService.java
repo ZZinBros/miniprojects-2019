@@ -53,9 +53,13 @@ public class FriendService {
         friendRepository.save(new Friend(receiver, sender));
     }
 
-    public Set<UserResponseDto> findFriendsByUser(final long id) {
+    public Set<UserResponseDto> findFriendsByUserId(final long id) {
         User owner = userService.findUserById(id);
         return this.friendToUserResponseDto(friendRepository.findAllByOwner(owner));
+    }
+
+    public Set<UserResponseDto> findFriendsByUser(UserResponseDto loginUserDto) {
+        return findFriendsByUserId(loginUserDto.getId());
     }
 
     public Set<UserResponseDto> findFriendRequestsByUser(final UserResponseDto loginUserDto) {

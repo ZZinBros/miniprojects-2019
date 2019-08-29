@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Set;
+
 @Controller
 @RequestMapping("/friends")
 public class FriendController {
@@ -18,6 +20,14 @@ public class FriendController {
 
     public FriendController(FriendService friendService) {
         this.friendService = friendService;
+    }
+
+    @GetMapping
+    @ResponseBody
+    public ResponseEntity<Set<UserResponseDto>> getFriends(@SessionInfo UserSession userSession) {
+        final UserResponseDto loginUserDto = userSession.getDto();
+        Set<UserResponseDto> friends = friendService.findFriendsByUser(loginUserDto);
+        return new ResponseEntity<>(friends, HttpStatus.OK);
     }
 
     @PostMapping
@@ -32,7 +42,7 @@ public class FriendController {
 
     @DeleteMapping("/{id}")
     @ResponseBody
-    public ResponseEntity<UserResponseDto> requestFriend(
+    public ResponseEntity<UserResponseDto> deleteFriend(
             @SessionInfo UserSession userSession,
             @PathVariable("id") long id) {
         final UserResponseDto loginUserDto = userSession.getDto();
