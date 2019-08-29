@@ -33,7 +33,7 @@ const CommentApp = (function () {
                         <span>·</span>
                         <span class="pointer text-link-color">답글 달기</span>
                         <span>·</span>
-                        <span data-timestamp="${comment.createdDateTime}" class="timestamp">${comment.createdDateTime}</span>
+                        <time datetime="${comment.createdDateTime}">${comment.createdDateTime}</time>
                     </div>
                 </div>
                 <div class="comment-input bg-lightgray border-radius-18 padding-10 max-width-100" style="display: none;">
@@ -44,10 +44,7 @@ const CommentApp = (function () {
             </li>`
     };
 
-    //TODO: 이전 댓글 가져오는 기능 차후에 추가
-    const showPassedCommentBtn = `<span class="passed-comment-pointer pointer text-link-color margin-20">
-                  이전 댓글 보기
-                </span>`
+    const showPassedCommentBtn = `<span class="passed-comment-pointer pointer text-link-color margin-20">이전 댓글 보기</span>`;
 
     const CommentController = function () {
         const commentService = new CommentService();
@@ -63,13 +60,13 @@ const CommentApp = (function () {
                     .then(res => res.json())
                     .then(fetchedComments => {
                         const commentItems = post.querySelector('.comment-items');
-
                         for (let comment of fetchedComments) {
                             commentItems.insertAdjacentHTML('beforeend', commentTemplate(comment));
                         }
+                        updateTimeStrings();
                 })
             }
-        }
+        };
 
         const addComment = function () {
             const commentAddBtns = document.getElementsByClassName('comment-add-btn');
@@ -99,9 +96,7 @@ const CommentApp = (function () {
             deleteComment();
         };
 
-        return {
-            init: init
-        }
+        return { init };
     };
 
     const CommentService = function () {
@@ -189,7 +184,7 @@ const CommentApp = (function () {
             cancelEditMode,
             editComment,
             deleteComment
-        }
+        };
     };
 
     const init = function () {
@@ -197,9 +192,7 @@ const CommentApp = (function () {
         commentController.init();
     };
 
-    return {
-        init
-    };
+    return { init };
 })();
 
 CommentApp.init();
