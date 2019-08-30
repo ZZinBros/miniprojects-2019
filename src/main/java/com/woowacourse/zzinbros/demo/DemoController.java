@@ -6,9 +6,16 @@ import com.woowacourse.zzinbros.user.service.UserService;
 import com.woowacourse.zzinbros.user.web.support.SessionInfo;
 import com.woowacourse.zzinbros.user.web.support.UserSession;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 
 import static org.springframework.data.domain.Sort.Direction;
 import static org.springframework.data.domain.Sort.by;
@@ -35,5 +42,11 @@ public class DemoController {
     @GetMapping("/entrance")
     public String enter() {
         return "entrance";
+    }
+
+    @RequestMapping(path = "/time", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseBody
+    public String timeService() {
+        return "\"" + ZonedDateTime.now().format(DateTimeFormatter.ISO_OFFSET_DATE_TIME) + "\"";
     }
 }
