@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.time.OffsetDateTime;
+import java.time.Instant;
 
 import static org.springframework.data.domain.Sort.Direction;
 import static org.springframework.data.domain.Sort.by;
@@ -43,9 +43,11 @@ public class DemoController {
         return "entrance";
     }
 
-    @RequestMapping(path = "/time", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(path = "/datetime", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public String timeService() {
-        return "\"" + OffsetDateTime.now().toString() + "\"";
+    public String datetimeService() {
+        return "{ \"datetime\": \""
+                + Instant.now().toString()
+                + "\" }";
     }
 }
