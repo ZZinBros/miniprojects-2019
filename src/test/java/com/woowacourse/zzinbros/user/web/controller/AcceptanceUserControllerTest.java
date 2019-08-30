@@ -24,7 +24,7 @@ public class AcceptanceUserControllerTest extends AuthedWebTestClient {
                         .with("name", "abc"))
                 .exchange()
                 .expectStatus().is3xxRedirection()
-                .expectHeader().valueMatches("Location", ".*/entrance");
+                .expectHeader().valueMatches("Location", ".*/entrance.*");
     }
 
     @Test
@@ -35,7 +35,7 @@ public class AcceptanceUserControllerTest extends AuthedWebTestClient {
                         .with("name", "abc"))
                 .exchange()
                 .expectStatus().is3xxRedirection()
-                .expectHeader().valueMatches("Location", ".*/entrance");
+                .expectHeader().valueMatches("Location", ".*/entrance.*");
     }
 
     @Test
