@@ -45,8 +45,7 @@ public class AcceptanceUserControllerTest extends AuthedWebTestClient {
                         .with("email", "test@test.com")
                         .with("password", "12345678"))
                 .exchange()
-                .expectStatus().is3xxRedirection()
-                .expectHeader().valueMatches("Location", ".*(/)");
+                .expectStatus().isOk();
 
         put("/users/777", MediaType.APPLICATION_FORM_URLENCODED)
                 .body(BodyInserters.fromFormData("name", "test")
@@ -62,7 +61,6 @@ public class AcceptanceUserControllerTest extends AuthedWebTestClient {
                         .with("email", "test@test.com")
                         .with("password", "12345678"))
                 .exchange()
-                .expectStatus().is3xxRedirection()
-                .expectHeader().valueMatches("Location", ".*/users/.*");
+                .expectStatus().isAccepted();
     }
 }

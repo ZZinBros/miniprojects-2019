@@ -3,9 +3,7 @@ package com.woowacourse.zzinbros.user.web.controller;
 import com.woowacourse.zzinbros.common.config.upload.UploadTo;
 import com.woowacourse.zzinbros.common.config.upload.UploadedFile;
 import com.woowacourse.zzinbros.user.domain.User;
-import com.woowacourse.zzinbros.user.dto.UserRequestDto;
-import com.woowacourse.zzinbros.user.dto.UserResponseDto;
-import com.woowacourse.zzinbros.user.dto.UserUpdateDto;
+import com.woowacourse.zzinbros.user.dto.*;
 import com.woowacourse.zzinbros.user.exception.UserException;
 import com.woowacourse.zzinbros.user.service.UserService;
 import com.woowacourse.zzinbros.user.web.exception.UserRegisterException;
@@ -21,6 +19,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Controller
 @RequestMapping("/users")
 public class UserController {
+    private static final String UPDATE_SUCCESS_MESSAGE = "Modification Success";
+
     private final UserService userService;
     private final LoginSessionManager loginSessionManager;
 
@@ -53,16 +53,18 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public String modify(@PathVariable Long id,
-                         UserUpdateDto userUpdateDto,
-                         @SessionInfo UserSession userSession,
-                         @UploadedFile UploadTo uploadTo) {
+    public ResponseEntity<ModifyResponseMessage<UserResponseDto>> modify(@PathVariable Long id,
+                                                                   UserUpdateDto userUpdateDto,
+                                                                   @SessionInfo UserSession userSession,
+                                                                   @UploadedFile UploadTo uploadTo) {
         try {
             UserResponseDto user = userService.modify(id, userUpdateDto, userSession.getDto(), uploadTo);
             loginSessionManager.setLoginSession(user);
-            return "redirect:/";
+            ModifyResponseMessage<UserResponseDto> message = ModifyResponseMessage.of(user, UPDATE_SUCCESS_MESSAGE);
+            return new ResponseEntity<>(message, HttpStatus.OK);
         } catch (UserException e) {
-            return "redirect:/users/" + id;
+            ModifyResponseMessage<UserResponseDto> message = ModifyResponseMessage.of(null, e.getMessage());
+            return new ResponseEntity<>(message, HttpStatus.ACCEPTED);
         }
     }
 
