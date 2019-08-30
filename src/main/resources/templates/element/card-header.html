@@ -32,9 +32,7 @@
 
 <script type="text/javascript">
     function onDeleteClick(id) {
-        const url = document.location.href;
-
-        fetch(url + "/posts/" + id, {
+        fetch("/posts/" + id, {
                 method: "DELETE",
                 headers: {
                     "Accept": "application/json",
@@ -45,7 +43,9 @@
             .then(body => {
                 location.reload();
             })
-            .catch(error => console.log(error));
+            .catch(error => {
+                console.log(error)
+            });
     }
 
 
