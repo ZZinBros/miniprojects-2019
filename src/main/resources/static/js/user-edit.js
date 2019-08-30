@@ -3,6 +3,8 @@
     const nameInput = document.getElementById('user-edit-name');
     const emailInput = document.getElementById('user-edit-email');
     const loginNameSpan = document.querySelector('.user-info span');
+    const messagePart = document.querySelector('#user-edit-message');
+    const messageAdder = new MessageAdder('beforeend');
 
     const updateBtnHandler = (event) => {
         event.preventDefault();
@@ -19,15 +21,13 @@
                             nameInput.value = object.name;
                             emailInput.value = object.email;
                             loginNameSpan.innerText = object.name;
-                            window.alert(json.message);
+                            messageAdder.add(messagePart, json.message);
                         });
                 }
                 if (res.status === 202) {
                     res.json()
                         .then(json => {
-                            nameInput.value = name;
-                            emailInput.value = email;
-                            window.alert(json.message);
+                            messageAdder.add(messagePart, json.message);
                         });
                 }
             });
