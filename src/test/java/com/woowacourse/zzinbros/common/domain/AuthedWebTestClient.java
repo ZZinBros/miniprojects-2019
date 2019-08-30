@@ -17,6 +17,7 @@ public abstract class AuthedWebTestClient extends BaseTest {
 
     @Autowired
     protected WebTestClient webTestClient;
+
     @Autowired
     protected UserRepository userRepository;
 
