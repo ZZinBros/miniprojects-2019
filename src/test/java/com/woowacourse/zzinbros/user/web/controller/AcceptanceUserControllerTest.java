@@ -1,9 +1,11 @@
 package com.woowacourse.zzinbros.user.web.controller;
 
 import com.woowacourse.zzinbros.common.domain.AuthedWebTestClient;
+import com.woowacourse.zzinbros.user.dto.UserUpdateDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.BodyInserters;
+import reactor.core.publisher.Mono;
 
 public class AcceptanceUserControllerTest extends AuthedWebTestClient {
 
@@ -40,26 +42,20 @@ public class AcceptanceUserControllerTest extends AuthedWebTestClient {
 
     @Test
     void 개인정보_수정() {
-        put("/users/777", MediaType.APPLICATION_FORM_URLENCODED)
-                .body(BodyInserters.fromFormData("name", "edited")
-                        .with("email", "test@test.com")
-                        .with("password", "12345678"))
+        put("/users/777", MediaType.APPLICATION_JSON_UTF8)
+                .body(Mono.just(new UserUpdateDto("edited", "test@test.com")), UserUpdateDto.class)
                 .exchange()
                 .expectStatus().isOk();
 
-        put("/users/777", MediaType.APPLICATION_FORM_URLENCODED)
-                .body(BodyInserters.fromFormData("name", "test")
-                        .with("email", "test@test.com")
-                        .with("password", "12345678"))
+        put("/users/777", MediaType.APPLICATION_JSON_UTF8)
+                .body(Mono.just(new UserUpdateDto("test", "test@test.com")), UserUpdateDto.class)
                 .exchange();
     }
 
     @Test
     void 다른_유저_정보_수정() {
-        put("/users/999", MediaType.APPLICATION_FORM_URLENCODED)
-                .body(BodyInserters.fromFormData("name", "edited")
-                        .with("email", "test@test.com")
-                        .with("password", "12345678"))
+        put("/users/999", MediaType.APPLICATION_JSON_UTF8)
+                .body(Mono.just(new UserUpdateDto("edited", "test@test.com")), UserUpdateDto.class)
                 .exchange()
                 .expectStatus().isAccepted();
     }

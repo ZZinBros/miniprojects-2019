@@ -18,6 +18,8 @@ public class User extends BaseEntity {
     private static final int MIN_PASSWORD_LENGTH = 8;
     private static final int MAX_PASSWORD_LENGTH = 30;
     private static final String EMAIL_PATTERN = "^.+@.+$";
+    private static final String NAME_LENGTH_ERROR_MESSAGE = "길이가 %d 이상 %d 미만이어야 합니다";
+    private static final String EMAIL_PATTERN_ERROR_MESSAGE = "이메일 형식으로 입력해주세요";
 
     @Column(name = "name", length = 20, nullable = false)
     private String name;
@@ -53,14 +55,14 @@ public class User extends BaseEntity {
 
     private void validateLength(String name, int minNameLength, int maxNameLength) {
         if (!matchLength(name, minNameLength, maxNameLength)) {
-            String message = String.format("길이가 %d 이상 %d 미만이어야 합니다", MIN_NAME_LENGTH, MAX_NAME_LENGTH);
+            String message = String.format(NAME_LENGTH_ERROR_MESSAGE, MIN_NAME_LENGTH, MAX_NAME_LENGTH);
             throw new IllegalUserArgumentException(message);
         }
     }
 
     private void validatePattern(String element, String pattern) {
         if (!matchRegex(element, pattern)) {
-            throw new IllegalUserArgumentException();
+            throw new IllegalUserArgumentException(EMAIL_PATTERN_ERROR_MESSAGE);
         }
     }
 
@@ -75,6 +77,8 @@ public class User extends BaseEntity {
     }
 
     public void update(User updatedUser) {
+        validateLength(updatedUser.name, MIN_NAME_LENGTH, MAX_NAME_LENGTH);
+        validatePattern(updatedUser.email, EMAIL_PATTERN);
         this.name = updatedUser.name;
         this.email = updatedUser.email;
         this.password = updatedUser.password;

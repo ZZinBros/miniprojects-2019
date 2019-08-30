@@ -54,7 +54,7 @@ public class UserController {
 
     @PutMapping("/{id}")
     public ResponseEntity<ModifyResponseMessage<UserResponseDto>> modify(@PathVariable Long id,
-                                                                   UserUpdateDto userUpdateDto,
+                                                                   @RequestBody UserUpdateDto userUpdateDto,
                                                                    @SessionInfo UserSession userSession,
                                                                    @UploadedFile UploadTo uploadTo) {
         try {
