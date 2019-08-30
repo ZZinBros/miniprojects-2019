@@ -41,7 +41,9 @@
             </div>
         </div>
         <div class="form-group text-right">
-            <button class="btn btn-tecobook btn-lg btn-rounded " type="submit">가입하기</button>
+            <span class="text-right" th:if="${successRegister}">회원 가입 성공!</span>
+            <span class="text-right default-color3" th:if="${errorMessage}" th:text="${errorMessage}"></span>
+            <button class="btn btn-tecobook btn-lg btn-rounded mrg-left-20" type="submit">가입하기</button>
         </div>
     </form>
 </div>
