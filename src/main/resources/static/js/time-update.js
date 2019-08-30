@@ -1,27 +1,31 @@
-const TIMESTAMP_UPDATE_INTERVAL = moment.duration({seconds: 30}); // 30초마다 글자 업데이트
+const UPDATE_INTERVAL = 10; // 10초마다 글자 업데이트
+const SECOND = "second";
 
-// Moment 라이브러리의 전역 로케일 설정
-// TODO: document.documentElement.lang 사용 - 모든 페이지에 언어 설정 필요
-moment.locale("ko");
+// 가벼운 시간 라이브러리인 Day.js 사용 https://github.com/iamkun/dayjs
+// 전역 한국어 로케일 설정 및 상대 시간 출력 플러그인 적용
+dayjs.locale("ko");
+dayjs.extend(dayjs_plugin_relativeTime);
 
 let serverTime;
 
 const getServerTime = () => {
     fetch("/datetime")
         .then(response => response.json())
-        .then(datetime => { serverTime = moment(datetime.datetime); })
-        .catch(ignored => { serverTime = moment(); }); // fallback
+        .then(datetime => { serverTime = dayjs(datetime.datetime); })
+        .catch(ignored => { serverTime = dayjs(); }); // fallback
 };
 
 const addIntervalToServerTime = () => {
     if (!serverTime) getServerTime();
-    else serverTime = moment(serverTime).add(TIMESTAMP_UPDATE_INTERVAL);
+    else serverTime = dayjs(serverTime).add(UPDATE_INTERVAL, SECOND);
 };
 
 const updateTimeStrings = () => {
     const timeStamps = document.getElementsByTagName("time");
     for (let timeStamp of timeStamps) {
-        timeStamp.textContent = moment(timeStamp.dateTime).from(serverTime);
+        timeStamp.textContent = dayjs(timeStamp.dateTime)
+            .subtract(UPDATE_INTERVAL, SECOND)
+            .from(serverTime);
     }
 };
 
@@ -30,7 +34,4 @@ const updateTimeStringsInterval = () => {
     updateTimeStrings();
 };
 
-// 페이지 처음 로딩시 실행
-getServerTime();
-updateTimeStrings();
-setInterval(updateTimeStringsInterval, TIMESTAMP_UPDATE_INTERVAL.asMilliseconds());
+setInterval(updateTimeStringsInterval, UPDATE_INTERVAL * 1000);
