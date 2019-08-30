@@ -12,4 +12,5 @@
             <th:block th:replace="layout/entrance/login-area"></th:block>
         </ul>
     </div>
+    <div class="text-right pdd-right-100" th:if="${loginErrorMessage}" th:text="${loginErrorMessage}"></div>
 </header>
