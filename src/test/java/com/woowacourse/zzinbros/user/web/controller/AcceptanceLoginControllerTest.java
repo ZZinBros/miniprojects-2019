@@ -25,6 +25,6 @@ public class AcceptanceLoginControllerTest extends AuthedWebTestClient {
                         .with("name", "hack"))
                 .exchange()
                 .expectStatus().is3xxRedirection()
-                .expectHeader().valueMatches("Location", ".*/entrance");
+                .expectHeader().valueMatches("Location", ".*/entrance.*");
     }
 }
