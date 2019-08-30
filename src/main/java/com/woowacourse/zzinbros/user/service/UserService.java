@@ -38,16 +38,20 @@ public class UserService {
         throw new EmailAlreadyExistsException("중복된 이메일이 존재합니다");
     }
 
-    public User modify(long id,
-                       UserUpdateDto userUpdateDto,
-                       UserResponseDto loginUserDto,
-                       UploadTo uploadTo) {
+    public UserResponseDto modify(long id,
+                                  UserUpdateDto userUpdateDto,
+                                  UserResponseDto loginUserDto,
+                                  UploadTo uploadTo) {
         User user = findUser(id);
         User loggedInUser = findUserByEmail(loginUserDto.getEmail());
         if (loggedInUser.isAuthor(user)) {
             MediaFile mediaFile = mediaFileService.register(uploadTo);
             user.update(userUpdateDto.toEntity(loggedInUser.getPassword(), mediaFile));
-            return user;
+            return new UserResponseDto(
+                    user.getId(),
+                    user.getName(),
+                    user.getEmail(),
+                    mediaFile.getUrl());
         }
         throw new NotValidUserException("수정할 수 없는 이용자입니다");
     }

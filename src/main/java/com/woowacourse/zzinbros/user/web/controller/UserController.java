@@ -58,9 +58,8 @@ public class UserController {
                          @SessionInfo UserSession userSession,
                          @UploadedFile UploadTo uploadTo) {
         try {
-            User user = userService.modify(id, userUpdateDto, userSession.getDto(), uploadTo);
-            UserResponseDto newLoginUserDto = new UserResponseDto(user.getId(), user.getName(), user.getEmail(), user.getProfile().getUrl());
-            loginSessionManager.setLoginSession(newLoginUserDto);
+            UserResponseDto user = userService.modify(id, userUpdateDto, userSession.getDto(), uploadTo);
+            loginSessionManager.setLoginSession(user);
             return "redirect:/";
         } catch (UserException e) {
             return "redirect:/users/" + id;

@@ -96,16 +96,23 @@ class UserServiceTest extends BaseTest {
     void updateUser() {
         given(userRepository.findById(BASE_ID)).willReturn(Optional.ofNullable(user));
         given(userRepository.findByEmail(validLoginUserDto.getEmail())).willReturn(Optional.ofNullable(user));
+        given(mediaFileService.register(any())).willReturn(mediaFile);
 
-        User updatedUser = userService.modify(BASE_ID, userUpdateDto, validLoginUserDto, DEFAULT_PROFILE);
-        assertThat(updatedUser).isEqualTo(user);
+        UserResponseDto updatedUser = userService.modify(BASE_ID, userUpdateDto, validLoginUserDto, DEFAULT_PROFILE);
+        assertThat(updatedUser).isEqualTo(new UserResponseDto(
+                user.getId(),
+                user.getName(),
+                user.getEmail(),
+                user.getProfile().getUrl()));
     }
 
     @Test
     @DisplayName("다른 유저가 수정 시도할 때 에외 발생")
     void updateUserWhenNotValid() {
         given(userRepository.findById(BASE_ID)).willReturn(Optional.ofNullable(user));
-        given(userRepository.findByEmail(notValidLoginUserDto.getEmail())).willReturn(Optional.ofNullable(notValidUser));
+        given(userRepository.findByEmail(notValidLoginUserDto.getEmail()))
+                .willReturn(Optional.ofNullable(notValidUser));
+        given(mediaFileService.register(any())).willReturn(mediaFile);
 
         assertThatThrownBy(() -> userService.modify(BASE_ID, userUpdateDto, notValidLoginUserDto, DEFAULT_PROFILE))
                 .isInstanceOf(NotValidUserException.class);
