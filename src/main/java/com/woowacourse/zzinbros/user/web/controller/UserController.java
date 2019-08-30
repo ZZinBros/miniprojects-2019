@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/users")
@@ -40,9 +41,11 @@ public class UserController {
 
     @PostMapping
     public String register(UserRequestDto userRequestDto,
-                           @UploadedFile UploadTo uploadTo) {
+                           @UploadedFile UploadTo uploadTo,
+                           RedirectAttributes redirectAttr) {
         try {
             userService.register(userRequestDto, uploadTo);
+            redirectAttr.addFlashAttribute("successRegister", true);
             return "redirect:/entrance";
         } catch (UserException e) {
             throw new UserRegisterException(e.getMessage(), e);
