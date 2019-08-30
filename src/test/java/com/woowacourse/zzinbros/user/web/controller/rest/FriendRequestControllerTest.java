@@ -1,6 +1,6 @@
 package com.woowacourse.zzinbros.user.web.controller.rest;
 
-import com.woowacourse.zzinbros.comment.AuthedWebTestClient;
+import com.woowacourse.zzinbros.common.domain.AuthedWebTestClient;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
