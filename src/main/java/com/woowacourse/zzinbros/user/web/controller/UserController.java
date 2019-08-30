@@ -1,5 +1,7 @@
 package com.woowacourse.zzinbros.user.web.controller;
 
+import com.woowacourse.zzinbros.common.config.upload.UploadTo;
+import com.woowacourse.zzinbros.common.config.upload.UploadedFile;
 import com.woowacourse.zzinbros.user.domain.User;
 import com.woowacourse.zzinbros.user.dto.UserRequestDto;
 import com.woowacourse.zzinbros.user.dto.UserResponseDto;
@@ -37,9 +39,10 @@ public class UserController {
     }
 
     @PostMapping
-    public String register(UserRequestDto userRequestDto) {
+    public String register(UserRequestDto userRequestDto,
+                           @UploadedFile UploadTo uploadTo) {
         try {
-            userService.register(userRequestDto);
+            userService.register(userRequestDto, uploadTo);
             return "redirect:/entrance";
         } catch (UserException e) {
             throw new UserRegisterException(e.getMessage(), e);
@@ -49,10 +52,11 @@ public class UserController {
     @PutMapping("/{id}")
     public String modify(@PathVariable Long id,
                          UserUpdateDto userUpdateDto,
-                         @SessionInfo UserSession userSession) {
+                         @SessionInfo UserSession userSession,
+                         @UploadedFile UploadTo uploadTo) {
         try {
-            User user = userService.modify(id, userUpdateDto, userSession.getDto());
-            UserResponseDto newLoginUserDto = new UserResponseDto(user.getId(), user.getName(), user.getEmail());
+            User user = userService.modify(id, userUpdateDto, userSession.getDto(), uploadTo);
+            UserResponseDto newLoginUserDto = new UserResponseDto(user.getId(), user.getName(), user.getEmail(), user.getProfile().getUrl());
             loginSessionManager.setLoginSession(newLoginUserDto);
             return "redirect:/";
         } catch (UserException e) {

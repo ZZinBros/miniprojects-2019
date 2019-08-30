@@ -8,5 +8,9 @@
                 }
             });
     };
-    document.getElementById("add-friend-btn").addEventListener("click", sendFriendRequest);
+
+    const friendAddBtn = document.getElementById("add-friend-btn");
+    if (friendAddBtn) {
+        friendAddBtn.addEventListener('click', sendFriendRequest);
+    }
 })();

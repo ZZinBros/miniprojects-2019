@@ -1,8 +1,8 @@
 <li class="user-profile">
-    <a th:if="${session.loggedInUser}" th:href="@{'/posts?author=' + ${session.loggedInUser.id}}">
-        <img class="profile-img img-fluid" src="https://raw.githubusercontent.com/woowacourse/miniprojects/master/wootecobook/images/default/eastjun_profile.jpg" alt="">
+    <a th:href="@{'/posts?author=' + ${session.loggedInUser.id}}" th:if="${session.loggedInUser}">
+        <img alt="" class="profile-img img-fluid" th:src="${session.loggedInUser.profile}">
         <div class="user-info mrg-left-5">
-            <span th:text="${session.loggedInUser.name}" class="name pdd-right-5 text-white text-bold">eastjun</span>
+            <span class="name pdd-right-5 text-white text-bold" th:text="${session.loggedInUser.name}">eastjun</span>
         </div>
     </a>
 </li>

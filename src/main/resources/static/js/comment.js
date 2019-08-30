@@ -3,7 +3,7 @@
 const CommentApp = (function () {
     const commentTemplate = function (comment) {
         return `<li class="comment-item" data-comment-id="${comment.commentId}">
-                <img class="thumb-img img-circle" src="images/default/eastjun_profile.jpg" alt="">
+                <img class="thumb-img img-circle" src="${comment.profile}" alt="">
                 <div class="info">
                     <div class="bg-lightgray border-radius-18 padding-10 max-width-100">
                         <a href="" class="title text-bold inline-block text-link-color">${comment.authorName}</a>

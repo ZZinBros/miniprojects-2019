@@ -288,3 +288,9 @@ header ul.nav-left li {
     border-color: #757575;
     color: #fff
 }
+
+.scrollable-menu {
+    height: auto;
+    max-height: 200px;
+    overflow-x: hidden;
+}

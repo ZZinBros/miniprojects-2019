@@ -1,11 +1,12 @@
-<div th:if="${session.loggedInUser}" class="card" xmlns:th="http://www.w3.org/1999/xhtml">
+<div class="card" th:if="${session.loggedInUser}" xmlns:th="http://www.w3.org/1999/xhtml">
     <h5 class="card-title mrg-top-15 mrg-btm-0 mrg-horizon-15">유저 목록</h5>
     <div class="card-body">
         <ul class="list-unstyled list-info" th:each="user : ${users}">
             <li class="story-user-list mrg-btm-10">
-                <img class="thumb-img img-circle img-circle-blue" src="https://avatars2.githubusercontent.com/u/46308585?s=460&v=4" alt="">
+                <img alt="" class="thumb-img img-circle img-circle-blue" th:src="${user.profile}">
                 <div class="info mrg-left-5 pdd-top-5">
-                    <a th:href="'/posts?author=' + ${user.id}" class="title no-pdd-vertical text-semibold inline-block text-bold">
+                    <a class="title no-pdd-vertical text-semibold inline-block text-bold"
+                       th:href="'/posts?author=' + ${user.id}">
                         <span th:text="${user.name}">이름</span>
                     </a>
                     <span class="sub-title" th:text="${user.email}">js momment로 수정</span>
@@ -15,7 +16,7 @@
     </div>
     <div class="border top">
         <div class="pdd-vertical-15 pdd-horizon-20 text-center">
-            <a href="" class="text-semibold text-dark">More...</a>
+            <a class="text-semibold text-dark" href="">More...</a>
         </div>
     </div>
 </div>

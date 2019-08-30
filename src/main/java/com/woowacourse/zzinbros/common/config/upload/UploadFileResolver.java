@@ -10,6 +10,9 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Component
 public class UploadFileResolver implements HandlerMethodArgumentResolver {
     @Autowired
@@ -22,9 +25,16 @@ public class UploadFileResolver implements HandlerMethodArgumentResolver {
 
     @Override
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
-        MultipartHttpServletRequest request = (MultipartHttpServletRequest) webRequest.getNativeRequest();
-        MultipartFile multipartFile = request.getFile("feed-image");
+        try {
+            MultipartHttpServletRequest request = (MultipartHttpServletRequest) webRequest.getNativeRequest();
+            List<String> fileNames = new ArrayList<>();
+            request.getFileNames().forEachRemaining(fileNames::add);
 
-        return uploadToFactory.create(multipartFile);
+            MultipartFile multipartFile = request.getFile(fileNames.get(0));
+
+            return uploadToFactory.create(multipartFile);
+        } catch (ClassCastException e) {
+            return uploadToFactory.create(null);
+        }
     }
 }

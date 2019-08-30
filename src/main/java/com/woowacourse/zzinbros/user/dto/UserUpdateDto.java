@@ -1,5 +1,6 @@
 package com.woowacourse.zzinbros.user.dto;
 
+import com.woowacourse.zzinbros.mediafile.domain.MediaFile;
 import com.woowacourse.zzinbros.user.domain.User;
 
 import java.util.Objects;
@@ -20,20 +21,24 @@ public class UserUpdateDto {
         return new User(name, email, password);
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
+    public User toEntity(String password, MediaFile mediaFile) {
+        return new User(name, email, password, mediaFile);
     }
 
     public String getName() {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public String getEmail() {
         return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     @Override

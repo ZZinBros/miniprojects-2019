@@ -22,10 +22,12 @@ public class FriendController {
         this.friendService = friendService;
     }
 
-    @GetMapping("/requests")
-    public ResponseEntity<Set<UserResponseDto>> showFriendRequests(@SessionInfo UserSession session) {
-        Set<UserResponseDto> users = friendService.findFriendRequestsByUser(session.getDto());
-        return new ResponseEntity<>(users, HttpStatus.OK);
+    @GetMapping
+    @ResponseBody
+    public ResponseEntity<Set<UserResponseDto>> getFriends(@SessionInfo UserSession userSession) {
+        final UserResponseDto loginUserDto = userSession.getDto();
+        Set<UserResponseDto> friends = friendService.findFriendsByUser(loginUserDto);
+        return new ResponseEntity<>(friends, HttpStatus.OK);
     }
 
     @PostMapping
@@ -36,5 +38,15 @@ public class FriendController {
             friendService.registerFriend(loginUserDto, friendRequestDto);
         }
         return "redirect:/posts?author=" + friendRequestDto.getRequestFriendId();
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseBody
+    public ResponseEntity<UserResponseDto> deleteFriend(
+            @SessionInfo UserSession userSession,
+            @PathVariable("id") long id) {
+        final UserResponseDto loginUserDto = userSession.getDto();
+        friendService.deleteFriends(loginUserDto, id);
+        return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
     }
 }

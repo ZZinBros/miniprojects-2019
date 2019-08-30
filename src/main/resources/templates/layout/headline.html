@@ -1,22 +1,22 @@
-<header id="header" class="header navbar" th:fragment="headline" xmlns:th="http://www.w3.org/1999/xhtml">
+<header class="header navbar" id="header">
     <div class="header-container max-width-lg mx-auto">
         <ul class="nav-left mrg-left-0">
             <li>
-                <a href="/" class="mrg-right-70">
-                    <img src="/images/logo/wootecobook.png" height="50px">
+                <a class="mrg-right-70" href="/">
+                    <img height="50px" src="/images/logo/wootecobook.png">
                 </a>
             </li>
         </ul>
         <ul class="nav-right">
             <th:block th:replace="element/headline-user"></th:block>
             <li>
-                <div class="friend-btn pointer mrg-vertical-10 mrg-horizon-5"></div>
+                <th:block th:replace="layout/friend-list-btn"></th:block>
             </li>
             <li>
                 <div class="message-btn pointer mrg-vertical-10 mrg-horizon-5"></div>
             </li>
             <li>
-                <div class="notification-btn pointer mrg-vertical-10 mrg-horizon-5"></div>
+                <th:block th:replace="layout/friend-request-btn"></th:block>
             </li>
         </ul>
     </div>

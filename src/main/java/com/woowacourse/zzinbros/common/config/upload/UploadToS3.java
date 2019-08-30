@@ -1,8 +1,6 @@
 package com.woowacourse.zzinbros.common.config.upload;
 
-import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.multipart.MultipartFile;
@@ -18,15 +16,21 @@ public class UploadToS3 extends AbstractUploadTo {
     private String bucketName;
     private String bucketUrl;
 
-    public UploadToS3(MultipartFile file, @NotNull String bucketName, @NotNull String bucketUrl) {
+    public UploadToS3(MultipartFile file,
+                      @NotNull String bucketName,
+                      @NotNull String bucketUrl,
+                      AmazonS3 amazonS3) {
         super(file);
         this.bucketName = bucketName;
         this.bucketUrl = bucketUrl;
-        amazonS3 = AmazonS3ClientBuilder.standard().withRegion(Regions.AP_NORTHEAST_2).build();
+        this.amazonS3 = amazonS3;
     }
 
     @Override
     public String save() {
+        if (file == null || file.isEmpty()) {
+            return null;
+        }
         String keyName = hashFileName() + getExtension();
         File localFile = convertMultiPartToFile(file);
         amazonS3.putObject(bucketName, keyName, localFile);

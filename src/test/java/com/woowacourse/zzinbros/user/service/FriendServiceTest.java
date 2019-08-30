@@ -72,7 +72,7 @@ class FriendServiceTest extends UserBaseTest {
         Set<Friend> friends = new HashSet<>(Arrays.asList(new Friend(userSampleOf(1), userSampleOf(2))));
         given(friendRepository.findAllByOwner(userSampleOf(1))).willReturn(friends);
 
-        assertThat(friendService.findFriendsByUser(1L)).isEqualTo(friendService.friendToUserResponseDto(friends));
+        assertThat(friendService.findFriendsByUserId(1L)).isEqualTo(friendService.friendToUserResponseDto(friends));
     }
 
     @Test
@@ -103,7 +103,20 @@ class FriendServiceTest extends UserBaseTest {
         expected.add(new UserResponseDto(userSampleOf(1).getId(), userSampleOf(1).getName(), userSampleOf(1).getEmail()));
         expected.add(new UserResponseDto(userSampleOf(3).getId(), userSampleOf(3).getName(), userSampleOf(3).getEmail()));
 
-
         assertThat(friendService.friendRequestToUserResponseDto(friends)).isEqualTo(expected);
+    }
+
+    @Test
+    @DisplayName("친구 삭제")
+    void deleteFriends() {
+        User owner = userSampleOf(SAMPLE_ONE);
+        User friend = userSampleOf(SAMPLE_TWO);
+        given(userService.findLoggedInUser(LOGIN_USER_DTO)).willReturn(owner);
+        given(userService.findUserById(2L)).willReturn(friend);
+        
+        friendService.deleteFriends(LOGIN_USER_DTO, 2L);
+
+        verify(friendRepository).deleteByOwnerAndSlave(owner, friend);
+        verify(friendRepository).deleteByOwnerAndSlave(friend, owner);
     }
 }
