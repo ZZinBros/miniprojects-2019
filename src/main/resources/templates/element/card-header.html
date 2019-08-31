@@ -3,7 +3,8 @@
         <li>
             <img alt="" class="thumb-img img-circle" th:src="${post.author.profile.url}">
             <div class="info">
-                <a class="title no-pdd-vertical text-semibold inline-block" href="" th:text="${post.author.name}">eastjun</a>
+                <a class="title no-pdd-vertical text-semibold inline-block"
+                   th:href="@{'/posts?author=' + ${post.author.id}}" th:text="${post.author.name}">eastjun</a>
                 <time class="sub-title" th:datetime="${post.createdDateTime}">몇 시간 전</time>
                 <a aria-expanded="false" class="pointer absolute top-0 right-0" data-toggle="dropdown">
                     <span class="btn-icon text-dark">
