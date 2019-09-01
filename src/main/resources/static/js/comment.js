@@ -98,7 +98,7 @@ const CommentApp = (function () {
             deleteComment();
         };
 
-        return {init};
+        return { init };
     };
 
     const CommentService = function () {
