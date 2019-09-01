@@ -1,0 +1,12 @@
+#header {
+    padding-bottom: 70px;
+    padding-top: 10px;
+}
+
+#login-form .form-group {
+    display: inline-block;
+}
+
+.entrance-logo {
+    max-width: 100%;
+}

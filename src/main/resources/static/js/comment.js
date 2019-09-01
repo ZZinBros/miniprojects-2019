@@ -1,7 +1,7 @@
 'use strict';
 
-const CommentApp = (function () {
-    const commentTemplate = function (comment) {
+const CommentApp = (function() {
+    const commentTemplate = function(comment) {
         return `<li class="comment-item" data-comment-id="${comment.commentId}">
                 <img class="thumb-img img-circle" src="${comment.profile}" alt="">
                 <div class="info">
@@ -48,11 +48,11 @@ const CommentApp = (function () {
 
     const showPassedCommentBtn = `<span class="passed-comment-pointer pointer text-link-color margin-20">이전 댓글 보기</span>`;
 
-    const CommentController = function () {
+    const CommentController = function() {
         const commentService = new CommentService();
         const commentsItems = document.getElementsByClassName('comment-items');
 
-        const initComments = function () {
+        const initComments = function() {
             const posts = document.getElementsByClassName('post');
 
             for (let post of posts) {
@@ -70,14 +70,14 @@ const CommentApp = (function () {
             }
         };
 
-        const addComment = function () {
+        const addComment = function() {
             const commentAddBtns = document.getElementsByClassName('comment-add-btn');
 
             Array.from(commentAddBtns)
                 .map(commentAddBtn => commentAddBtn.addEventListener('click', commentService.addComment));
         };
 
-        const editComment = function () {
+        const editComment = function() {
             Array.from(commentsItems)
                 .map(commentItem => commentItem.addEventListener('click', commentService.editMode));
             Array.from(commentsItems)
@@ -86,12 +86,12 @@ const CommentApp = (function () {
                 .map(commentItem => commentItem.addEventListener('click', commentService.editComment));
         };
 
-        const deleteComment = function () {
+        const deleteComment = function() {
             Array.from(commentsItems)
                 .map(commentItem => commentItem.addEventListener('click', commentService.deleteComment));
         };
 
-        const init = function () {
+        const init = function() {
             initComments();
             addComment();
             editComment();
@@ -101,8 +101,8 @@ const CommentApp = (function () {
         return { init };
     };
 
-    const CommentService = function () {
-        const addComment = function (event) {
+    const CommentService = function() {
+        const addComment = function(event) {
             event.stopPropagation();
 
             const parentPost = event.target.closest(".card");
@@ -121,24 +121,26 @@ const CommentApp = (function () {
                 });
         };
 
-        const editMode = function (event) {
+        const editMode = function(event) {
             const clicked = event.target.closest('a');
             if ((clicked !== null) && clicked.classList.contains('comment-edit-btn')) {
                 const commentInfo = clicked.closest('.info');
-                const commentInput = clicked.closest('.comment-item').querySelector('.comment-input');
+                const commentInputArea = clicked.closest('.comment-item').querySelector('.comment-input');
+                const commentInput = commentInputArea.querySelector('input')
 
+                commentInput.value = commentInfo.querySelector('.comment-contents').innerHTML;
                 commentInfo.setAttribute('style', 'display: none');
-                commentInput.removeAttribute('style');
+                commentInputArea.removeAttribute('style');
             }
         };
 
-        const cancelEditMode = function (event) {
+        const cancelEditMode = function(event) {
             if (event.target.classList.contains('cancel-pointer')) {
                 cancelEditModeBy(event.target);
             }
         };
 
-        const cancelEditModeBy = function (eventTarget) {
+        const cancelEditModeBy = function(eventTarget) {
             const commentInfo = eventTarget.closest('.comment-item').querySelector('.info');
             const commentInput = eventTarget.closest('.comment-item').querySelector('.comment-input');
 
@@ -146,7 +148,7 @@ const CommentApp = (function () {
             commentInput.setAttribute('style', 'display: none');
         };
 
-        const editComment = function (event) {
+        const editComment = function(event) {
             if (event.target.classList.contains('edit-pointer')) {
                 const postId = event.target.closest('.post').dataset.postId;
                 const commentItem = event.target.closest('.comment-item');
@@ -155,16 +157,23 @@ const CommentApp = (function () {
                 const contents = commentInput.value;
 
                 Api.put(`posts/${postId}/comments/${commentId}`, {contents})
-                    .then(res => res.json())
-                    .then(updatedComment => {
-                        const commentContents = commentItem.querySelector('.comment-contents');
-                        commentContents.innerText = updatedComment.contents;
-                        cancelEditModeBy(event.target);
-                    })
+                   .then(function(res) {
+                       if (res.ok) {
+                           return res.json()
+                       }
+                   })
+                   .then(updatedComment => {
+                       const commentContents = commentItem.querySelector('.comment-contents');
+                       commentContents.innerText = updatedComment.contents;
+                       cancelEditModeBy(event.target);
+                   }).catch(function(error) {
+                    alert("해당 댓글은 수정할 수 없습니다!")
+                    cancelEditModeBy(event.target);
+                })
             }
         };
 
-        const deleteComment = function (event) {
+        const deleteComment = function(event) {
             const postId = event.target.closest('.post').dataset.postId;
             const commentItem = event.target.closest('.comment-item');
             const commentId = commentItem.dataset.commentId;
@@ -189,7 +198,7 @@ const CommentApp = (function () {
         };
     };
 
-    const init = function () {
+    const init = function() {
         const commentController = new CommentController();
         commentController.init();
     };
