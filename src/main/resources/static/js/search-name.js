@@ -1,5 +1,4 @@
 (function () {
-    console.log("test 시작 must delete");
     const searchScrollBar = document.getElementById('search-dropdown-menu');
 
     const cleanInnerText = (element) => {
@@ -14,12 +13,12 @@
                 <span class="">${result.name}</span>
             </a>
         </li>`;
-
         searchScrollBar.insertAdjacentHTML('afterbegin', element);
     };
 
     const handleInputEvent = (event) => {
         const searchValue = event.target.value;
+
         if (searchValue === '') {
             event.preventDefault();
             cleanInnerText(searchScrollBar);
