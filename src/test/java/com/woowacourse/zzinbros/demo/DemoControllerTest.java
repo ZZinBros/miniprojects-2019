@@ -44,4 +44,14 @@ class DemoControllerTest extends AuthedWebTestClient {
     void enterFailIfLogIn() throws Exception {
         //TODO : 테스트 작성하여야 함
     }
+
+    @Test
+    @DisplayName("서버에서 시간 정보를 받아온다.")
+    void datetime() {
+        webTestClient.get().uri("/datetime")
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody()
+                .jsonPath("$.datetime").isNotEmpty();
+    }
 }
