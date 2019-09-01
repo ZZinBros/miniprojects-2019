@@ -22,6 +22,7 @@
         const searchValue = event.target.value;
         if (searchValue === '') {
             event.preventDefault();
+            cleanInnerText(searchScrollBar);
             return;
         }
 
