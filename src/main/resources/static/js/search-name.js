@@ -7,7 +7,6 @@
     };
 
     const addSearchResult = (result) => {
-        console.log(result);
         const element =
         `<li>
             <a href="/posts?author=${result.id}" class="pointer dropdown-item">
@@ -21,8 +20,6 @@
 
     const handleInputEvent = (event) => {
         const searchValue = event.target.value;
-        console.log("Input Event 시작 must delete");
-        console.log("input 값 : " + searchValue);
         if (searchValue === '') {
             event.preventDefault();
             return;
@@ -30,13 +27,13 @@
 
         Api.get("/users?name=" + searchValue)
             .then(res => {
-                console.log(res);
                 cleanInnerText(searchScrollBar);
                 return res.json();
             })
             .then(json => {
                 json.forEach(addSearchResult);
-            });
+            })
+            .catch(console.log);
     };
 
     const searchNameInput = document.getElementById('input-search-name');
