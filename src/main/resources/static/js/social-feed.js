@@ -1,7 +1,7 @@
 (function () {
-    const onAddPostClick = () => {
+    const onAddPostClick = (event) => {
         const contents = document.getElementById('post-content').value;
-        const displayStrategyText = document.getElementsByClassName('ti-check')[0].previousElementSibling.textContent;
+        const displayStrategyText = event.target.closest('ul').querySelector('.ti-check').previousElementSibling.textContent;
 
         let displayStrategy;
         switch (displayStrategyText) {
@@ -30,7 +30,7 @@
     const onDisplayStrategyHilight = (event) => {
         event.target.closest('ul').querySelector('.ti-check').classList.remove('ti-check');
         event.target.closest('li').querySelectorAll('span')[1].classList.add('ti-check');
-        document.getElementById('feed-add-display-btn').querySelector('span').innerText
+        event.target.closest('.composor-tools').querySelector('.display-btn > span').textContent
             = event.target.closest('li').querySelector('span').textContent;
     };
 
@@ -81,5 +81,7 @@
 
     document.getElementById("feed-add-btn").addEventListener("click", onAddPostClick);
 
-    document.getElementById('post-display-dropdown').addEventListener("click", e => onDisplayStrategyHilight(e))
+    const displayDropdowns = document.getElementsByClassName('post-display-dropdown');
+    Array.from(displayDropdowns)
+        .map(element => element.addEventListener("click", e => onDisplayStrategyHilight(e)))
 })();
