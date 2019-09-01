@@ -17,6 +17,9 @@ import static com.woowacourse.zzinbros.post.domain.DisplayStrategy.ALL;
 @Entity
 @DynamicInsert
 public class Post extends BaseEntity {
+    private static final int INIT_COUNT_OF_LIKE = 0;
+    private static final int INIT_COUNT_OF_SHARED = 0;
+
     @Lob
     private String contents;
 
@@ -54,16 +57,25 @@ public class Post extends BaseEntity {
         this.contents = contents;
         this.author = author;
         this.sharedPost = sharedPost;
-        this.countOfLike = 0;
-        this.countOfShared = 0;
+        this.countOfLike = INIT_COUNT_OF_LIKE;
+        this.countOfShared = INIT_COUNT_OF_SHARED;
         this.displayStrategy = ALL;
     }
 
     public Post(String contents, User author, DisplayStrategy displayStrategy) {
         this.contents = contents;
         this.author = author;
-        this.countOfLike = 0;
-        this.countOfShared = 0;
+        this.countOfLike = INIT_COUNT_OF_LIKE;
+        this.countOfShared = INIT_COUNT_OF_SHARED;
+        this.displayStrategy = displayStrategy;
+    }
+
+    public Post(String contents, User author, Post sharedPost, DisplayStrategy displayStrategy) {
+        this.contents = contents;
+        this.author = author;
+        this.sharedPost = sharedPost;
+        this.countOfLike = INIT_COUNT_OF_LIKE;
+        this.countOfShared = INIT_COUNT_OF_SHARED;
         this.displayStrategy = displayStrategy;
     }
 
@@ -121,7 +133,7 @@ public class Post extends BaseEntity {
 
     public int getCountOfLike() {
         if (countOfLike == null) {
-            return 0;
+            return INIT_COUNT_OF_LIKE;
         }
         return countOfLike;
     }

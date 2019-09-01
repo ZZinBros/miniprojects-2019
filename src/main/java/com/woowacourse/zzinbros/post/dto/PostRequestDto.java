@@ -43,7 +43,7 @@ public class PostRequestDto {
     }
 
     public Post toEntity(User user, Post sharedPost) {
-        return new Post(contents, user, sharedPost);
+        return new Post(contents, user, sharedPost, DisplayStrategy.valueOf(displayStrategy));
     }
 
     @Override
