@@ -88,7 +88,7 @@ public class UserService {
         throw new UserLoginException("비밀번호가 다릅니다");
     }
 
-    public List<UserResponseDto> readAll() {
+    public List<UserResponseDto> findAll() {
         List<User> users = userRepository.findAll();
         return users.stream()
                 .map(user -> new UserResponseDto(user.getId(), user.getName(), user.getEmail(), user.getProfile().getUrl()))

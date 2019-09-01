@@ -34,7 +34,7 @@ public class DemoController {
         UserResponseDto loginUserDto = userSession.getDto();
         Sort sort = by(Direction.DESC, "createdDateTime");
         model.addAttribute("posts", postService.readAll(loginUserDto.getId(), sort));
-        model.addAttribute("users", userService.readAll());
+        model.addAttribute("users", userService.findAll());
         return "index";
     }
 

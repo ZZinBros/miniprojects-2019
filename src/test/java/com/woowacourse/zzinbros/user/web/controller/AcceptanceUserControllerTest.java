@@ -1,11 +1,19 @@
 package com.woowacourse.zzinbros.user.web.controller;
 
 import com.woowacourse.zzinbros.common.domain.AuthedWebTestClient;
+import com.woowacourse.zzinbros.user.dto.UserResponseDto;
 import com.woowacourse.zzinbros.user.dto.UserUpdateDto;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
+import org.springframework.test.web.reactive.server.EntityExchangeResult;
+import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.web.reactive.function.BodyInserters;
 import reactor.core.publisher.Mono;
+
+import java.util.Set;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class AcceptanceUserControllerTest extends AuthedWebTestClient {
 
@@ -58,5 +66,13 @@ public class AcceptanceUserControllerTest extends AuthedWebTestClient {
                 .body(Mono.just(new UserUpdateDto("edited", "test@test.com")), UserUpdateDto.class)
                 .exchange()
                 .expectStatus().isAccepted();
+    }
+
+    @Test
+    @DisplayName("정상 검색")
+    void search() {
+        get("/users?name=friend")
+                .exchange()
+                .expectStatus().isOk();
     }
 }
