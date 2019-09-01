@@ -46,7 +46,7 @@ public class PostService {
     }
 
     @Transactional
-    public Post add(PostRequestDto dto, long userId, long sharedPostId) {
+    public Post share(PostRequestDto dto, long userId, long sharedPostId) {
         User user = userService.findUserById(userId);
         Post sharedPost = postRepository.findById(sharedPostId).orElseThrow(PostNotFoundException::new);
         sharedPost.share();

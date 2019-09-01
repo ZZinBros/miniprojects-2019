@@ -215,6 +215,6 @@ public class PostServiceTest extends BaseTest {
         given(postRepository.findById(1000L)).willReturn(Optional.of(post));
         given(sharedPostRepository.save(new SharedPost(defaultUser, post))).willReturn(new SharedPost(defaultUser, post));
         given(postRepository.save(post)).willReturn(post);
-        assertThat(postService.add(postRequestDto, DEFAULT_USER_ID, 1000L)).isEqualTo(post);
+        assertThat(postService.share(postRequestDto, DEFAULT_USER_ID, 1000L)).isEqualTo(post);
     }
 }
