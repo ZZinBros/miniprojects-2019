@@ -8,7 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class DemoControllerTest extends AuthedWebTestClient {
+class MainControllerTest extends AuthedWebTestClient {
 
     @Test
     @DisplayName("로그인 되지 않았을 때, /entrance로 get요청하면 entrance페이지를 받아온다.")

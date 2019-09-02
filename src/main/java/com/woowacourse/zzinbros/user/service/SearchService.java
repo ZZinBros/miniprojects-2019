@@ -1,5 +1,6 @@
 package com.woowacourse.zzinbros.user.service;
 
+import com.woowacourse.zzinbros.user.domain.User;
 import com.woowacourse.zzinbros.user.dto.UserResponseDto;
 import org.springframework.stereotype.Service;
 
@@ -17,9 +18,10 @@ public class SearchService {
     }
 
     public Set<UserResponseDto> search(String searchName) {
-        List<UserResponseDto> users = userService.findAll();
+        List<User> users = userService.findAll();
         return users.stream()
                 .filter(user -> user.getName().contains(searchName))
+                .map(UserResponseDto::new)
                 .collect(Collectors.toSet());
     }
 }

@@ -18,7 +18,7 @@ public class CommentResponseDto {
     public CommentResponseDto() {
     }
 
-    public CommentResponseDto(final Comment comment) {
+    public CommentResponseDto(Comment comment) {
         this.commentId = comment.getId();
         this.authorId = comment.getAuthor().getId();
         this.authorName = comment.getAuthor().getName();
@@ -28,7 +28,7 @@ public class CommentResponseDto {
         this.profile = comment.getAuthor().getProfile().getUrl();
     }
 
-    public CommentResponseDto(final Exception exception) {
+    public CommentResponseDto(Exception exception) {
         this.errorMessage = exception.getClass().getSimpleName() +
                 Optional.ofNullable(exception.getMessage())
                         .map(msg -> ": " + msg).orElse("");
@@ -38,7 +38,7 @@ public class CommentResponseDto {
         return commentId;
     }
 
-    public void setCommentId(final Long commentId) {
+    public void setCommentId(Long commentId) {
         this.commentId = commentId;
     }
 
@@ -46,7 +46,7 @@ public class CommentResponseDto {
         return authorId;
     }
 
-    public void setAuthorId(final Long authorId) {
+    public void setAuthorId(Long authorId) {
         this.authorId = authorId;
     }
 
@@ -54,7 +54,7 @@ public class CommentResponseDto {
         return authorName;
     }
 
-    public void setAuthorName(final String authorName) {
+    public void setAuthorName(String authorName) {
         this.authorName = authorName;
     }
 
@@ -62,7 +62,7 @@ public class CommentResponseDto {
         return contents;
     }
 
-    public void setContents(final String contents) {
+    public void setContents(String contents) {
         this.contents = contents;
     }
 
@@ -70,7 +70,7 @@ public class CommentResponseDto {
         return errorMessage;
     }
 
-    public void setErrorMessage(final String errorMessage) {
+    public void setErrorMessage(String errorMessage) {
         this.errorMessage = errorMessage;
     }
 
@@ -78,7 +78,7 @@ public class CommentResponseDto {
         return createdDateTime;
     }
 
-    public void setCreatedDateTime(final LocalDateTime createdDateTime) {
+    public void setCreatedDateTime(LocalDateTime createdDateTime) {
         this.createdDateTime = createdDateTime;
     }
 
@@ -86,7 +86,7 @@ public class CommentResponseDto {
         return updatedDateTime;
     }
 
-    public void setUpdatedDateTime(final LocalDateTime updatedDateTime) {
+    public void setUpdatedDateTime(LocalDateTime updatedDateTime) {
         this.updatedDateTime = updatedDateTime;
     }
 

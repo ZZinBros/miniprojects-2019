@@ -1,5 +1,6 @@
-package com.woowacourse.zzinbros.common.config.upload;
+package com.woowacourse.zzinbros.mediafile.domain.upload.support;
 
+import com.woowacourse.zzinbros.mediafile.domain.upload.UploadToFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;

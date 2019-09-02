@@ -17,7 +17,7 @@
         }
 
         const url = document.location.href;
-        Api.post(`${url}/posts`, {"contents": contents, "displayStrategy": displayStrategy})
+        Api.post(`${url}/posts`, { "contents": contents, "displayStrategy": displayStrategy })
             .then(res => {
                 if (res.redirected) {
                     window.location.href = res.url
@@ -38,13 +38,25 @@
         const preview = document.getElementById("feed-image-preview");
         preview.style.visibility = "visible";
         const file = this.files[0];
-        if (!file.type.startsWith('image/')) { return; }
+        console.log(file.size);
+        if (!file.type.startsWith('image/')) {
+            alert('이미지 파일만 등록할 수 있습니다.');
+            this.value = "";
+            $("#feed-add-modal").modal("hide");
+            return;
+        }
+        if (file.size >= 10000000) {
+            alert('10MB 이하의 파일만 등록할 수 있습니다.');
+            this.value = "";
+            $("#feed-add-modal").modal("hide");
+            return;
+        }
         preview.classList.add("obj");
         preview.file = file;
 
         const reader = new FileReader();
         reader.onload = (aImg => {
-            return function(e) {
+            return function (e) {
                 aImg.src = e.target.result;
             };
         })(preview);

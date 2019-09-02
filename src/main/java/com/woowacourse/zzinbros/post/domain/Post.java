@@ -5,17 +5,17 @@ import com.woowacourse.zzinbros.mediafile.domain.MediaFile;
 import com.woowacourse.zzinbros.post.exception.UnAuthorizedException;
 import com.woowacourse.zzinbros.user.domain.User;
 import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-import static com.woowacourse.zzinbros.post.domain.DisplayStrategy.ALL;
+import static com.woowacourse.zzinbros.post.domain.DisplayType.ALL;
 
 @Entity
-@DynamicInsert
+@DynamicUpdate
 public class Post extends BaseEntity {
     @Lob
     private String contents;
@@ -41,7 +41,7 @@ public class Post extends BaseEntity {
     private Integer countOfShared;
 
     @Enumerated(EnumType.STRING)
-    private DisplayStrategy displayStrategy;
+    private DisplayType displayType;
 
     public Post() {
     }
@@ -56,15 +56,15 @@ public class Post extends BaseEntity {
         this.sharedPost = sharedPost;
         this.countOfLike = 0;
         this.countOfShared = 0;
-        this.displayStrategy = ALL;
+        this.displayType = ALL;
     }
 
-    public Post(String contents, User author, DisplayStrategy displayStrategy) {
+    public Post(String contents, User author, DisplayType displayType) {
         this.contents = contents;
         this.author = author;
         this.countOfLike = 0;
         this.countOfShared = 0;
-        this.displayStrategy = displayStrategy;
+        this.displayType = displayType;
     }
 
     public Post update(Post post) {
@@ -134,7 +134,7 @@ public class Post extends BaseEntity {
         return countOfShared;
     }
 
-    public DisplayStrategy getDisplayStrategy() {
-        return displayStrategy;
+    public DisplayType getDisplayType() {
+        return displayType;
     }
 }

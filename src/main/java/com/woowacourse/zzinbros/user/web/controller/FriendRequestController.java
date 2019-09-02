@@ -1,4 +1,4 @@
-package com.woowacourse.zzinbros.user.web.controller.rest;
+package com.woowacourse.zzinbros.user.web.controller;
 
 import com.woowacourse.zzinbros.user.dto.UserResponseDto;
 import com.woowacourse.zzinbros.user.service.FriendService;

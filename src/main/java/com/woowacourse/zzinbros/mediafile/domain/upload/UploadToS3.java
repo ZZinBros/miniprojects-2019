@@ -1,17 +1,15 @@
-package com.woowacourse.zzinbros.common.config.upload;
+package com.woowacourse.zzinbros.mediafile.domain.upload;
 
 import com.amazonaws.services.s3.AmazonS3;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotNull;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Objects;
 
 public class UploadToS3 extends AbstractUploadTo {
-    private static final Logger log = LoggerFactory.getLogger(UploadToS3.class);
     private AmazonS3 amazonS3;
     private String bucketName;
     private String bucketUrl;
@@ -28,7 +26,7 @@ public class UploadToS3 extends AbstractUploadTo {
 
     @Override
     public String save() {
-        if (file == null || file.isEmpty()) {
+        if (Objects.isNull(file) || file.isEmpty()) {
             return null;
         }
         String keyName = hashFileName() + getExtension();
@@ -45,7 +43,7 @@ public class UploadToS3 extends AbstractUploadTo {
             fos.close();
             return convertFile;
         } catch (IOException e) {
-            log.warn("FILE CONVERT FAILED : {}", e.getMessage());
+            LOGGER.warn("FILE CONVERT FAILED : {}", e.getMessage());
             throw new IllegalAccessError();
         }
     }

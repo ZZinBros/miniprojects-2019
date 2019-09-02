@@ -1,4 +1,4 @@
-package com.woowacourse.zzinbros.comment.controller;
+package com.woowacourse.zzinbros.comment.web.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.woowacourse.zzinbros.BaseTest;
@@ -7,6 +7,7 @@ import com.woowacourse.zzinbros.comment.dto.CommentRequestDto;
 import com.woowacourse.zzinbros.comment.exception.CommentNotFoundException;
 import com.woowacourse.zzinbros.comment.exception.UnauthorizedException;
 import com.woowacourse.zzinbros.comment.service.CommentService;
+import com.woowacourse.zzinbros.comment.web.controller.rest.CommentController;
 import com.woowacourse.zzinbros.post.domain.Post;
 import com.woowacourse.zzinbros.post.exception.PostNotFoundException;
 import com.woowacourse.zzinbros.post.service.PostService;
@@ -47,7 +48,16 @@ class CommentControllerTest extends BaseTest {
     private static final String POSTS_PATH = "/posts/";
     private static final String COMMENTS_PATH = POSTS_PATH + MOCK_ID + "/comments";
     private static final String MOCK_CONTENTS = "contents";
-
+    @Autowired
+    WebApplicationContext webApplicationContext;
+    @Autowired
+    CommentController commentController;
+    @MockBean
+    CommentService commentService;
+    @MockBean
+    UserService userService;
+    @MockBean
+    PostService postService;
     private User mockUser = new User("name", "email@example.net", "12QWas!@");
     @Spy
     private Post mockPost = new Post(MOCK_CONTENTS, mockUser);
@@ -55,23 +65,7 @@ class CommentControllerTest extends BaseTest {
     private String commentRequestDto;
     private UserResponseDto mockUserDto = new UserResponseDto(MOCK_ID, mockUser.getName(), mockUser.getEmail());
     private UserResponseDto mockWrongUserDto = new UserResponseDto(MOCK_ID + 10L, mockUser.getName(), mockUser.getEmail());
-
     private MockMvc mockMvc;
-
-    @Autowired
-    WebApplicationContext webApplicationContext;
-
-    @Autowired
-    CommentController commentController;
-
-    @MockBean
-    CommentService commentService;
-
-    @MockBean
-    UserService userService;
-
-    @MockBean
-    PostService postService;
 
     @BeforeEach
     void setUp() throws Exception {

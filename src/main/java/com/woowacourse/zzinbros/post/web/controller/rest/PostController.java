@@ -1,4 +1,4 @@
-package com.woowacourse.zzinbros.post.web;
+package com.woowacourse.zzinbros.post.web.controller.rest;
 
 import com.woowacourse.zzinbros.post.domain.Post;
 import com.woowacourse.zzinbros.post.dto.PostRequestDto;

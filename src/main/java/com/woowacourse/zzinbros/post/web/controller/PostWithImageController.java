@@ -1,7 +1,7 @@
-package com.woowacourse.zzinbros.post.web;
+package com.woowacourse.zzinbros.post.web.controller;
 
-import com.woowacourse.zzinbros.common.config.upload.UploadTo;
-import com.woowacourse.zzinbros.common.config.upload.UploadedFile;
+import com.woowacourse.zzinbros.mediafile.domain.upload.UploadTo;
+import com.woowacourse.zzinbros.mediafile.domain.upload.support.UploadedFile;
 import com.woowacourse.zzinbros.post.dto.PostRequestDto;
 import com.woowacourse.zzinbros.post.service.PostWithImageService;
 import com.woowacourse.zzinbros.user.web.support.SessionInfo;
@@ -21,9 +21,9 @@ public class PostWithImageController {
 
     @PostMapping
     public String upload(PostRequestDto postRequestDto,
-                         @UploadedFile UploadTo uploadToLocal,
+                         @UploadedFile UploadTo uploadTo,
                          @SessionInfo UserSession userSession) {
-        postService.add(postRequestDto, userSession.getDto().getId(), uploadToLocal);
+        postService.add(postRequestDto, userSession.getDto().getId(), uploadTo);
         return "redirect:/";
     }
 }

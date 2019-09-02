@@ -8,8 +8,8 @@ import com.woowacourse.zzinbros.comment.exception.UnauthorizedException;
 import com.woowacourse.zzinbros.post.domain.Post;
 import com.woowacourse.zzinbros.post.service.PostService;
 import com.woowacourse.zzinbros.user.domain.User;
+import com.woowacourse.zzinbros.user.dto.UserResponseDto;
 import com.woowacourse.zzinbros.user.service.UserService;
-import com.woowacourse.zzinbros.user.web.support.UserSession;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,40 +17,33 @@ import java.util.Collections;
 import java.util.List;
 
 @Service
+@Transactional
 public class CommentService {
     private final UserService userService;
     private final PostService postService;
     private final CommentRepository commentRepository;
 
-    public CommentService(final UserService userService, final PostService postService, final CommentRepository commentRepository) {
+    public CommentService(UserService userService, PostService postService, CommentRepository commentRepository) {
         this.userService = userService;
         this.postService = postService;
         this.commentRepository = commentRepository;
     }
 
-    @Transactional
-    public Comment add(final CommentRequestDto requestDto, final UserSession session) {
-        final User user = userService.findLoggedInUser(session.getDto());
-        final Post post = postService.read(requestDto.getPostId());
-        final String contents = requestDto.getContents();
+    public Comment add(CommentRequestDto requestDto, UserResponseDto loginDto) {
+        User user = userService.findLoggedInUser(loginDto);
+        Post post = postService.read(requestDto.getPostId());
+        String contents = requestDto.getContents();
         return commentRepository.save(new Comment(user, post, contents));
     }
 
-    public List<Comment> findByPost(final long postId) {
-        final Post post = postService.read(postId);
+    public List<Comment> findByPost(long postId) {
+        Post post = postService.read(postId);
         return Collections.unmodifiableList(commentRepository.findByPost(post));
     }
 
-    public Comment findById(final long commentId) {
-        return commentRepository
-                .findById(commentId)
-                .orElseThrow(CommentNotFoundException::new);
-    }
-
-    @Transactional
-    public Comment update(final CommentRequestDto requestDto, final UserSession session) {
-        final User user = userService.findLoggedInUser(session.getDto());
-        final Comment comment = commentRepository
+    public Comment update(CommentRequestDto requestDto, UserResponseDto loginDto) {
+        User user = userService.findLoggedInUser(loginDto);
+        Comment comment = commentRepository
                 .findById(requestDto.getCommentId())
                 .orElseThrow(CommentNotFoundException::new);
         checkMatchedUser(comment, user);
@@ -58,10 +51,9 @@ public class CommentService {
         return comment;
     }
 
-    @Transactional
-    public boolean delete(final long commentId, final UserSession session) {
-        final User user = userService.findLoggedInUser(session.getDto());
-        final Comment comment = commentRepository
+    public boolean delete(long commentId, UserResponseDto loginDto) {
+        User user = userService.findLoggedInUser(loginDto);
+        Comment comment = commentRepository
                 .findById(commentId)
                 .orElseThrow(CommentNotFoundException::new);
         checkMatchedUser(comment, user);
@@ -70,8 +62,8 @@ public class CommentService {
         return true;
     }
 
-    private void checkMatchedUser(final Comment comment, final User user) {
-        if (comment.isMatchUser(user)) {
+    private void checkMatchedUser(Comment comment, User author) {
+        if (comment.isAuthor(author)) {
             return;
         }
         throw new UnauthorizedException();

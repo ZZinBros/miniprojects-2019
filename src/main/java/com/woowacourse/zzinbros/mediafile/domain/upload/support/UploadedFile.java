@@ -1,4 +1,4 @@
-package com.woowacourse.zzinbros.common.config.upload;
+package com.woowacourse.zzinbros.mediafile.domain.upload.support;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

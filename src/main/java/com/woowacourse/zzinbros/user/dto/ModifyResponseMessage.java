@@ -1,5 +1,7 @@
 package com.woowacourse.zzinbros.user.dto;
 
+import java.util.Collections;
+
 public class ModifyResponseMessage<T> {
     private T object;
     private String message;
@@ -9,8 +11,12 @@ public class ModifyResponseMessage<T> {
         this.message = message;
     }
 
-    public static <T> ModifyResponseMessage of(T object, String message) {
-        return new ModifyResponseMessage(object, message);
+    public static <T> ModifyResponseMessage<T> of(T object, String message) {
+        return new ModifyResponseMessage<>(object, message);
+    }
+
+    public static ModifyResponseMessage empty(String message) {
+        return new ModifyResponseMessage(Collections.emptyList(), message);
     }
 
     public T getObject() {

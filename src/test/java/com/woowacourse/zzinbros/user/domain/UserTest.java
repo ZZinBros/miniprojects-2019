@@ -21,7 +21,6 @@ public class UserTest extends UserBaseTest {
     public static final String BASE_EMAIL = "test@example.com";
     public static final String BASE_PASSWORD = "12345678";
 
-
     private User user;
 
     @Autowired
@@ -38,7 +37,7 @@ public class UserTest extends UserBaseTest {
     @Test
     @DisplayName("유저 이름이 제한길이를 초과했을때 예외를 던진다")
     public void userNameOverMaxLength() {
-        final String invalidName = "열자이상의이름열자이상";
+        final String invalidName = "열자이상의이름열자이상열자이상의이름열자이상열자이상의이름열자이상열자이상의이름열자이상열자이상의이";
         assertThatThrownBy(() ->
                 new User(invalidName, BASE_EMAIL, BASE_PASSWORD)).isInstanceOf(IllegalUserArgumentException.class);
     }

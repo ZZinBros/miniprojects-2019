@@ -1,9 +1,9 @@
 package com.woowacourse.zzinbros.user.service;
 
 import com.woowacourse.zzinbros.BaseTest;
-import com.woowacourse.zzinbros.common.config.upload.UploadTo;
-import com.woowacourse.zzinbros.common.config.upload.UploadToLocal;
 import com.woowacourse.zzinbros.mediafile.domain.MediaFile;
+import com.woowacourse.zzinbros.mediafile.domain.upload.UploadTo;
+import com.woowacourse.zzinbros.mediafile.domain.upload.UploadToLocal;
 import com.woowacourse.zzinbros.mediafile.service.MediaFileService;
 import com.woowacourse.zzinbros.user.domain.User;
 import com.woowacourse.zzinbros.user.domain.UserTest;
@@ -75,7 +75,7 @@ class UserServiceTest extends BaseTest {
     @Test
     @DisplayName("정상 회원 가입 테스트")
     void addUser() {
-        given(userRepository.existsUserByEmail(user.getEmail())).willReturn(false);
+        given(userRepository.existsUserByEmailEmail(user.getEmail())).willReturn(false);
         given(userRepository.save(user)).willReturn(user);
         given(mediaFileService.register(any())).willReturn(mediaFile);
 
@@ -86,7 +86,7 @@ class UserServiceTest extends BaseTest {
     @Test
     @DisplayName("이미 이메일이 존재할 때 가입 실패")
     void failAddUserWhenUserExists() {
-        given(userRepository.existsUserByEmail(user.getEmail())).willReturn(true);
+        given(userRepository.existsUserByEmailEmail(user.getEmail())).willReturn(true);
         assertThatThrownBy(() ->
                 userService.register(userRequestDto, DEFAULT_PROFILE)).isInstanceOf(EmailAlreadyExistsException.class);
     }
@@ -95,22 +95,19 @@ class UserServiceTest extends BaseTest {
     @DisplayName("회원 정보 수정 성공")
     void updateUser() {
         given(userRepository.findById(BASE_ID)).willReturn(Optional.ofNullable(user));
-        given(userRepository.findByEmail(validLoginUserDto.getEmail())).willReturn(Optional.ofNullable(user));
+        given(userRepository.findByEmailEmail(validLoginUserDto.getEmail())).willReturn(Optional.ofNullable(user));
         given(mediaFileService.register(any())).willReturn(mediaFile);
 
-        UserResponseDto updatedUser = userService.modify(BASE_ID, userUpdateDto, validLoginUserDto, DEFAULT_PROFILE);
-        assertThat(updatedUser).isEqualTo(new UserResponseDto(
-                user.getId(),
-                user.getName(),
-                user.getEmail(),
-                user.getProfile().getUrl()));
+        User updatedUser = userService.modify(BASE_ID, userUpdateDto, validLoginUserDto, DEFAULT_PROFILE);
+        assertThat(updatedUser.getEmail()).isEqualTo(userUpdateDto.getEmail());
+        assertThat(updatedUser.getName()).isEqualTo(userUpdateDto.getName());
     }
 
     @Test
     @DisplayName("다른 유저가 수정 시도할 때 에외 발생")
     void updateUserWhenNotValid() {
         given(userRepository.findById(BASE_ID)).willReturn(Optional.ofNullable(user));
-        given(userRepository.findByEmail(notValidLoginUserDto.getEmail()))
+        given(userRepository.findByEmailEmail(notValidLoginUserDto.getEmail()))
                 .willReturn(Optional.ofNullable(notValidUser));
         given(mediaFileService.register(any())).willReturn(mediaFile);
 
@@ -139,7 +136,7 @@ class UserServiceTest extends BaseTest {
     @DisplayName("회원 정보 ID로 삭제")
     void deleteUser() {
         given(userRepository.findById(BASE_ID)).willReturn(Optional.ofNullable(user));
-        given(userRepository.findByEmail(validLoginUserDto.getEmail())).willReturn(Optional.ofNullable(user));
+        given(userRepository.findByEmailEmail(validLoginUserDto.getEmail())).willReturn(Optional.ofNullable(user));
 
         userService.delete(BASE_ID, validLoginUserDto);
         verify(userRepository, times(1)).deleteById(BASE_ID);
@@ -156,17 +153,17 @@ class UserServiceTest extends BaseTest {
     @Test
     @DisplayName("로그인 성공")
     void loginSuccess() {
-        given(userRepository.findByEmail(userRequestDto.getEmail())).willReturn(Optional.ofNullable(user));
+        given(userRepository.findByEmailEmail(userRequestDto.getEmail())).willReturn(Optional.ofNullable(user));
 
-        UserResponseDto loginUserDto = userService.login(userRequestDto);
-        assertThat(loginUserDto.getEmail()).isEqualTo(userRequestDto.getEmail());
-        assertThat(loginUserDto.getName()).isEqualTo(userRequestDto.getName());
+        User user = userService.login(userRequestDto);
+        assertThat(user.getEmail()).isEqualTo(userRequestDto.getEmail());
+        assertThat(user.getName()).isEqualTo(userRequestDto.getName());
     }
 
     @Test
     @DisplayName("비밀번호가 다를 때 로그인 실패")
     void loginFail() {
-        given(userRepository.findByEmail(userRequestDto.getEmail())).willReturn(Optional.ofNullable(user));
+        given(userRepository.findByEmailEmail(userRequestDto.getEmail())).willReturn(Optional.ofNullable(user));
 
         UserRequestDto loginRequestDto
                 = new UserRequestDto(user.getName(), user.getEmail(), user.getPassword() + "a");

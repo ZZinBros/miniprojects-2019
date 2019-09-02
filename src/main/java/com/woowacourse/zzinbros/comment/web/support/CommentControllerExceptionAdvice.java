@@ -1,4 +1,4 @@
-package com.woowacourse.zzinbros.comment.controller;
+package com.woowacourse.zzinbros.comment.web.support;
 
 import com.woowacourse.zzinbros.comment.dto.CommentResponseDto;
 import org.slf4j.Logger;
@@ -10,25 +10,26 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import java.util.Objects;
+
 import static org.slf4j.LoggerFactory.getLogger;
 import static org.springframework.core.annotation.AnnotatedElementUtils.findMergedAnnotation;
 
 @RestControllerAdvice
 public class CommentControllerExceptionAdvice extends ResponseEntityExceptionHandler {
-    private static final Logger LOG = getLogger(CommentControllerExceptionAdvice.class);
+    private static final Logger LOGGER = getLogger(CommentControllerExceptionAdvice.class);
 
     @ExceptionHandler(ResponseStatusException.class)
-    public ResponseEntity<CommentResponseDto> handleResponseStatusException(final ResponseStatusException exception) {
-        LOG.info("HTTP status: {}", exception.getStatus());
-        LOG.info("{}", exception.getClass().getSimpleName());
-        final HttpStatus status = resolveAnnotatedResponseStatus(exception);
+    public ResponseEntity<CommentResponseDto> handleResponseStatusException(ResponseStatusException exception) {
+        LOGGER.info("HTTP status: {}", exception.getStatus());
+        LOGGER.info("{}", exception.getClass().getSimpleName());
+        HttpStatus status = resolveAnnotatedResponseStatus(exception);
         return new ResponseEntity<>(new CommentResponseDto(exception), status);
     }
 
-    // https://stackoverflow.com/a/51358263
-    private HttpStatus resolveAnnotatedResponseStatus(final Exception exception) {
+    private HttpStatus resolveAnnotatedResponseStatus(Exception exception) {
         final ResponseStatus annotation = findMergedAnnotation(exception.getClass(), ResponseStatus.class);
-        if (annotation != null) {
+        if (Objects.nonNull(annotation)) {
             return annotation.value();
         }
         return HttpStatus.INTERNAL_SERVER_ERROR;

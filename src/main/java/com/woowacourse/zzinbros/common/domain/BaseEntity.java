@@ -21,6 +21,18 @@ public abstract class BaseEntity {
     @UpdateTimestamp
     protected LocalDateTime updatedDateTime;
 
+    public Long getId() {
+        return id;
+    }
+
+    public LocalDateTime getCreatedDateTime() {
+        return createdDateTime;
+    }
+
+    public LocalDateTime getUpdatedDateTime() {
+        return updatedDateTime;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -3,7 +3,7 @@ package com.woowacourse.zzinbros.common.config;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
-import com.woowacourse.zzinbros.common.config.upload.UploadFileResolver;
+import com.woowacourse.zzinbros.mediafile.domain.upload.support.UploadFileResolver;
 import com.woowacourse.zzinbros.user.web.support.UserArgumentResolver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringBootConfiguration;

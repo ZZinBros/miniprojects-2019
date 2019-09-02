@@ -29,45 +29,32 @@ class CommentServiceTest extends BaseTest {
     private static long POST_ID = 2L;
     private static long COMMENT_ID = 3L;
     private static long WRONG_COMMENT_ID = 30L;
-
-    @Mock
-    private User user;
-
-    @Mock
-    private UserSession userSession;
-
-    @Mock
-    private UserSession wrongUserSession;
-
-    @Mock
-    private UserResponseDto loginUserDto;
-
-    @Mock
-    private UserResponseDto wrongLoginUserDto;
-
-    @Mock
-    private CommentRequestDto commentRequestDto;
-
-    @Mock
-    private CommentRequestDto wrongCommentRequestDto;
-
     @Mock
     CommentRepository commentRepository;
-
     @Mock
     UserService userService;
-
     @Mock
     PostService postService;
-
     @InjectMocks
     CommentService commentService;
-
     @Mock
     Post post;
-
     @Mock
     Comment comment;
+    @Mock
+    private User user;
+    @Mock
+    private UserSession userSession;
+    @Mock
+    private UserSession wrongUserSession;
+    @Mock
+    private UserResponseDto loginUserDto;
+    @Mock
+    private UserResponseDto wrongLoginUserDto;
+    @Mock
+    private CommentRequestDto commentRequestDto;
+    @Mock
+    private CommentRequestDto wrongCommentRequestDto;
 
     @BeforeEach
     void setUp() {
@@ -79,7 +66,7 @@ class CommentServiceTest extends BaseTest {
         when(post.getId()).thenReturn(POST_ID);
         when(postService.read(POST_ID)).thenReturn(post);
 
-        when(comment.isMatchUser(user)).thenReturn(true);
+        when(comment.isAuthor(user)).thenReturn(true);
         when(comment.getId()).thenReturn(COMMENT_ID);
         when(commentRequestDto.getCommentId()).thenReturn(COMMENT_ID);
         when(commentRequestDto.getContents()).thenReturn(COMMENT_CONTENTS);
@@ -96,14 +83,14 @@ class CommentServiceTest extends BaseTest {
     @Test
     @DisplayName("댓글 달기")
     void add() {
-        commentService.add(commentRequestDto, userSession);
+        commentService.add(commentRequestDto, userSession.getDto());
         verify(commentRepository).save(any(Comment.class));
     }
 
     @Test
     @DisplayName("댓글 수정")
     void update() {
-        commentService.update(commentRequestDto, userSession);
+        commentService.update(commentRequestDto, userSession.getDto());
         verify(comment).update(COMMENT_CONTENTS);
     }
 
@@ -111,8 +98,9 @@ class CommentServiceTest extends BaseTest {
     @DisplayName("다른 사용자의 댓글 수정 시도")
     void update_fail_by_another_user() {
         try {
-            commentService.update(commentRequestDto, wrongUserSession);
-        } catch (final UnauthorizedException ignored) {}
+            commentService.update(commentRequestDto, wrongUserSession.getDto());
+        } catch (final UnauthorizedException ignored) {
+        }
         verify(comment, never()).update(COMMENT_CONTENTS);
     }
 
@@ -126,7 +114,7 @@ class CommentServiceTest extends BaseTest {
     @Test
     @DisplayName("댓글 삭제")
     void delete() {
-        commentService.delete(commentRequestDto.getCommentId(), userSession);
+        commentService.delete(commentRequestDto.getCommentId(), userSession.getDto());
         verify(commentRepository).delete(any(Comment.class));
     }
 
@@ -134,8 +122,9 @@ class CommentServiceTest extends BaseTest {
     @DisplayName("없는 댓글 삭제 시도")
     void delete_wrong_comment_id() {
         try {
-            commentService.delete(wrongCommentRequestDto.getCommentId(), userSession);
-        } catch (final CommentNotFoundException ignored) {}
+            commentService.delete(wrongCommentRequestDto.getCommentId(), userSession.getDto());
+        } catch (final CommentNotFoundException ignored) {
+        }
         verify(commentRepository, never()).delete(any(Comment.class));
     }
 
@@ -143,8 +132,9 @@ class CommentServiceTest extends BaseTest {
     @DisplayName("남의 댓글 삭제 시도")
     void delete_fail_by_another_user() {
         try {
-            commentService.delete(commentRequestDto.getCommentId(), wrongUserSession);
-        } catch (final UnauthorizedException ignored) {}
+            commentService.delete(commentRequestDto.getCommentId(), wrongUserSession.getDto());
+        } catch (final UnauthorizedException ignored) {
+        }
         verify(commentRepository, never()).delete(any(Comment.class));
     }
 }

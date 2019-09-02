@@ -30,10 +30,6 @@ public class SharedPost extends BaseEntity {
         this.post = post;
     }
 
-    public Long getId() {
-        return id;
-    }
-
     public User getUser() {
         return user;
     }
