@@ -1,6 +1,6 @@
 package com.woowacourse.zzinbros.post.service;
 
-import com.woowacourse.zzinbros.post.domain.DisplayStrategy;
+import com.woowacourse.zzinbros.post.domain.DisplayType;
 import com.woowacourse.zzinbros.post.domain.Post;
 import com.woowacourse.zzinbros.post.domain.PostLike;
 import com.woowacourse.zzinbros.post.domain.SharedPost;
@@ -81,14 +81,14 @@ public class PostService {
     public List<Post> readAll(long userId, Sort sort) {
         User loginUser = userService.findUserById(userId);
         Set<User> friends = friendService.findFriendEntitiesByUser(userId);
-        List<Post> posts = postRepository.findAllByDisplayStrategy(DisplayStrategy.ALL, sort);
+        List<Post> posts = postRepository.findAllByDisplayStrategy(DisplayType.ALL, sort);
 
         for (User friend : friends) {
-            posts.addAll(postRepository.findAllByDisplayStrategyAndAuthor(DisplayStrategy.FRIEND, friend, sort));
+            posts.addAll(postRepository.findAllByDisplayStrategyAndAuthor(DisplayType.FRIEND, friend, sort));
         }
 
-        posts.addAll(postRepository.findAllByDisplayStrategyAndAuthor(DisplayStrategy.FRIEND, loginUser, sort));
-        posts.addAll(postRepository.findAllByDisplayStrategyAndAuthor(DisplayStrategy.ONLY_ME, loginUser, sort));
+        posts.addAll(postRepository.findAllByDisplayStrategyAndAuthor(DisplayType.FRIEND, loginUser, sort));
+        posts.addAll(postRepository.findAllByDisplayStrategyAndAuthor(DisplayType.ONLY_ME, loginUser, sort));
 
         posts.sort(Comparator.comparing(Post::getCreatedDateTime).reversed());
         return Collections.unmodifiableList(posts);
@@ -101,9 +101,9 @@ public class PostService {
             return Collections.unmodifiableList(posts);
         }
 
-        posts.addAll(postRepository.findAllByDisplayStrategyAndAuthor(DisplayStrategy.ALL, user, sort));
+        posts.addAll(postRepository.findAllByDisplayStrategyAndAuthor(DisplayType.ALL, user, sort));
         if (friendService.isMyFriend(loginUserId, user.getId())) {
-            posts.addAll(postRepository.findAllByDisplayStrategyAndAuthor(DisplayStrategy.FRIEND, user, sort));
+            posts.addAll(postRepository.findAllByDisplayStrategyAndAuthor(DisplayType.FRIEND, user, sort));
         }
 
         posts.sort(Comparator.comparing(Post::getCreatedDateTime).reversed());

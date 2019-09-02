@@ -5,6 +5,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.constraints.NotNull;
 import java.io.File;
 import java.io.IOException;
+import java.util.Objects;
 
 public class UploadToLocal extends AbstractUploadTo {
     private String uploadUrl;
@@ -20,14 +21,14 @@ public class UploadToLocal extends AbstractUploadTo {
 
     @Override
     public String save() {
-        if (file == null) {
+        if (Objects.isNull(file)) {
             return null;
         }
         try {
             String saveName = hashFileName() + getExtension();
             file.transferTo(new File(uploadUrl + saveName));
             LOGGER.debug("FILE SAVED : {}", uploadUrl + saveName);
-            return downloadUrl + saveName;
+            return null;
         } catch (IOException e) {
             LOGGER.warn("IOException " + e.getMessage());
             throw new IllegalArgumentException();

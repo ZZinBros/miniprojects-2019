@@ -3,6 +3,7 @@ package com.woowacourse.zzinbros.comment.domain;
 import com.woowacourse.zzinbros.common.domain.BaseEntity;
 import com.woowacourse.zzinbros.post.domain.Post;
 import com.woowacourse.zzinbros.user.domain.User;
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -12,6 +13,7 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 
 @Entity
+@DynamicUpdate
 public class Comment extends BaseEntity {
     @ManyToOne
     @OnDelete(action = OnDeleteAction.CASCADE)

@@ -28,7 +28,7 @@ import java.util.Optional;
 
 import static com.woowacourse.zzinbros.common.domain.TestBaseMock.mockingId;
 import static com.woowacourse.zzinbros.common.domain.TestBaseMock.mockingIdAndCreatedDateTime;
-import static com.woowacourse.zzinbros.post.domain.DisplayStrategy.*;
+import static com.woowacourse.zzinbros.post.domain.DisplayType.*;
 import static com.woowacourse.zzinbros.post.domain.PostTest.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
