@@ -15,7 +15,7 @@ import org.springframework.data.domain.Sort;
 
 import java.util.List;
 
-import static com.woowacourse.zzinbros.notification.domain.NotificationType.*;
+import static com.woowacourse.zzinbros.notification.domain.NotificationType.NEW_POST;
 import static com.woowacourse.zzinbros.notification.service.NotificationServiceTest.TEST_POST_ID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.data.domain.Sort.by;
@@ -30,43 +30,63 @@ class NotificationRepositoryTest extends BaseTest {
 
     private User notifiedUser;
     private User publisher;
-    private PostNotification newPostNotification;
-    private PostNotification sharedPostNotification;
-    private PostNotification postLikeNotification;
 
     @BeforeEach
     void setUp() {
         notifiedUser = userRepository.findById(999L).orElseThrow(IllegalArgumentException::new);
         publisher = userRepository.findById(1000L).orElseThrow(IllegalArgumentException::new);
-
-        newPostNotification = new PostNotification(NEW_POST, publisher, notifiedUser, TEST_POST_ID);
-        sharedPostNotification = new PostNotification(SHARED_POST, publisher, notifiedUser, TEST_POST_ID);
-        postLikeNotification = new PostNotification(POST_LIKE, publisher, notifiedUser, TEST_POST_ID);
     }
 
     @Test
     @DisplayName("알림을 page단위로 가져온다.")
     void fetchNotificationByPage() {
         // Given
-        int pageSize = 2;
+        int pageSize = 5;
+        int numberOfNotifications = 15;
         PageRequest pageRequest = getPageRequest(pageSize);
 
-        notificationRepository.save(newPostNotification);
-        notificationRepository.save(sharedPostNotification);
-        notificationRepository.save(postLikeNotification);
+        saveNotifications(numberOfNotifications);
 
         // When
-        Page<PostNotification> notificationPage = notificationRepository.findAllByNotified(notifiedUser, pageRequest);
+        Page<PostNotification> notificationPage = notificationRepository.findAllByNotifiedUserId(
+                notifiedUser.getId(), pageRequest
+        );
         List<PostNotification> notifications = notificationPage.getContent();
 
         // Then
         assertThat(notifications.size()).isEqualTo(pageSize);
     }
 
-    private PageRequest getPageRequest(int pageSize) {
-        Sort sort = by(Sort.Direction.ASC, "createdDateTime");
-        return PageRequest.of(0,pageSize, sort);
+    @Test
+    @DisplayName("알림 개수가 page 크기보다 작은 경우에 저장된 알림을 모두 가져온다.")
+    void fetchNotificationByPageIfLessNumber() {
+        // Given
+        int pageSize = 10;
+        int numberOfNotification = 5;
+        PageRequest pageRequest = getPageRequest(pageSize);
+
+        saveNotifications(numberOfNotification);
+
+        // When
+        Page<PostNotification> notificationPage = notificationRepository.findAllByNotifiedUserId(
+                notifiedUser.getId(), pageRequest
+        );
+        List<PostNotification> notifications = notificationPage.getContent();
+
+        // Then
+        assertThat(notifications.size()).isEqualTo(numberOfNotification);
     }
 
-    //TODO: notification이 5개밖에 없는 경우, pageable siz가 10이더라도 5개 돌려주는지 테스트
+    private void saveNotifications(int numberOfNotifications) {
+        for (int i = 0; i < numberOfNotifications; i++) {
+            notificationRepository.save(
+                    new PostNotification(NEW_POST, publisher, notifiedUser.getId(), TEST_POST_ID + i)
+            );
+        }
+    }
+
+    private PageRequest getPageRequest(int pageSize) {
+        Sort sort = by(Sort.Direction.ASC, "createdDateTime");
+        return PageRequest.of(0, pageSize, sort);
+    }
 }

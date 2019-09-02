@@ -14,17 +14,16 @@ public class PostNotification extends BaseEntity {
     @JoinColumn(name = "publisher_id")
     private User publisher;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "notified_id")
-    private User notified;
+    @Column(name = "notified_user_id", nullable = false)
+    private Long notifiedUserId;
 
     @Column(name = "post_id", nullable = false)
     private Long postId;
 
-    public PostNotification(NotificationType type, User publisher, User notified, Long postId) {
+    public PostNotification(NotificationType type, User publisher, Long notifiedUserId, Long postId) {
         this.type = type;
         this.publisher = publisher;
-        this.notified = notified;
+        this.notifiedUserId = notifiedUserId;
         this.postId = postId;
     }
 
@@ -36,8 +35,8 @@ public class PostNotification extends BaseEntity {
         return publisher;
     }
 
-    public User getNotified() {
-        return notified;
+    public Long getNotifiedUserId() {
+        return notifiedUserId;
     }
 
     public Long getPostId() {

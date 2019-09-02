@@ -10,5 +10,5 @@ import java.util.List;
 
 public interface NotificationRepository extends JpaRepository<PostNotification, Long> {
 
-    Page<PostNotification> findAllByNotified(User notifiedUser, Pageable pageable);
+    Page<PostNotification> findAllByNotifiedUserId(Long id, Pageable pageable);
 }
