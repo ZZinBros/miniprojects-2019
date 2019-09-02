@@ -1,8 +1,8 @@
 package com.woowacourse.zzinbros.mediafile.service;
 
-import com.woowacourse.zzinbros.common.config.upload.UploadTo;
 import com.woowacourse.zzinbros.mediafile.domain.MediaFile;
 import com.woowacourse.zzinbros.mediafile.domain.MediaFileRepository;
+import com.woowacourse.zzinbros.mediafile.domain.upload.UploadTo;
 import org.springframework.stereotype.Service;
 
 @Service

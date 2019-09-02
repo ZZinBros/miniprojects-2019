@@ -1,4 +1,4 @@
-package com.woowacourse.zzinbros.comment.controller;
+package com.woowacourse.zzinbros.comment.web.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.woowacourse.zzinbros.BaseTest;

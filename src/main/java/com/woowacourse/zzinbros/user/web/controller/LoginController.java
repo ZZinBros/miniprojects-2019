@@ -1,5 +1,6 @@
 package com.woowacourse.zzinbros.user.web.controller;
 
+import com.woowacourse.zzinbros.user.domain.User;
 import com.woowacourse.zzinbros.user.dto.UserRequestDto;
 import com.woowacourse.zzinbros.user.dto.UserResponseDto;
 import com.woowacourse.zzinbros.user.exception.UserException;
@@ -25,7 +26,8 @@ public class LoginController {
     @PostMapping
     public String login(UserRequestDto userRequestDto, RedirectAttributes redirectAttr) {
         try {
-            UserResponseDto loginUserDto = userService.login(userRequestDto);
+            User user = userService.login(userRequestDto);
+            UserResponseDto loginUserDto = new UserResponseDto(user);
             loginSessionManager.setLoginSession(loginUserDto);
             return "redirect:/";
         } catch (UserException e) {

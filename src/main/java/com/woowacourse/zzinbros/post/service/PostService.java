@@ -81,14 +81,14 @@ public class PostService {
     public List<Post> readAll(long userId, Sort sort) {
         User loginUser = userService.findUserById(userId);
         Set<User> friends = friendService.findFriendEntitiesByUser(userId);
-        List<Post> posts = postRepository.findAllByDisplayStrategy(DisplayType.ALL, sort);
+        List<Post> posts = postRepository.findAllByDisplayType(DisplayType.ALL, sort);
 
         for (User friend : friends) {
-            posts.addAll(postRepository.findAllByDisplayStrategyAndAuthor(DisplayType.FRIEND, friend, sort));
+            posts.addAll(postRepository.findAllByDisplayTypeAndAuthor(DisplayType.FRIEND, friend, sort));
         }
 
-        posts.addAll(postRepository.findAllByDisplayStrategyAndAuthor(DisplayType.FRIEND, loginUser, sort));
-        posts.addAll(postRepository.findAllByDisplayStrategyAndAuthor(DisplayType.ONLY_ME, loginUser, sort));
+        posts.addAll(postRepository.findAllByDisplayTypeAndAuthor(DisplayType.FRIEND, loginUser, sort));
+        posts.addAll(postRepository.findAllByDisplayTypeAndAuthor(DisplayType.ONLY_ME, loginUser, sort));
 
         posts.sort(Comparator.comparing(Post::getCreatedDateTime).reversed());
         return Collections.unmodifiableList(posts);
@@ -101,9 +101,9 @@ public class PostService {
             return Collections.unmodifiableList(posts);
         }
 
-        posts.addAll(postRepository.findAllByDisplayStrategyAndAuthor(DisplayType.ALL, user, sort));
+        posts.addAll(postRepository.findAllByDisplayTypeAndAuthor(DisplayType.ALL, user, sort));
         if (friendService.isMyFriend(loginUserId, user.getId())) {
-            posts.addAll(postRepository.findAllByDisplayStrategyAndAuthor(DisplayType.FRIEND, user, sort));
+            posts.addAll(postRepository.findAllByDisplayTypeAndAuthor(DisplayType.FRIEND, user, sort));
         }
 
         posts.sort(Comparator.comparing(Post::getCreatedDateTime).reversed());

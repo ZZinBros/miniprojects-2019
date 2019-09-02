@@ -1,4 +1,4 @@
-package com.woowacourse.zzinbros.comment.controller;
+package com.woowacourse.zzinbros.comment.web.controller;
 
 import com.woowacourse.zzinbros.comment.domain.Comment;
 import com.woowacourse.zzinbros.comment.dto.CommentRequestDto;

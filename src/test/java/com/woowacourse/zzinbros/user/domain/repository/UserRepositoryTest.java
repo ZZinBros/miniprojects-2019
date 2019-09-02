@@ -26,7 +26,7 @@ class UserRepositoryTest extends UserBaseTest {
     @DisplayName("이메일이 중복이 아닐때 False를 반환하는지 발생하는지 테스트")
     void findByEmail() {
         User user = userRepository.save(SAMPLE_USERS.get(SAMPLE_ONE));
-        User actual = userRepository.findByEmail(user.getEmail()).orElseThrow(IllegalArgumentException::new);
+        User actual = userRepository.findByEmailEmail(user.getEmail()).orElseThrow(IllegalArgumentException::new);
         assertEquals(user, actual);
     }
 
@@ -34,6 +34,6 @@ class UserRepositoryTest extends UserBaseTest {
     @DisplayName("이메일이 중복일 때 True를 반환하는지 발생하는지 테스트")
     void signupWhenEmailExists() {
         User user = userRepository.save(SAMPLE_USERS.get(SAMPLE_ONE));
-        assertTrue(userRepository.existsUserByEmail(user.getEmail()));
+        assertTrue(userRepository.existsUserByEmailEmail(user.getEmail()));
     }
 }

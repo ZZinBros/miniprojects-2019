@@ -13,7 +13,7 @@ import java.util.List;
 public interface PostRepository extends JpaRepository<Post, Long> {
     List<Post> findAllByAuthor(User user, Sort sort);
 
-    List<Post> findAllByDisplayStrategy(DisplayType displayType, Sort sort);
+    List<Post> findAllByDisplayType(DisplayType displayType, Sort sort);
 
-    List<Post> findAllByDisplayStrategyAndAuthor(DisplayType displayType, User author, Sort sort);
+    List<Post> findAllByDisplayTypeAndAuthor(DisplayType displayType, User author, Sort sort);
 }

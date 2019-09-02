@@ -1,7 +1,7 @@
 package com.woowacourse.zzinbros.post.service;
 
-import com.woowacourse.zzinbros.common.config.upload.UploadTo;
 import com.woowacourse.zzinbros.mediafile.domain.MediaFile;
+import com.woowacourse.zzinbros.mediafile.domain.upload.UploadTo;
 import com.woowacourse.zzinbros.mediafile.service.MediaFileService;
 import com.woowacourse.zzinbros.post.domain.Post;
 import com.woowacourse.zzinbros.post.domain.repository.PostRepository;
@@ -18,7 +18,9 @@ public class PostWithImageService {
     private final PostRepository postRepository;
     private final MediaFileService mediaFileService;
 
-    public PostWithImageService(UserService userService, PostRepository postRepository, MediaFileService mediaFileService) {
+    public PostWithImageService(UserService userService,
+                                PostRepository postRepository,
+                                MediaFileService mediaFileService) {
         this.userService = userService;
         this.postRepository = postRepository;
         this.mediaFileService = mediaFileService;

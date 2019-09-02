@@ -1,9 +1,10 @@
 package com.woowacourse.zzinbros.user.dto;
 
-import java.io.Serializable;
+import com.woowacourse.zzinbros.user.domain.User;
+
 import java.util.Objects;
 
-public class UserResponseDto implements Serializable {
+public class UserResponseDto {
     private Long id;
     private String name;
     private String email;
@@ -20,6 +21,13 @@ public class UserResponseDto implements Serializable {
         this.name = name;
         this.email = email;
         this.profile = profile;
+    }
+
+    public UserResponseDto(User user) {
+        this.id = user.getId();
+        this.name = user.getName();
+        this.email = user.getEmail();
+        this.profile = user.getProfile().getUrl();
     }
 
     public long getId() {
@@ -45,11 +53,12 @@ public class UserResponseDto implements Serializable {
         UserResponseDto that = (UserResponseDto) o;
         return Objects.equals(id, that.id) &&
                 Objects.equals(name, that.name) &&
-                Objects.equals(email, that.email);
+                Objects.equals(email, that.email) &&
+                Objects.equals(profile, that.profile);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, email);
+        return Objects.hash(id, name, email, profile);
     }
 }

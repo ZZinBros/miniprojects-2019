@@ -119,7 +119,7 @@ public class PostServiceTest extends BaseTest {
 
         given(postRepository.findById(DEFAULT_POST_ID)).willReturn(Optional.of(defaultPost));
         given(userService.findUserById(DEFAULT_USER_ID)).willReturn(defaultUser);
-        given(postRepository.findAllByDisplayStrategyAndAuthor(ALL, defaultUser, sort)).willReturn(Arrays.asList());
+        given(postRepository.findAllByDisplayTypeAndAuthor(ALL, defaultUser, sort)).willReturn(Arrays.asList());
 
         postRequestDto = new PostRequestDto();
         postRequestDto.setContents(DEFAULT_CONTENT);
@@ -160,7 +160,7 @@ public class PostServiceTest extends BaseTest {
     @Test
     @DisplayName("친구관계가 아닌 회원이 회원페이지에 접속했을 때 게시글 조회")
     void readAllByOutsider() {
-        given(postRepository.findAllByDisplayStrategyAndAuthor(ALL, outsider, sort)).willReturn(Arrays.asList(outsiderPostToAll));
+        given(postRepository.findAllByDisplayTypeAndAuthor(ALL, outsider, sort)).willReturn(Arrays.asList(outsiderPostToAll));
         given(friendService.isMyFriend(DEFAULT_USER_ID, FRIEND_USER_ID)).willReturn(false);
         assertThat(postService.readAllByUser(outsider, DEFAULT_USER_ID, sort)).isEqualTo(Arrays.asList(outsiderPostToAll));
     }
@@ -168,8 +168,8 @@ public class PostServiceTest extends BaseTest {
     @Test
     @DisplayName("친구관계인 회원이 회원페이지에 접속했을 때 게시글 조회")
     void readAllByFriend() {
-        given(postRepository.findAllByDisplayStrategyAndAuthor(ALL, defaultFriend, sort)).willReturn(Arrays.asList(friendPostToAll));
-        given(postRepository.findAllByDisplayStrategyAndAuthor(FRIEND, defaultFriend, sort)).willReturn(Arrays.asList(friendPostToFriend));
+        given(postRepository.findAllByDisplayTypeAndAuthor(ALL, defaultFriend, sort)).willReturn(Arrays.asList(friendPostToAll));
+        given(postRepository.findAllByDisplayTypeAndAuthor(FRIEND, defaultFriend, sort)).willReturn(Arrays.asList(friendPostToFriend));
         given(friendService.isMyFriend(DEFAULT_USER_ID, FRIEND_USER_ID)).willReturn(true);
         assertThat(postService.readAllByUser(defaultFriend, DEFAULT_USER_ID, sort)).isEqualTo(Arrays.asList(friendPostToFriend, friendPostToAll));
     }
@@ -185,10 +185,10 @@ public class PostServiceTest extends BaseTest {
     @DisplayName("타임라인에 나오는 게시글 조회")
     void readAll() {
         given(friendService.findFriendEntitiesByUser(DEFAULT_USER_ID)).willReturn(new HashSet<>(Arrays.asList(defaultFriend)));
-        given(postRepository.findAllByDisplayStrategy(ALL, sort)).willReturn(new ArrayList<>(Arrays.asList(outsiderPostToAll, friendPostToAll, defaultPostToAll)));
-        given(postRepository.findAllByDisplayStrategyAndAuthor(FRIEND, defaultFriend, sort)).willReturn(new ArrayList<>(Arrays.asList(friendPostToFriend)));
-        given(postRepository.findAllByDisplayStrategyAndAuthor(FRIEND, defaultUser, sort)).willReturn(new ArrayList<>(Arrays.asList(defaultPostToFriend)));
-        given(postRepository.findAllByDisplayStrategyAndAuthor(ONLY_ME, defaultUser, sort)).willReturn(new ArrayList<>(Arrays.asList(defaultPostToMe)));
+        given(postRepository.findAllByDisplayType(ALL, sort)).willReturn(new ArrayList<>(Arrays.asList(outsiderPostToAll, friendPostToAll, defaultPostToAll)));
+        given(postRepository.findAllByDisplayTypeAndAuthor(FRIEND, defaultFriend, sort)).willReturn(new ArrayList<>(Arrays.asList(friendPostToFriend)));
+        given(postRepository.findAllByDisplayTypeAndAuthor(FRIEND, defaultUser, sort)).willReturn(new ArrayList<>(Arrays.asList(defaultPostToFriend)));
+        given(postRepository.findAllByDisplayTypeAndAuthor(ONLY_ME, defaultUser, sort)).willReturn(new ArrayList<>(Arrays.asList(defaultPostToMe)));
 
         assertThat(postService.readAll(DEFAULT_USER_ID, sort)).isEqualTo(Arrays.asList(outsiderPostToAll, friendPostToFriend, friendPostToAll, defaultPostToMe, defaultPostToFriend, defaultPostToAll));
     }

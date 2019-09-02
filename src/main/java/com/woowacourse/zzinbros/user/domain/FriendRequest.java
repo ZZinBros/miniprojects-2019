@@ -7,20 +7,23 @@ import org.hibernate.annotations.OnDeleteAction;
 import javax.persistence.*;
 
 @Entity
-@Table(
-        uniqueConstraints = @UniqueConstraint(
-                columnNames = {"sender_id", "receiver_id"},
-                name = "uk_friend_request_sender_and_receiver")
-)
+@Table(uniqueConstraints = @UniqueConstraint(
+        columnNames = {"sender_id", "receiver_id"},
+        name = "uk_friend_request_sender_and_receiver"))
 public class FriendRequest extends BaseEntity {
-
     @ManyToOne
-    @JoinColumn(name = "sender_id", foreignKey = @ForeignKey(name = "fk_friend_request_sender_to_user"))
+    @JoinColumn(name = "sender_id",
+            foreignKey = @ForeignKey(name = "fk_friend_request_sender_to_user"),
+            updatable = false,
+            nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User sender;
 
     @ManyToOne
-    @JoinColumn(name = "receiver_id", foreignKey = @ForeignKey(name = "fk_friend_request_receiver_to_user"))
+    @JoinColumn(name = "receiver_id",
+            foreignKey = @ForeignKey(name = "fk_friend_request_receiver_to_user"),
+            updatable = false,
+            nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User receiver;
 
@@ -30,10 +33,6 @@ public class FriendRequest extends BaseEntity {
     public FriendRequest(User sender, User receiver) {
         this.sender = sender;
         this.receiver = receiver;
-    }
-
-    public Long getId() {
-        return this.id;
     }
 
     public User getSender() {

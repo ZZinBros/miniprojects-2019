@@ -1,6 +1,6 @@
-package com.woowacourse.zzinbros.common.config.upload;
+package com.woowacourse.zzinbros.mediafile.domain.upload;
 
-import com.woowacourse.zzinbros.common.config.upload.exception.FileNotFoundException;
+import com.woowacourse.zzinbros.mediafile.domain.upload.exception.FileNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.multipart.MultipartFile;

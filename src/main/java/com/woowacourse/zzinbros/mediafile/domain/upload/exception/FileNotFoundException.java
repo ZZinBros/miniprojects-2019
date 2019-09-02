@@ -1,4 +1,4 @@
-package com.woowacourse.zzinbros.common.config.upload.exception;
+package com.woowacourse.zzinbros.mediafile.domain.upload.exception;
 
 public class FileNotFoundException extends UploadException {
     public FileNotFoundException() {

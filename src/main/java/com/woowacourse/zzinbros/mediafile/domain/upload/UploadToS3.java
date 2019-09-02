@@ -1,4 +1,4 @@
-package com.woowacourse.zzinbros.common.config.upload;
+package com.woowacourse.zzinbros.mediafile.domain.upload;
 
 import com.amazonaws.services.s3.AmazonS3;
 import org.springframework.web.multipart.MultipartFile;

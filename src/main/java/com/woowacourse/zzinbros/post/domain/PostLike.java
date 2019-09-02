@@ -1,7 +1,7 @@
 package com.woowacourse.zzinbros.post.domain;
 
 import com.woowacourse.zzinbros.common.domain.BaseEntity;
-import com.woowacourse.zzinbros.user.domain.User; 
+import com.woowacourse.zzinbros.user.domain.User;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -28,10 +28,6 @@ public class PostLike extends BaseEntity {
     public PostLike(Post post, User user) {
         this.post = post;
         this.user = user;
-    }
-
-    public Long getId() {
-        return id;
     }
 
     public Post getPost() {

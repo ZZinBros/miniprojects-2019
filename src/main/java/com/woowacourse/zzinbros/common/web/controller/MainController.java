@@ -1,4 +1,4 @@
-package com.woowacourse.zzinbros.common.controller;
+package com.woowacourse.zzinbros.common.web.controller;
 
 import com.woowacourse.zzinbros.post.service.PostService;
 import com.woowacourse.zzinbros.user.dto.UserResponseDto;
@@ -34,7 +34,7 @@ public class MainController {
         UserResponseDto loginUserDto = userSession.getDto();
         Sort sort = by(Direction.DESC, "createdDateTime");
         model.addAttribute("posts", postService.readAll(loginUserDto.getId(), sort));
-        model.addAttribute("users", userService.readAll());
+        model.addAttribute("users", userService.convertToUserResponseDto(userService.findAll()));
         return "index";
     }
 
