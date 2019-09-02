@@ -1,6 +1,7 @@
 package com.woowacourse.zzinbros.post.service;
 
 import com.woowacourse.zzinbros.BaseTest;
+import com.woowacourse.zzinbros.notification.service.NotificationService;
 import com.woowacourse.zzinbros.post.domain.Post;
 import com.woowacourse.zzinbros.post.domain.PostLike;
 import com.woowacourse.zzinbros.post.domain.SharedPost;
@@ -72,6 +73,9 @@ class PostServiceTest extends BaseTest {
 
     @Mock
     private UserService userService;
+
+    @Mock
+    private NotificationService notificationService;
 
     @Mock
     private FriendService friendService;

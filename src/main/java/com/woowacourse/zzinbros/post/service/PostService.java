@@ -1,6 +1,7 @@
 package com.woowacourse.zzinbros.post.service;
 
 import com.woowacourse.zzinbros.post.domain.DisplayType;
+import com.woowacourse.zzinbros.notification.service.NotificationService;
 import com.woowacourse.zzinbros.post.domain.Post;
 import com.woowacourse.zzinbros.post.domain.PostLike;
 import com.woowacourse.zzinbros.post.domain.SharedPost;
@@ -26,23 +27,28 @@ public class PostService {
     private final PostRepository postRepository;
     private final PostLikeRepository postLikeRepository;
     private final SharedPostRepository sharedPostRepository;
+    private final NotificationService notificationService;
 
     public PostService(UserService userService,
                        FriendService friendService,
                        PostRepository postRepository,
                        PostLikeRepository postLikeRepository,
-                       SharedPostRepository sharedPostRepository) {
+                       SharedPostRepository sharedPostRepository,
+                       NotificationService notificationService) {
         this.userService = userService;
         this.friendService = friendService;
         this.postRepository = postRepository;
         this.postLikeRepository = postLikeRepository;
         this.sharedPostRepository = sharedPostRepository;
+        this.notificationService = notificationService;
     }
 
     public Post add(PostRequestDto dto, long userId) {
         User user = userService.findUserById(userId);
         Post post = dto.toEntity(user);
-        return postRepository.save(post);
+        Post createdPost = postRepository.save(post);
+        notificationService.notifyPostCreation(createdPost);
+        return createdPost;
     }
 
     @Transactional
