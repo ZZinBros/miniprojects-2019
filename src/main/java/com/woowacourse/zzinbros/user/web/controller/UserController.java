@@ -28,12 +28,10 @@ public class UserController {
     private static final String UPDATE_SUCCESS_MESSAGE = "Modification Success";
 
     private final UserService userService;
-    private final SearchService searchService;
     private final LoginSessionManager loginSessionManager;
 
-    public UserController(UserService userService, SearchService searchService, LoginSessionManager loginSessionManager) {
+    public UserController(UserService userService, LoginSessionManager loginSessionManager) {
         this.userService = userService;
-        this.searchService = searchService;
         this.loginSessionManager = loginSessionManager;
     }
 
@@ -45,12 +43,6 @@ public class UserController {
         } catch (UserException e) {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
-    }
-
-    @GetMapping
-    public ResponseEntity<Set<UserResponseDto>> search(@RequestParam("name") String name) {
-        Set<UserResponseDto> users = searchService.search(name);
-        return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
     @PostMapping

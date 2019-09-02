@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Set;
 
 public interface FriendRepository extends JpaRepository<Friend, Long> {
-
     boolean existsByOwnerAndSlave(User owner, User slave);
 
     Set<Friend> findAllByOwner(User owner);
