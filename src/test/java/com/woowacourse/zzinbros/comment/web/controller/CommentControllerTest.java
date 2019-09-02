@@ -7,6 +7,7 @@ import com.woowacourse.zzinbros.comment.dto.CommentRequestDto;
 import com.woowacourse.zzinbros.comment.exception.CommentNotFoundException;
 import com.woowacourse.zzinbros.comment.exception.UnauthorizedException;
 import com.woowacourse.zzinbros.comment.service.CommentService;
+import com.woowacourse.zzinbros.comment.web.controller.rest.CommentController;
 import com.woowacourse.zzinbros.post.domain.Post;
 import com.woowacourse.zzinbros.post.exception.PostNotFoundException;
 import com.woowacourse.zzinbros.post.service.PostService;

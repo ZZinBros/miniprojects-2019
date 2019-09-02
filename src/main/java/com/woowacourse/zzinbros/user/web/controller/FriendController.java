@@ -15,8 +15,7 @@ import java.util.Set;
 @Controller
 @RequestMapping("/friends")
 public class FriendController {
-
-    private FriendService friendService;
+    private final FriendService friendService;
 
     public FriendController(FriendService friendService) {
         this.friendService = friendService;
@@ -25,15 +24,16 @@ public class FriendController {
     @GetMapping
     @ResponseBody
     public ResponseEntity<Set<UserResponseDto>> getFriends(@SessionInfo UserSession userSession) {
-        final UserResponseDto loginUserDto = userSession.getDto();
+        UserResponseDto loginUserDto = userSession.getDto();
         Set<UserResponseDto> friends = friendService.findFriendsByUser(loginUserDto);
         return new ResponseEntity<>(friends, HttpStatus.OK);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.FOUND)
-    public String requestFriend(@RequestBody FriendRequestDto friendRequestDto, @SessionInfo UserSession userSession) {
-        final UserResponseDto loginUserDto = userSession.getDto();
+    public String requestFriend(@RequestBody FriendRequestDto friendRequestDto,
+                                @SessionInfo UserSession userSession) {
+        UserResponseDto loginUserDto = userSession.getDto();
         if (!userSession.matchId(friendRequestDto.getRequestFriendId())) {
             friendService.registerFriend(loginUserDto, friendRequestDto);
         }
@@ -42,10 +42,9 @@ public class FriendController {
 
     @DeleteMapping("/{id}")
     @ResponseBody
-    public ResponseEntity<UserResponseDto> deleteFriend(
-            @SessionInfo UserSession userSession,
-            @PathVariable("id") long id) {
-        final UserResponseDto loginUserDto = userSession.getDto();
+    public ResponseEntity<UserResponseDto> deleteFriend(@SessionInfo UserSession userSession,
+                                                        @PathVariable("id") long id) {
+        UserResponseDto loginUserDto = userSession.getDto();
         friendService.deleteFriends(loginUserDto, id);
         return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
     }
