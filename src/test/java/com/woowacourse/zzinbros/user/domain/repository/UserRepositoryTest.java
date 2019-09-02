@@ -7,6 +7,10 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.data.domain.PageRequest;
+
+import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -35,5 +39,18 @@ class UserRepositoryTest extends UserBaseTest {
     void signupWhenEmailExists() {
         User user = userRepository.save(SAMPLE_USERS.get(SAMPLE_ONE));
         assertTrue(userRepository.existsUserByEmailEmail(user.getEmail()));
+    }
+
+    @Test
+    @DisplayName("문자열을 포함한 페이징한 유저 목록을 조회한다")
+    void test() {
+        User user1 = userRepository.save(new User("name1", "name1@test.com", "123qweasd"));
+        User user2 = userRepository.save(new User("name2", "name2@test.com", "123qweasd"));
+        User user3 = userRepository.save(new User("name3", "name3@test.com", "123qweasd"));
+        userRepository.save(new User("not", "name4@test.com", "123qweasd"));
+
+        List<User> expected = Arrays.asList(user1, user2, user3);
+        List<User> users = userRepository.findByNameNameContaining("name", PageRequest.of(0, 3));
+        assertEquals(expected, users);
     }
 }

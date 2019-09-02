@@ -2,6 +2,7 @@ package com.woowacourse.zzinbros.user.web.controller;
 
 import com.woowacourse.zzinbros.user.dto.UserResponseDto;
 import com.woowacourse.zzinbros.user.service.SearchService;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -21,8 +22,8 @@ public class SearchController {
     }
 
     @GetMapping
-    public ResponseEntity<Set<UserResponseDto>> search(@RequestParam("name") String name) {
-        Set<UserResponseDto> users = searchService.search(name);
+    public ResponseEntity<Set<UserResponseDto>> search(@RequestParam("name") String name, Pageable pageable) {
+        Set<UserResponseDto> users = searchService.search(name, pageable);
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 }
