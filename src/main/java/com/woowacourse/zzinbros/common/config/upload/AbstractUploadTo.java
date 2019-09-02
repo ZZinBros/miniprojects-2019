@@ -1,13 +1,18 @@
 package com.woowacourse.zzinbros.common.config.upload;
 
+import com.woowacourse.zzinbros.common.config.upload.exception.FileNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Objects;
 import java.util.UUID;
 
 public abstract class AbstractUploadTo implements UploadTo {
-    protected static final Logger log = LoggerFactory.getLogger(AbstractUploadTo.class);
+    protected static final Logger LOGGER = LoggerFactory.getLogger(AbstractUploadTo.class);
+    private static final int LAST_INDEX = -1;
+    private static final String EXTENSION_SPLITTER = ".";
+
     protected MultipartFile file;
 
     protected AbstractUploadTo(MultipartFile file) {
@@ -17,15 +22,15 @@ public abstract class AbstractUploadTo implements UploadTo {
     @Override
     public String getExtension() {
         String originName = file.getOriginalFilename();
-        if (originName == null) {
-            throw new IllegalArgumentException();
+        if (Objects.isNull(originName)) {
+            throw new FileNotFoundException();
         }
-        int lastIndexOf = originName.lastIndexOf(".");
-        if (lastIndexOf == -1) {
-            log.warn("확장자가 없는 파일이네여");
+        int lastIndex = originName.lastIndexOf(EXTENSION_SPLITTER);
+        if (lastIndex == LAST_INDEX) {
+            LOGGER.warn("확장자가 없는 파일이네여");
             return "";
         }
-        return originName.substring(lastIndexOf);
+        return originName.substring(lastIndex);
     }
 
     @Override
@@ -33,8 +38,8 @@ public abstract class AbstractUploadTo implements UploadTo {
 
     protected String hashFileName() {
         String fileName = file.getOriginalFilename();
-        if (fileName == null) {
-            throw new IllegalArgumentException();
+        if (Objects.isNull(fileName)) {
+            throw new FileNotFoundException();
         }
         return UUID.randomUUID().toString();
     }

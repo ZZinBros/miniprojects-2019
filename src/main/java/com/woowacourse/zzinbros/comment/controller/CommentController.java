@@ -11,55 +11,47 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
 
 @RestController
 @RequestMapping("/posts/{postId}/comments")
 public class CommentController {
     private final CommentService commentService;
 
-    public CommentController(final CommentService commentService) {
+    public CommentController(CommentService commentService) {
         this.commentService = commentService;
     }
 
     @GetMapping
-    public ResponseEntity<List<CommentResponseDto>> getCommentsByPost(@PathVariable final Long postId) {
-        final List<Comment> comments = commentService.findByPost(postId);
-        final List<CommentResponseDto> dtoList = comments.stream()
+    public ResponseEntity<List<CommentResponseDto>> getCommentsByPost(@PathVariable Long postId) {
+        List<Comment> comments = commentService.findByPost(postId);
+        List<CommentResponseDto> dtoList = comments.stream()
                 .map(CommentResponseDto::new)
-                .collect(Collectors.toList());
+                .collect(toList());
         return new ResponseEntity<>(dtoList, HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<CommentResponseDto> add(
-            @PathVariable final Long postId,
-            @RequestBody final CommentRequestDto requestDto,
-            @SessionInfo final UserSession userSession) {
-        requestDto.setPostId(postId);
-        final Comment comment = commentService.add(requestDto, userSession);
-        final CommentResponseDto responseDto = new CommentResponseDto(comment);
+    public ResponseEntity<CommentResponseDto> add(@RequestBody CommentRequestDto requestDto,
+                                                  @SessionInfo UserSession userSession) {
+        Comment comment = commentService.add(requestDto, userSession.getDto());
+        CommentResponseDto responseDto = new CommentResponseDto(comment);
         return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
     }
 
     @PutMapping("/{commentId}")
-    public ResponseEntity<CommentResponseDto> edit(
-            @PathVariable final Long postId,
-            @PathVariable final Long commentId,
-            @RequestBody final CommentRequestDto requestDto,
-            @SessionInfo final UserSession session) {
-        requestDto.setPostId(postId);
-        requestDto.setCommentId(commentId);
-        final Comment comment = commentService.update(requestDto, session);
-        final CommentResponseDto responseDto = new CommentResponseDto(comment);
+    public ResponseEntity<CommentResponseDto> edit(@RequestBody CommentRequestDto requestDto,
+                                                   @SessionInfo UserSession session) {
+        Comment comment = commentService.update(requestDto, session.getDto());
+        CommentResponseDto responseDto = new CommentResponseDto(comment);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
     @DeleteMapping("/{commentId}")
-    public ResponseEntity<CommentResponseDto> delete(
-            @PathVariable final Long commentId,
-            @SessionInfo final UserSession session) {
-        commentService.delete(commentId, session);
+    public ResponseEntity<CommentResponseDto> delete(@PathVariable Long commentId,
+                                                     @SessionInfo UserSession session) {
+        commentService.delete(commentId, session.getDto());
         return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
     }
 }

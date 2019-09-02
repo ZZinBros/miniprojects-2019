@@ -12,7 +12,7 @@ public class CommentRequestDto {
         return postId;
     }
 
-    public void setPostId(final Long postId) {
+    public void setPostId(Long postId) {
         this.postId = postId;
     }
 
@@ -20,7 +20,7 @@ public class CommentRequestDto {
         return commentId;
     }
 
-    public void setCommentId(final Long commentId) {
+    public void setCommentId(Long commentId) {
         this.commentId = commentId;
     }
 
@@ -28,7 +28,7 @@ public class CommentRequestDto {
         return contents;
     }
 
-    public void setContents(final String contents) {
+    public void setContents(String contents) {
         this.contents = contents;
     }
 }

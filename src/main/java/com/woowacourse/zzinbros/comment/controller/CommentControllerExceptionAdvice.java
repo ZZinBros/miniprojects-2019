@@ -15,18 +15,17 @@ import static org.springframework.core.annotation.AnnotatedElementUtils.findMerg
 
 @RestControllerAdvice
 public class CommentControllerExceptionAdvice extends ResponseEntityExceptionHandler {
-    private static final Logger LOG = getLogger(CommentControllerExceptionAdvice.class);
+    private static final Logger LOGGER = getLogger(CommentControllerExceptionAdvice.class);
 
     @ExceptionHandler(ResponseStatusException.class)
-    public ResponseEntity<CommentResponseDto> handleResponseStatusException(final ResponseStatusException exception) {
-        LOG.info("HTTP status: {}", exception.getStatus());
-        LOG.info("{}", exception.getClass().getSimpleName());
-        final HttpStatus status = resolveAnnotatedResponseStatus(exception);
+    public ResponseEntity<CommentResponseDto> handleResponseStatusException(ResponseStatusException exception) {
+        LOGGER.info("HTTP status: {}", exception.getStatus());
+        LOGGER.info("{}", exception.getClass().getSimpleName());
+        HttpStatus status = resolveAnnotatedResponseStatus(exception);
         return new ResponseEntity<>(new CommentResponseDto(exception), status);
     }
 
-    // https://stackoverflow.com/a/51358263
-    private HttpStatus resolveAnnotatedResponseStatus(final Exception exception) {
+    private HttpStatus resolveAnnotatedResponseStatus(Exception exception) {
         final ResponseStatus annotation = findMergedAnnotation(exception.getClass(), ResponseStatus.class);
         if (annotation != null) {
             return annotation.value();

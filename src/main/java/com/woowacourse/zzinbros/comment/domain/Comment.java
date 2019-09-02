@@ -10,7 +10,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
-import java.time.LocalDateTime;
 
 @Entity
 public class Comment extends BaseEntity {
@@ -26,17 +25,13 @@ public class Comment extends BaseEntity {
     @Column(nullable = false)
     private String contents;
 
-    public Comment() {
+    protected Comment() {
     }
 
-    public Comment(final User author, final Post post, final String contents) {
+    public Comment(User author, Post post, String contents) {
         this.author = author;
         this.post = post;
         this.contents = contents;
-    }
-
-    public Long getId() {
-        return id;
     }
 
     public User getAuthor() {
@@ -51,15 +46,7 @@ public class Comment extends BaseEntity {
         return contents;
     }
 
-    public LocalDateTime getCreatedDateTime() {
-        return createdDateTime;
-    }
-
-    public LocalDateTime getUpdatedDateTime() {
-        return updatedDateTime;
-    }
-
-    public void update(final String contents) {
+    public void update(String contents) {
         this.contents = contents;
     }
 
@@ -68,7 +55,7 @@ public class Comment extends BaseEntity {
         this.post = null;
     }
 
-    public boolean isMatchUser(final User user) {
+    public boolean isAuthor(User user) {
         return this.author.isAuthor(user);
     }
 

@@ -18,7 +18,7 @@ class CommentTest extends BaseTest {
         final Post post = new Post("post", user);
         final Comment comment = new Comment(user, post, "comment");
 
-        assertThat(comment.isMatchUser(user)).isTrue();
-        assertThat(comment.isMatchUser(anotherUser)).isFalse();
+        assertThat(comment.isAuthor(user)).isTrue();
+        assertThat(comment.isAuthor(anotherUser)).isFalse();
     }
 }

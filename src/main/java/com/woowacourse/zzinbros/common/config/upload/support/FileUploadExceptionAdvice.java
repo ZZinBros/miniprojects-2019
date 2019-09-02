@@ -1,4 +1,4 @@
-package com.woowacourse.zzinbros.common.config.upload;
+package com.woowacourse.zzinbros.common.config.upload.support;
 
 import org.apache.tomcat.util.http.fileupload.FileUploadBase;
 import org.springframework.web.bind.annotation.ControllerAdvice;

@@ -1,7 +1,7 @@
 package com.woowacourse.zzinbros.post.web;
 
 import com.woowacourse.zzinbros.common.config.upload.UploadTo;
-import com.woowacourse.zzinbros.common.config.upload.UploadedFile;
+import com.woowacourse.zzinbros.common.config.upload.support.UploadedFile;
 import com.woowacourse.zzinbros.post.dto.PostRequestDto;
 import com.woowacourse.zzinbros.post.service.PostWithImageService;
 import com.woowacourse.zzinbros.user.web.support.SessionInfo;

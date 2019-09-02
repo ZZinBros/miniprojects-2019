@@ -1,9 +1,12 @@
 package com.woowacourse.zzinbros.user.web.controller;
 
 import com.woowacourse.zzinbros.common.config.upload.UploadTo;
-import com.woowacourse.zzinbros.common.config.upload.UploadedFile;
+import com.woowacourse.zzinbros.common.config.upload.support.UploadedFile;
 import com.woowacourse.zzinbros.user.domain.User;
-import com.woowacourse.zzinbros.user.dto.*;
+import com.woowacourse.zzinbros.user.dto.ModifyResponseMessage;
+import com.woowacourse.zzinbros.user.dto.UserRequestDto;
+import com.woowacourse.zzinbros.user.dto.UserResponseDto;
+import com.woowacourse.zzinbros.user.dto.UserUpdateDto;
 import com.woowacourse.zzinbros.user.exception.UserException;
 import com.woowacourse.zzinbros.user.service.UserService;
 import com.woowacourse.zzinbros.user.web.exception.UserRegisterException;
@@ -54,9 +57,9 @@ public class UserController {
 
     @PutMapping("/{id}")
     public ResponseEntity<ModifyResponseMessage<UserResponseDto>> modify(@PathVariable Long id,
-                                                                   @RequestBody UserUpdateDto userUpdateDto,
-                                                                   @SessionInfo UserSession userSession,
-                                                                   @UploadedFile UploadTo uploadTo) {
+                                                                         @RequestBody UserUpdateDto userUpdateDto,
+                                                                         @SessionInfo UserSession userSession,
+                                                                         @UploadedFile UploadTo uploadTo) {
         try {
             UserResponseDto user = userService.modify(id, userUpdateDto, userSession.getDto(), uploadTo);
             loginSessionManager.setLoginSession(user);

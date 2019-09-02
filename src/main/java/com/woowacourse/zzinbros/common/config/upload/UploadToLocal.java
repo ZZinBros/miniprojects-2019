@@ -26,10 +26,10 @@ public class UploadToLocal extends AbstractUploadTo {
         try {
             String saveName = hashFileName() + getExtension();
             file.transferTo(new File(uploadUrl + saveName));
-            log.debug("FILE SAVED : {}", uploadUrl + saveName);
+            LOGGER.debug("FILE SAVED : {}", uploadUrl + saveName);
             return downloadUrl + saveName;
         } catch (IOException e) {
-            log.warn("IOException " + e.getMessage());
+            LOGGER.warn("IOException " + e.getMessage());
             throw new IllegalArgumentException();
         }
     }

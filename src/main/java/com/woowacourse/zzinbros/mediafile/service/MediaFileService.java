@@ -5,9 +5,12 @@ import com.woowacourse.zzinbros.mediafile.domain.MediaFile;
 import com.woowacourse.zzinbros.mediafile.domain.MediaFileRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
+
 @Service
 public class MediaFileService {
     private static final String DEFAULT_URL = "/images/default/eastjun_profile.jpg";
+
     private final MediaFileRepository mediaFileRepository;
 
     public MediaFileService(MediaFileRepository mediaFileRepository) {
@@ -16,7 +19,7 @@ public class MediaFileService {
 
     public MediaFile register(UploadTo uploadTo) {
         String url = uploadTo.save();
-        if (url == null) {
+        if (Objects.isNull(url)) {
             return mediaFileRepository.save(new MediaFile(DEFAULT_URL));
         }
         return mediaFileRepository.save(new MediaFile(url));

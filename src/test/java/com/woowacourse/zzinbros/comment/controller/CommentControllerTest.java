@@ -47,7 +47,16 @@ class CommentControllerTest extends BaseTest {
     private static final String POSTS_PATH = "/posts/";
     private static final String COMMENTS_PATH = POSTS_PATH + MOCK_ID + "/comments";
     private static final String MOCK_CONTENTS = "contents";
-
+    @Autowired
+    WebApplicationContext webApplicationContext;
+    @Autowired
+    CommentController commentController;
+    @MockBean
+    CommentService commentService;
+    @MockBean
+    UserService userService;
+    @MockBean
+    PostService postService;
     private User mockUser = new User("name", "email@example.net", "12QWas!@");
     @Spy
     private Post mockPost = new Post(MOCK_CONTENTS, mockUser);
@@ -55,23 +64,7 @@ class CommentControllerTest extends BaseTest {
     private String commentRequestDto;
     private UserResponseDto mockUserDto = new UserResponseDto(MOCK_ID, mockUser.getName(), mockUser.getEmail());
     private UserResponseDto mockWrongUserDto = new UserResponseDto(MOCK_ID + 10L, mockUser.getName(), mockUser.getEmail());
-
     private MockMvc mockMvc;
-
-    @Autowired
-    WebApplicationContext webApplicationContext;
-
-    @Autowired
-    CommentController commentController;
-
-    @MockBean
-    CommentService commentService;
-
-    @MockBean
-    UserService userService;
-
-    @MockBean
-    PostService postService;
 
     @BeforeEach
     void setUp() throws Exception {
