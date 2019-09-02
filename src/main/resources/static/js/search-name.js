@@ -1,5 +1,7 @@
 (function () {
     const searchScrollBar = document.getElementById('search-dropdown-menu');
+    const pageNumber = 0;
+    const pageSize = 20;
 
     const cleanInnerText = (element) => {
         element.innerText = '';
@@ -25,7 +27,7 @@
             return;
         }
 
-        Api.get("/users?name=" + searchValue)
+        Api.get("/users?name=" + searchValue + "&page=" + pageNumber +"&size=" + pageSize)
             .then(res => {
                 cleanInnerText(searchScrollBar);
                 return res.json();
