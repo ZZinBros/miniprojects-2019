@@ -33,16 +33,20 @@ public class CommentController {
     }
 
     @PostMapping
-    public ResponseEntity<CommentResponseDto> add(@RequestBody CommentRequestDto requestDto,
+    public ResponseEntity<CommentResponseDto> add(@PathVariable Long postId,
+                                                  @RequestBody CommentRequestDto requestDto,
                                                   @SessionInfo UserSession userSession) {
+        requestDto.setPostId(postId);
         Comment comment = commentService.add(requestDto, userSession.getDto());
         CommentResponseDto responseDto = new CommentResponseDto(comment);
         return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
     }
 
     @PutMapping("/{commentId}")
-    public ResponseEntity<CommentResponseDto> edit(@RequestBody CommentRequestDto requestDto,
+    public ResponseEntity<CommentResponseDto> edit(@PathVariable Long commentId,
+                                                   @RequestBody CommentRequestDto requestDto,
                                                    @SessionInfo UserSession session) {
+        requestDto.setCommentId(commentId);
         Comment comment = commentService.update(requestDto, session.getDto());
         CommentResponseDto responseDto = new CommentResponseDto(comment);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
