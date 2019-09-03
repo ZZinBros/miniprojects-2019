@@ -32,14 +32,13 @@ public class NotificationService {
     public List<PostNotification> notify(Post post, NotificationType notificationType) {
         User publisher = post.getAuthor();
         Set<UserResponseDto> friendsDtos = friendService.findFriendsByUserId(publisher.getId());
-        List<PostNotification> savedNotifications = new ArrayList<>();
+        List<PostNotification> notifications = new ArrayList<>();
 
         for (UserResponseDto friendDto : friendsDtos) {
-            PostNotification savedNotification = notificationRepository
-                    .save(new PostNotification(notificationType, publisher, friendDto.getId(), post.getId()));
-            savedNotifications.add(savedNotification);
+            notifications.add(new PostNotification(notificationType, publisher, friendDto.getId(), post.getId()));
         }
-        return savedNotifications;
+        notificationRepository.saveAll(notifications);
+        return notifications;
     }
 
     public Page<PostNotification> fetchNotifications(long notifiedUserId, PageRequest pageRequest) {

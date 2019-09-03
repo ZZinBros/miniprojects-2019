@@ -69,10 +69,10 @@ public class NotificationServiceTest extends BaseTest {
         given(friendService.findFriendsByUserId(publisherWithId.getId())).willReturn(friendsOfPublisher);
 
         // When
-        notificationService.notify(post, CREATED);
+        List<PostNotification> savedNotifications = notificationService.notify(post, CREATED);
 
         // Then
-        verify(notificationRepository, times(numberOfFriends)).save(any());
+        assertThat(savedNotifications.size()).isEqualTo(numberOfFriends);
     }
 
     @Test
@@ -87,10 +87,10 @@ public class NotificationServiceTest extends BaseTest {
         given(friendService.findFriendsByUserId(publisherWithId.getId())).willReturn(friendsOfPublisher);
 
         // When
-        notificationService.notify(post, CREATED);
+        List<PostNotification> savedNotifications = notificationService.notify(post, CREATED);
 
         // Then
-        verify(notificationRepository, times(numberOfFriends)).save(any());
+        assertThat(savedNotifications.size()).isEqualTo(numberOfFriends);
     }
 
     @Test

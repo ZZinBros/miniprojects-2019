@@ -1,5 +1,6 @@
 package com.woowacourse.zzinbros.post.service;
 
+import com.woowacourse.zzinbros.notification.domain.NotificationType;
 import com.woowacourse.zzinbros.post.domain.DisplayType;
 import com.woowacourse.zzinbros.notification.service.NotificationService;
 import com.woowacourse.zzinbros.post.domain.Post;
@@ -14,6 +15,8 @@ import com.woowacourse.zzinbros.post.exception.UnAuthorizedException;
 import com.woowacourse.zzinbros.user.domain.User;
 import com.woowacourse.zzinbros.user.service.FriendService;
 import com.woowacourse.zzinbros.user.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +27,8 @@ import static com.woowacourse.zzinbros.notification.domain.NotificationType.CREA
 
 @Service
 public class PostService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(PostService.class);
+
     private final UserService userService;
     private final FriendService friendService;
     private final PostRepository postRepository;
@@ -48,14 +53,18 @@ public class PostService {
     public Post add(PostRequestDto dto, long userId) {
         User user = userService.findUserById(userId);
         Post post = dto.toEntity(user);
+        Post createdPost = postRepository.save(post);
 
-        post = postRepository.save(post);
+        notify(createdPost, CREATED);
+        return createdPost;
+    }
+
+    private void notify(Post post, NotificationType notificationType) {
         try {
-            notificationService.notify(post, CREATED);
+            notificationService.notify(post, notificationType);
         } catch (RuntimeException e) {
-            e.getStackTrace();
+            LOGGER.error(e.getMessage());
         }
-        return post;
     }
 
     @Transactional
