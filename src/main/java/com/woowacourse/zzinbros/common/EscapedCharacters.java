@@ -5,7 +5,7 @@ import org.apache.commons.text.translate.CharSequenceTranslator;
 import org.apache.commons.text.translate.EntityArrays;
 import org.apache.commons.text.translate.LookupTranslator;
 
-public class CharacterEscape {
+public class EscapedCharacters {
     private static final CharSequenceTranslator ALL_ESCAPE = new AggregateTranslator(
             new LookupTranslator(EntityArrays.BASIC_ESCAPE),
             new LookupTranslator(EntityArrays.APOS_ESCAPE),
