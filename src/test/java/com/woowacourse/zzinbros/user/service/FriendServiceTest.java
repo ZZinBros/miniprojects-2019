@@ -81,12 +81,12 @@ class FriendServiceTest extends UserBaseTest {
         friends.add(mockingId(new Friend(userSampleOf(1), userSampleOf(2)), 99L));
         friends.add(mockingId(new Friend(userSampleOf(2), userSampleOf(3)), 100L));
 
+        Set<UserResponseDto> actual = friendService.friendToUserResponseDto(friends);
         Set<UserResponseDto> expected = new HashSet<>();
-        expected.add(new UserResponseDto(userSampleOf(2).getId(), userSampleOf(2).getName(), userSampleOf(2).getEmail()));
-        expected.add(new UserResponseDto(userSampleOf(3).getId(), userSampleOf(3).getName(), userSampleOf(3).getEmail()));
+        expected.add(new UserResponseDto(userSampleOf(2)));
+        expected.add(new UserResponseDto(userSampleOf(3)));
 
-
-        assertThat(friendService.friendToUserResponseDto(friends)).isEqualTo(expected);
+        assertThat(actual).isEqualTo(expected);
     }
 
     @Test
@@ -98,9 +98,8 @@ class FriendServiceTest extends UserBaseTest {
         friends.add(mockingId(new FriendRequest(userSampleOf(3), userSampleOf(2)), 100L));
 
         Set<UserResponseDto> expected = new HashSet<>();
-        expected.add(new UserResponseDto(userSampleOf(1).getId(), userSampleOf(1).getName(), userSampleOf(1).getEmail()));
-        expected.add(new UserResponseDto(userSampleOf(3).getId(), userSampleOf(3).getName(), userSampleOf(3).getEmail()));
-
+        expected.add(new UserResponseDto(userSampleOf(1)));
+        expected.add(new UserResponseDto(userSampleOf(3)));
         assertThat(friendService.friendRequestToUserResponseDto(friends)).isEqualTo(expected);
     }
 
