@@ -16,7 +16,6 @@ import java.util.stream.Collectors;
 @Service
 @Transactional
 public class FriendService {
-
     private final FriendRequestRepository friendRequestRepository;
     private final FriendRepository friendRepository;
     private final UserService userService;
@@ -55,12 +54,12 @@ public class FriendService {
 
     public Set<UserResponseDto> findFriendsByUserId(final long id) {
         User owner = userService.findUserById(id);
-        return this.friendToUserResponseDto(friendRepository.findAllByOwner(owner));
+        return this.friendToUserResponseDto(friendRepository.findSlavesByOwner(owner));
     }
 
     public Set<User> findFriendEntitiesByUser(final long id) {
         User owner = userService.findUserById(id);
-        return friendToUser(friendRepository.findAllByOwner(owner));
+        return friendRepository.findSlavesByOwner(owner);
     }
 
     public Set<UserResponseDto> findFriendsByUser(UserResponseDto loginUserDto) {
@@ -74,7 +73,6 @@ public class FriendService {
     public Set<UserResponseDto> findFriendRequestsByUserId(final long id) {
         User owner = userService.findUserById(id);
         return friendRequestToUserResponseDto(friendRequestRepository.findAllByReceiver(owner));
-
     }
 
     public boolean isMyFriend(final long ownerId, final long slaveId) {
@@ -89,16 +87,9 @@ public class FriendService {
         return friendRequestRepository.existsBySenderAndReceiver(sender, receiver);
     }
 
-    public Set<UserResponseDto> friendToUserResponseDto(Set<Friend> friends) {
-        return friends.stream()
-                .map(friend -> friend.getSlave())
-                .map(user -> new UserResponseDto(user.getId(), user.getName(), user.getEmail()))
-                .collect(Collectors.toSet());
-    }
-
-    public Set<User> friendToUser(Set<Friend> friends) {
-        return friends.stream()
-                .map(friend -> friend.getSlave())
+    public Set<UserResponseDto> friendToUserResponseDto(Set<User> users) {
+        return users.stream()
+                .map(UserResponseDto::new)
                 .collect(Collectors.toSet());
     }
 

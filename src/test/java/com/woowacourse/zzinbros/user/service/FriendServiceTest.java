@@ -1,6 +1,5 @@
 package com.woowacourse.zzinbros.user.service;
 
-import com.woowacourse.zzinbros.user.domain.Friend;
 import com.woowacourse.zzinbros.user.domain.FriendRequest;
 import com.woowacourse.zzinbros.user.domain.User;
 import com.woowacourse.zzinbros.user.domain.UserBaseTest;
@@ -67,26 +66,28 @@ class FriendServiceTest extends UserBaseTest {
     @Test
     @DisplayName("친구 목록을 제대로 반환")
     void findFriendsByUser() {
-        Set<Friend> friends = new HashSet<>(Arrays.asList(new Friend(userSampleOf(1), userSampleOf(2))));
-        given(friendRepository.findAllByOwner(userSampleOf(1))).willReturn(friends);
+        Set<User> users = new HashSet<>(Arrays.asList(userSampleOf(SAMPLE_TWO)));
+        given(friendRepository.findSlavesByOwner(userSampleOf(SAMPLE_ONE))).willReturn(users);
 
-        assertThat(friendService.findFriendsByUserId(1L)).isEqualTo(friendService.friendToUserResponseDto(friends));
+        assertThat(friendService.findFriendsByUserId(1L)).isEqualTo(friendService.friendToUserResponseDto(users));
     }
 
     @Test
     @DisplayName("친구를 제대로 변환하는지")
     void friendToUserResponseDto() {
-        Set<Friend> friends = new HashSet<>();
+        User user1 = mockingId(userSampleOf(SAMPLE_ONE), 99L);
+        User user2 = mockingId(userSampleOf(SAMPLE_ONE), 100L);
+        Set<User> users = new HashSet<>();
 
-        friends.add(mockingId(new Friend(userSampleOf(1), userSampleOf(2)), 99L));
-        friends.add(mockingId(new Friend(userSampleOf(2), userSampleOf(3)), 100L));
+        users.add(user1);
+        users.add(user2);
 
         Set<UserResponseDto> expected = new HashSet<>();
-        expected.add(new UserResponseDto(userSampleOf(2).getId(), userSampleOf(2).getName(), userSampleOf(2).getEmail()));
-        expected.add(new UserResponseDto(userSampleOf(3).getId(), userSampleOf(3).getName(), userSampleOf(3).getEmail()));
+        expected.add(new UserResponseDto(user1));
+        expected.add(new UserResponseDto(user2));
 
 
-        assertThat(friendService.friendToUserResponseDto(friends)).isEqualTo(expected);
+        assertThat(friendService.friendToUserResponseDto(users)).isEqualTo(expected);
     }
 
     @Test
