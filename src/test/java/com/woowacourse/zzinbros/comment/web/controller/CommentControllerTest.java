@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.woowacourse.zzinbros.post.domain.DisplayType.ALL;
 import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -60,7 +61,7 @@ class CommentControllerTest extends BaseTest {
     PostService postService;
     private User mockUser = new User("name", "email@example.net", "12QWas!@");
     @Spy
-    private Post mockPost = new Post(MOCK_CONTENTS, mockUser);
+    private Post mockPost = new Post(MOCK_CONTENTS, mockUser, ALL);
     private Comment mockComment = new Comment(mockUser, mockPost, MOCK_CONTENTS);
     private String commentRequestDto;
     private UserResponseDto mockUserDto = new UserResponseDto(MOCK_ID, mockUser.getName(), mockUser.getEmail());

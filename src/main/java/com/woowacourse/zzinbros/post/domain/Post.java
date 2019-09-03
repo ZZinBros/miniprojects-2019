@@ -12,8 +12,6 @@ import org.hibernate.annotations.OnDeleteAction;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-import static com.woowacourse.zzinbros.post.domain.DisplayType.ALL;
-
 @Entity
 @DynamicUpdate
 public class Post extends BaseEntity {
@@ -49,17 +47,13 @@ public class Post extends BaseEntity {
     public Post() {
     }
 
-    public Post(String contents, User author) {
-        this(contents, author, ALL);
-    }
-
-    public Post(String contents, User author, Post sharedPost) {
+    public Post(String contents, User author, Post sharedPost, DisplayType displayType) {
         this.contents = contents;
         this.author = author;
         this.sharedPost = sharedPost;
         this.countOfLike = INIT_COUNT_OF_LIKE;
         this.countOfShared = INIT_COUNT_OF_SHARED;
-        this.displayType = ALL;
+        this.displayType = displayType;
     }
 
     public Post(String contents, User author, DisplayType displayType) {
