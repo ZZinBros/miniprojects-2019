@@ -1,6 +1,7 @@
 package com.woowacourse.zzinbros.comment.dto;
 
 import com.woowacourse.zzinbros.comment.domain.Comment;
+import com.woowacourse.zzinbros.common.CharacterEscape;
 
 import java.time.OffsetDateTime;
 import java.util.Optional;
@@ -51,7 +52,7 @@ public class CommentResponseDto {
     }
 
     public String getAuthorName() {
-        return authorName;
+        return CharacterEscape.of(authorName);
     }
 
     public void setAuthorName(String authorName) {
@@ -59,7 +60,7 @@ public class CommentResponseDto {
     }
 
     public String getContents() {
-        return contents;
+        return CharacterEscape.of(contents);
     }
 
     public void setContents(String contents) {
