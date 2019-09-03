@@ -56,7 +56,7 @@ public class FriendService {
         User owner = userService.findUserById(id);
         return this.friendToUserResponseDto(friendRepository.findSlavesByOwner(owner));
     }
-
+  
     public Set<User> findFriendEntitiesByUser(final long id) {
         User owner = userService.findUserById(id);
         return friendRepository.findSlavesByOwner(owner);
@@ -64,6 +64,11 @@ public class FriendService {
 
     public Set<UserResponseDto> findFriendsByUser(UserResponseDto loginUserDto) {
         return findFriendsByUserId(loginUserDto.getId());
+    }
+
+    public Set<UserResponseDto> findFriendsByUserId(final long id) {
+        User owner = userService.findUserById(id);
+        return this.friendToUserResponseDto(friendRepository.findAllByOwner(owner));
     }
 
     public Set<UserResponseDto> findFriendRequestsByUser(final UserResponseDto loginUserDto) {

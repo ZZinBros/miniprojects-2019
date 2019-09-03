@@ -82,10 +82,10 @@ class FriendServiceTest extends UserBaseTest {
         users.add(user1);
         users.add(user2);
 
+        Set<UserResponseDto> actual = friendService.friendToUserResponseDto(friends);
         Set<UserResponseDto> expected = new HashSet<>();
         expected.add(new UserResponseDto(user1));
         expected.add(new UserResponseDto(user2));
-
 
         assertThat(friendService.friendToUserResponseDto(users)).isEqualTo(expected);
     }
@@ -101,7 +101,7 @@ class FriendServiceTest extends UserBaseTest {
         Set<UserResponseDto> expected = new HashSet<>();
         expected.add(new UserResponseDto(userSampleOf(SAMPLE_TWO)));
         expected.add(new UserResponseDto(userSampleOf(SAMPLE_THREE)));
-
+      
         assertThat(friendService.friendRequestToUserResponseDto(friends)).isEqualTo(expected);
     }
 

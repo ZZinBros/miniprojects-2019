@@ -3,10 +3,19 @@
     const friendRequestNotification = document.getElementById('friend-requests-notification');
     const friendsScrollBar = document.getElementById('friends-scroll-bar');
 
-    const addFriendRequest = (element, req) => {
+    const addFriend = (scrollbar, friend) => {
+        const li = `<li>
+                        <a href="/posts?author=${friend.id}">
+                            <img src="${friend.profile}" />
+                            <span>${friend.name}</span>
+                        </a>
+                    </li>`;
 
-        const handleAddFriend = (event) => {
-            const requestFriendId = event.target.parentElement.value;
+        scrollbar.insertAdjacentHTML('beforeend', li);
+    };
+
+    const handleFriendRequest = (event) => {
+        const postFriendRequest = () => {
             Api.post('/friends', {requestFriendId})
                 .then(res => {
                     if (res.redirected) {
@@ -15,8 +24,7 @@
                 });
         };
 
-        const handleDeleteFriendRequest = (event) => {
-            const requestFriendId = event.target.parentElement.value;
+        const deleteFriendRequest = () => {
             Api.delete('/friends-requests/' + requestFriendId)
                 .then(res => {
                     if (res.ok) {
@@ -25,47 +33,31 @@
                 });
         };
 
-        const li = document.createElement('li');
-        li.value = req.id;
+        const target = event.target;
+        const requestFriendId = event.target.closest('li').value;
 
-        const span = document.createElement('span');
-        span.innerText = req.name;
+        if (target.classList.contains('friend-request-add')) {
+            postFriendRequest();
+            return;
+        }
+        deleteFriendRequest();
+    };
 
-        li.insertAdjacentElement('afterbegin', span);
-
-        const addBtn = document.createElement('button');
-        addBtn.innerText = '추가';
-        addBtn.addEventListener('click', handleAddFriend);
-        const rejectBtn = document.createElement('button');
-        rejectBtn.innerText = '거절';
-        rejectBtn.addEventListener('click', handleDeleteFriendRequest);
-
-        li.insertAdjacentElement('beforeend', addBtn);
-        li.insertAdjacentElement('beforeend', rejectBtn);
-
-        element.insertAdjacentElement('beforeend', li);
+    const addFriendRequest = (element, request) => {
+        const li = `<li value=${request.id}>
+                        <img src="${request.profile}" />
+                        <span>${request.name}</span>
+                        <button class="friend-request-add">추가</button>
+                        <button class="friend-request-reject">거절</button>
+                      </li>`;
+        element.insertAdjacentHTML('beforeend', li);
     };
 
     const notifyFriendRequest = (array) => {
         if (array.length > 0) {
-            const span = document.createElement('span');
-            span.classList.add('dot', 'mrg-vertical-10', 'mrg-horizon-15');
-            friendRequestNotification.insertAdjacentElement('beforeend', span);
+            const span = `<span class="dot mrg-vertical-10 mrg-horizon-15"></span>`;
+            friendRequestNotification.insertAdjacentHTML('beforeend', span);
         }
-    };
-
-    const addFriend = (scrollbar, json) => {
-        const li = document.createElement('li');
-        const anchor = document.createElement('a');
-        anchor.href = '/posts?author=' + json.id;
-
-        const span = document.createElement('span');
-        span.innerText = json.name;
-        anchor.insertAdjacentElement('beforeend', span);
-
-        li.insertAdjacentElement('afterbegin', anchor);
-
-        scrollbar.insertAdjacentElement('beforeend', li);
     };
 
     const addElementsToScrollBar = (scrollbar, url, addElement, checkNotification) => {
@@ -77,8 +69,14 @@
             });
     };
 
-    if (requestScrollBar) {
-        addElementsToScrollBar(requestScrollBar, '/friends-requests', addFriendRequest, notifyFriendRequest);
-        addElementsToScrollBar(friendsScrollBar, '/friends', addFriend, () => {});
+    const init = () => {
+        if (requestScrollBar) {
+            addElementsToScrollBar(requestScrollBar, '/friends-requests', addFriendRequest, notifyFriendRequest);
+            requestScrollBar.addEventListener('click', handleFriendRequest);
+            addElementsToScrollBar(friendsScrollBar, '/friends', addFriend, () => {
+            });
+        }
     }
+
+    init();
 })();
