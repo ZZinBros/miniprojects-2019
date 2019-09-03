@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Set;
 
 import static com.woowacourse.zzinbros.notification.domain.NotificationType.CREATED;
+import static com.woowacourse.zzinbros.post.domain.DisplayType.ALL;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.data.domain.Sort.by;
@@ -32,7 +33,6 @@ import static org.springframework.data.domain.Sort.by;
 @ExtendWith(SpringExtension.class)
 public class NotificationServiceTest extends BaseTest {
     private static final long PUBLISHER_ID = 999L;
-    private static final long NOTIFIED_USER_ID = 1000L;
     private static final String PUBLISHER_NAME = "publisher";
     private static final String NOTIFIED_USER_NAME = "notified";
     private static final String PUBLISHER_EMAIL = "publisher@test.com";
@@ -63,7 +63,7 @@ public class NotificationServiceTest extends BaseTest {
         // Given
         int numberOfFriends = 5;
         User publisherWithId = TestBaseMock.mockingId(publisher, PUBLISHER_ID);
-        Post post = new Post("contents", publisherWithId);
+        Post post = new Post("contents", publisherWithId, ALL);
         Set<User> friendsOfPublisher = getFriends(numberOfFriends);
 
         given(friendService.findFriendEntitiesByUser(publisherWithId.getId()))
@@ -82,7 +82,7 @@ public class NotificationServiceTest extends BaseTest {
         // Given
         int numberOfFriends = 0;
         User publisherWithId = TestBaseMock.mockingId(publisher, PUBLISHER_ID);
-        Post post = new Post("contents", publisherWithId);
+        Post post = new Post("contents", publisherWithId, ALL);
         Set<User> friendsOfPublisher = getFriends(numberOfFriends);
 
         given(friendService.findFriendEntitiesByUser(publisherWithId.getId())).willReturn(friendsOfPublisher);
