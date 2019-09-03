@@ -2,7 +2,7 @@ package com.woowacourse.zzinbros.comment.dto;
 
 import com.woowacourse.zzinbros.comment.domain.Comment;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.Optional;
 
 public class CommentResponseDto {
@@ -11,8 +11,8 @@ public class CommentResponseDto {
     private String authorName;
     private String contents;
     private String errorMessage;
-    private LocalDateTime createdDateTime;
-    private LocalDateTime updatedDateTime;
+    private OffsetDateTime createdDateTime;
+    private OffsetDateTime updatedDateTime;
     private String profile;
 
     public CommentResponseDto() {
@@ -74,19 +74,19 @@ public class CommentResponseDto {
         this.errorMessage = errorMessage;
     }
 
-    public LocalDateTime getCreatedDateTime() {
+    public OffsetDateTime getCreatedDateTime() {
         return createdDateTime;
     }
 
-    public void setCreatedDateTime(LocalDateTime createdDateTime) {
+    public void setCreatedDateTime(OffsetDateTime createdDateTime) {
         this.createdDateTime = createdDateTime;
     }
 
-    public LocalDateTime getUpdatedDateTime() {
+    public OffsetDateTime getUpdatedDateTime() {
         return updatedDateTime;
     }
 
-    public void setUpdatedDateTime(LocalDateTime updatedDateTime) {
+    public void setUpdatedDateTime(OffsetDateTime updatedDateTime) {
         this.updatedDateTime = updatedDateTime;
     }
 

@@ -21,6 +21,8 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.data.domain.Sort;
 
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -37,7 +39,7 @@ import static org.mockito.Mockito.doNothing;
 import static org.springframework.data.domain.Sort.Direction;
 import static org.springframework.data.domain.Sort.by;
 
-public class PostServiceTest extends BaseTest {
+class PostServiceTest extends BaseTest {
     private static final Long DEFAULT_USER_ID = 999L;
     private static final Long FRIEND_USER_ID = 1000L;
     private static final Long OUTSIDER_USER_ID = 1001L;
@@ -93,29 +95,29 @@ public class PostServiceTest extends BaseTest {
         defaultPostToAll = mockingIdAndCreatedDateTime(
                 new Post("defaultToAll", defaultUser, ALL),
                 DEFAULT_POST_ID,
-                LocalDateTime.of(2019, 8, 30, 12, 0, 0));
+                OffsetDateTime.of(LocalDateTime.of(2019, 8, 30, 12, 0, 0), ZoneOffset.of("+09:00")));
         defaultPostToFriend = mockingIdAndCreatedDateTime(
                 new Post("defaultToFriend", defaultUser, FRIEND),
                 DEFAULT_POST_ID + 1,
-                LocalDateTime.of(2019, 8, 30, 12, 0, 1));
+                OffsetDateTime.of(LocalDateTime.of(2019, 8, 30, 12, 0, 1), ZoneOffset.of("+09:00")));
         defaultPostToMe = mockingIdAndCreatedDateTime(
                 new Post("defaultToMe", defaultUser, ONLY_ME),
                 DEFAULT_POST_ID + 2,
-                LocalDateTime.of(2019, 8, 30, 12, 0, 2));
+                OffsetDateTime.of(LocalDateTime.of(2019, 8, 30, 12, 0, 2), ZoneOffset.of("+09:00")));
 
         friendPostToAll = mockingIdAndCreatedDateTime(
                 new Post("friendToAll", defaultFriend, ALL),
                 DEFAULT_POST_ID + 3,
-                LocalDateTime.of(2019, 8, 30, 12, 0, 3));
+                OffsetDateTime.of(LocalDateTime.of(2019, 8, 30, 12, 0, 3), ZoneOffset.of("+09:00")));
         friendPostToFriend = mockingIdAndCreatedDateTime(
                 new Post("friendToFriend", defaultFriend, FRIEND),
                 DEFAULT_POST_ID + 4,
-                LocalDateTime.of(2019, 8, 30, 12, 0, 4));
+                OffsetDateTime.of(LocalDateTime.of(2019, 8, 30, 12, 0, 4), ZoneOffset.of("+09:00")));
 
         outsiderPostToAll = mockingIdAndCreatedDateTime(
                 new Post("outsiderToAll", outsider, ALL),
                 DEFAULT_POST_ID + 5,
-                LocalDateTime.of(2019, 8, 30, 12, 0, 5));
+                OffsetDateTime.of(LocalDateTime.of(2019, 8, 30, 12, 0, 5), ZoneOffset.of("+09:00")));
 
         given(postRepository.findById(DEFAULT_POST_ID)).willReturn(Optional.of(defaultPost));
         given(userService.findUserById(DEFAULT_USER_ID)).willReturn(defaultUser);

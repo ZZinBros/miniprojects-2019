@@ -10,7 +10,6 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 import static com.woowacourse.zzinbros.post.domain.DisplayType.ALL;
 
@@ -101,14 +100,6 @@ public class Post extends BaseEntity {
 
     public String getContents() {
         return contents;
-    }
-
-    public LocalDateTime getCreatedDateTime() {
-        return createdDateTime;
-    }
-
-    public LocalDateTime getUpdatedDateTime() {
-        return updatedDateTime;
     }
 
     public User getAuthor() {

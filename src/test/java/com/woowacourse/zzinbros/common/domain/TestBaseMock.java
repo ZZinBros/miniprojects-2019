@@ -3,7 +3,7 @@ package com.woowacourse.zzinbros.common.domain;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 public class TestBaseMock extends BaseEntity {
     private static final Logger log = LoggerFactory.getLogger(TestBaseMock.class);
@@ -18,7 +18,7 @@ public class TestBaseMock extends BaseEntity {
         }
     }
 
-    public static <T extends BaseEntity> T mockingIdAndCreatedDateTime(T mock, final long id, final LocalDateTime createdDateTime) {
+    public static <T extends BaseEntity> T mockingIdAndCreatedDateTime(T mock, long id, OffsetDateTime createdDateTime) {
         try {
             mock.id = id;
             mock.createdDateTime = createdDateTime;
