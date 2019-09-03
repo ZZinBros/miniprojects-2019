@@ -31,17 +31,17 @@ public class NotificationService {
 
     public List<PostNotification> notify(Post post, NotificationType notificationType) {
         User publisher = post.getAuthor();
-        Set<UserResponseDto> friendsDtos = friendService.findFriendsByUserId(publisher.getId());
+        Set<User> friends = friendService.findFriendEntitiesByUser(publisher.getId());
         List<PostNotification> notifications = new ArrayList<>();
 
-        for (UserResponseDto friendDto : friendsDtos) {
-            notifications.add(new PostNotification(notificationType, publisher, friendDto.getId(), post.getId()));
+        for (User notifiedUser : friends) {
+            notifications.add(new PostNotification(notificationType, publisher, notifiedUser, post));
         }
         notificationRepository.saveAll(notifications);
         return notifications;
     }
 
-    public Page<PostNotification> fetchNotifications(long notifiedUserId, PageRequest pageRequest) {
-        return notificationRepository.findAllByNotifiedUserId(notifiedUserId, pageRequest);
+    public Page<PostNotification> fetchNotifications(User notifiedUser, PageRequest pageRequest) {
+        return notificationRepository.findAllByNotifiedUser(notifiedUser, pageRequest);
     }
 }

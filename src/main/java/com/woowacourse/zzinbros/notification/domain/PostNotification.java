@@ -1,6 +1,7 @@
 package com.woowacourse.zzinbros.notification.domain;
 
 import com.woowacourse.zzinbros.common.domain.BaseEntity;
+import com.woowacourse.zzinbros.post.domain.Post;
 import com.woowacourse.zzinbros.user.domain.User;
 
 import javax.persistence.*;
@@ -12,20 +13,26 @@ public class PostNotification extends BaseEntity {
     private NotificationType type;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "publisher_id")
+    @JoinColumn(name = "publisher_id", nullable = false)
     private User publisher;
 
-    @Column(name = "notified_user_id", nullable = false)
-    private Long notifiedUserId;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "notified_user_id", nullable = false)
+    private User notifiedUser;
 
-    @Column(name = "post_id", nullable = false)
-    private Long postId;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "post_id")
+    private Post post;
 
-    public PostNotification(NotificationType type, User publisher, Long notifiedUserId, Long postId) {
+    @Column(name = "checked", nullable = false)
+    private Boolean checked;
+
+    public PostNotification(NotificationType type, User publisher, User notifiedUser, Post post) {
         this.type = type;
         this.publisher = publisher;
-        this.notifiedUserId = notifiedUserId;
-        this.postId = postId;
+        this.notifiedUser = notifiedUser;
+        this.post = post;
+        checked = false;
     }
 
     public NotificationType getType() {
@@ -36,11 +43,19 @@ public class PostNotification extends BaseEntity {
         return publisher;
     }
 
-    public Long getNotifiedUserId() {
-        return notifiedUserId;
+    public User getNotifiedUser() {
+        return notifiedUser;
     }
 
-    public Long getPostId() {
-        return postId;
+    public Post getPost() {
+        return post;
+    }
+
+    public Boolean isChecked() {
+        return checked;
+    }
+
+    public void checkNotification() {
+        checked = true;
     }
 }

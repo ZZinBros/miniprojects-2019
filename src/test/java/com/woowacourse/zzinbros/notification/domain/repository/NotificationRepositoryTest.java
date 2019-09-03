@@ -2,6 +2,7 @@ package com.woowacourse.zzinbros.notification.domain.repository;
 
 import com.woowacourse.zzinbros.BaseTest;
 import com.woowacourse.zzinbros.notification.domain.PostNotification;
+import com.woowacourse.zzinbros.post.domain.Post;
 import com.woowacourse.zzinbros.user.domain.User;
 import com.woowacourse.zzinbros.user.domain.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,7 +17,6 @@ import org.springframework.data.domain.Sort;
 import java.util.List;
 
 import static com.woowacourse.zzinbros.notification.domain.NotificationType.CREATED;
-import static com.woowacourse.zzinbros.notification.service.NotificationServiceTest.TEST_POST_ID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.data.domain.Sort.by;
 
@@ -49,7 +49,7 @@ class NotificationRepositoryTest extends BaseTest {
 
         // When
         Page<PostNotification> notificationPage = notificationRepository
-                .findAllByNotifiedUserId(notifiedUser.getId(), pageRequest);
+                .findAllByNotifiedUser(notifiedUser, pageRequest);
         List<PostNotification> notifications = notificationPage.getContent();
 
         // Then
@@ -68,7 +68,7 @@ class NotificationRepositoryTest extends BaseTest {
 
         // When
         Page<PostNotification> notificationPage = notificationRepository
-                .findAllByNotifiedUserId(notifiedUser.getId(), pageRequest);
+                .findAllByNotifiedUser(notifiedUser, pageRequest);
         List<PostNotification> notifications = notificationPage.getContent();
 
         // Then
@@ -77,9 +77,7 @@ class NotificationRepositoryTest extends BaseTest {
 
     private void saveNotifications(int numberOfNotifications) {
         for (int i = 0; i < numberOfNotifications; i++) {
-            notificationRepository.save(new PostNotification(CREATED,
-                    publisher, notifiedUser.getId(), TEST_POST_ID + i)
-            );
+            notificationRepository.save(new PostNotification(CREATED, publisher, notifiedUser, new Post()));
         }
     }
 

@@ -9,6 +9,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface NotificationRepository extends JpaRepository<PostNotification, Long> {
-
-    Page<PostNotification> findAllByNotifiedUserId(Long id, Pageable pageable);
+    Page<PostNotification> findAllByNotifiedUser(User user, Pageable pageable);
 }

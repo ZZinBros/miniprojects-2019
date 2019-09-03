@@ -6,7 +6,6 @@ import com.woowacourse.zzinbros.notification.domain.PostNotification;
 import com.woowacourse.zzinbros.notification.domain.repository.NotificationRepository;
 import com.woowacourse.zzinbros.post.domain.Post;
 import com.woowacourse.zzinbros.user.domain.User;
-import com.woowacourse.zzinbros.user.dto.UserResponseDto;
 import com.woowacourse.zzinbros.user.service.FriendService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -27,17 +26,18 @@ import java.util.Set;
 
 import static com.woowacourse.zzinbros.notification.domain.NotificationType.CREATED;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 import static org.springframework.data.domain.Sort.by;
 
 @ExtendWith(SpringExtension.class)
 public class NotificationServiceTest extends BaseTest {
-    public static final long TEST_POST_ID = 999L;
     private static final long PUBLISHER_ID = 999L;
     private static final long NOTIFIED_USER_ID = 1000L;
+    private static final String PUBLISHER_NAME = "publisher";
+    private static final String NOTIFIED_USER_NAME = "notified";
+    private static final String PUBLISHER_EMAIL = "publisher@test.com";
+    private static final String NOTIFIED_EMAIL = "notified@test.com";
+    private static final String PASSWORD = "!@QW12qw";
 
     @Mock
     private NotificationRepository notificationRepository;
@@ -53,8 +53,8 @@ public class NotificationServiceTest extends BaseTest {
 
     @BeforeEach
     void setUp() {
-        publisher = new User("publisher", "publisher@test.com", "!@QW12qw");
-        notifiedUser = new User("testUser", "test@test.com", "!@QW12qw");
+        publisher = new User(PUBLISHER_NAME, PUBLISHER_EMAIL, PASSWORD);
+        notifiedUser = new User(NOTIFIED_USER_NAME, NOTIFIED_EMAIL, PASSWORD);
     }
 
     @Test
@@ -64,9 +64,10 @@ public class NotificationServiceTest extends BaseTest {
         int numberOfFriends = 5;
         User publisherWithId = TestBaseMock.mockingId(publisher, PUBLISHER_ID);
         Post post = new Post("contents", publisherWithId);
-        Set<UserResponseDto> friendsOfPublisher = getFriendsDtos(numberOfFriends);
+        Set<User> friendsOfPublisher = getFriends(numberOfFriends);
 
-        given(friendService.findFriendsByUserId(publisherWithId.getId())).willReturn(friendsOfPublisher);
+        given(friendService.findFriendEntitiesByUser(publisherWithId.getId()))
+                .willReturn(friendsOfPublisher);
 
         // When
         List<PostNotification> savedNotifications = notificationService.notify(post, CREATED);
@@ -82,9 +83,9 @@ public class NotificationServiceTest extends BaseTest {
         int numberOfFriends = 0;
         User publisherWithId = TestBaseMock.mockingId(publisher, PUBLISHER_ID);
         Post post = new Post("contents", publisherWithId);
-        Set<UserResponseDto> friendsOfPublisher = getFriendsDtos(numberOfFriends);
+        Set<User> friendsOfPublisher = getFriends(numberOfFriends);
 
-        given(friendService.findFriendsByUserId(publisherWithId.getId())).willReturn(friendsOfPublisher);
+        given(friendService.findFriendEntitiesByUser(publisherWithId.getId())).willReturn(friendsOfPublisher);
 
         // When
         List<PostNotification> savedNotifications = notificationService.notify(post, CREATED);
@@ -101,18 +102,17 @@ public class NotificationServiceTest extends BaseTest {
 
         PageRequest pageRequest = getPageRequest(pageSize);
         Page<PostNotification> expectedPage = getPostNotifications(pageSize);
-        given(notificationRepository.findAllByNotifiedUserId(NOTIFIED_USER_ID, pageRequest))
+        given(notificationRepository.findAllByNotifiedUser(notifiedUser, pageRequest))
                 .willReturn(expectedPage);
 
         // When
         Page<PostNotification> actualPage = notificationService.fetchNotifications(
-                NOTIFIED_USER_ID, pageRequest);
+                notifiedUser, pageRequest);
 
         // Then
         assertThat(actualPage.getContent().size()).isEqualTo(pageSize);
         assertThat(actualPage).isEqualTo(expectedPage);
     }
-
 
     @Test
     @DisplayName("알림을 삭제한다")
@@ -132,20 +132,16 @@ public class NotificationServiceTest extends BaseTest {
         //TODO
     }
 
-    private Set<UserResponseDto> getFriendsDtos(int numberOfFriends) {
-        Set<UserResponseDto> userResponseDtos = new HashSet<>();
+    private Set<User> getFriends(int numberOfFriends) {
+        Set<User> friends = new HashSet<>();
+        User friend;
 
         for (int i = 0; i < numberOfFriends; i++) {
-            userResponseDtos.add(new UserResponseDto(
-                    NOTIFIED_USER_ID + i,
-                    notifiedUser.getName(),
-                    notifiedUser.getEmail())
-            );
+            friend = new User(NOTIFIED_USER_NAME + i, NOTIFIED_EMAIL + i, PASSWORD);
+            friends.add(TestBaseMock.mockingId(friend, i));
         }
-
-        return userResponseDtos;
+        return friends;
     }
-
 
     private PageRequest getPageRequest(int pageSize) {
         Sort sort = by(Sort.Direction.ASC, "createdDateTime");
@@ -157,7 +153,7 @@ public class NotificationServiceTest extends BaseTest {
 
         for (int i = 0; i < pageSize; i++) {
             postNotifications.add(new PostNotification(
-                    CREATED, publisher, NOTIFIED_USER_ID, TEST_POST_ID + i
+                    CREATED, publisher, notifiedUser, new Post()
             ));
         }
         return new PageImpl<>(postNotifications);
