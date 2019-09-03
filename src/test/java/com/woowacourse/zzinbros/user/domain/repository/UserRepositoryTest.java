@@ -66,4 +66,16 @@ class UserRepositoryTest extends UserBaseTest {
         List<User> actual = userRepository.findByNameNameContaining("not", PageRequest.of(0, 3));
         assertEquals(expected, actual);
     }
+
+    @Test
+    @DisplayName("최근 가입한 순서대로 유저를 반환한다")
+    void findRecentUsers() {
+        User user1 = userRepository.save(new User("name1", "name1@test.com", "123qweasd"));
+        User user2 = userRepository.save(new User("name2", "name2@test.com", "123qweasd"));
+        User user3 = userRepository.save(new User("name3", "name3@test.com", "123qweasd"));
+
+        List<User> expected = Arrays.asList(user3, user2, user1);
+        List<User> actual = userRepository.findLatestUsers(PageRequest.of(0, 5));
+        assertEquals(expected, actual);
+    }
 }

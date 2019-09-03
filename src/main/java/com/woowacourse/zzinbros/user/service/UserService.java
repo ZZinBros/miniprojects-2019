@@ -12,6 +12,7 @@ import com.woowacourse.zzinbros.user.exception.EmailAlreadyExistsException;
 import com.woowacourse.zzinbros.user.exception.NotValidUserException;
 import com.woowacourse.zzinbros.user.exception.UserLoginException;
 import com.woowacourse.zzinbros.user.exception.UserNotFoundException;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +23,8 @@ import static java.util.stream.Collectors.toList;
 @Service
 @Transactional
 public class UserService {
+    private final int START_PAGE_INDEX = 0;
+
     private final UserRepository userRepository;
     private final MediaFileService mediaFileService;
 
@@ -83,9 +86,8 @@ public class UserService {
         throw new UserLoginException("비밀번호가 다릅니다");
     }
 
-
-    public List<User> findAll() {
-        return userRepository.findAll();
+    public List<User> findRandomUsers(int limit) {
+        return userRepository.findLatestUsers(PageRequest.of(START_PAGE_INDEX, limit));
     }
 
     public List<UserResponseDto> convertToUserResponseDto(List<User> users) {
