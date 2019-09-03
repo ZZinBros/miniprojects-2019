@@ -4,7 +4,7 @@
     const pageSize = 20;
 
     const cleanInnerText = (element) => {
-        element.innerText = '';
+        element.innerHTML = '';
     };
 
     const addSearchResult = (result) => {
@@ -39,5 +39,5 @@
     };
 
     const searchNameInput = document.getElementById('input-search-name');
-    searchNameInput.addEventListener('input', handleInputEvent);
+    searchNameInput.addEventListener('keyup', handleInputEvent);
 })();
