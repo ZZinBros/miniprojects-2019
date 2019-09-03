@@ -1,9 +1,9 @@
 package com.woowacourse.zzinbros.user.service;
 
+import com.woowacourse.zzinbros.BaseTest;
 import com.woowacourse.zzinbros.user.domain.User;
 import com.woowacourse.zzinbros.user.domain.repository.UserRepository;
 import com.woowacourse.zzinbros.user.dto.UserResponseDto;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,18 +11,17 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.PageRequest;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import static com.woowacourse.zzinbros.common.domain.TestBaseMock.mockingId;
-import static java.util.Collections.emptyList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.BDDMockito.given;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
-class SearchServiceTest {
-
-    @MockBean
-    UserService userService;
+class SearchServiceTest extends BaseTest {
 
     @MockBean
     UserRepository userRepository;
@@ -30,14 +29,9 @@ class SearchServiceTest {
     @Autowired
     SearchService searchService;
 
-    @BeforeEach
-    void setUp() {
-
-    }
-
     @Test
     @DisplayName("검색어로 이름 목록을 찾는다")
-    void test() {
+    void searchTest() {
         List<User> users = Arrays.asList(
                 mockingId(new User("name1", "name1@email.com", "123qweasd"), 1L),
                 mockingId(new User("name2", "name2@email.com", "123qweasd"), 2L)
@@ -57,21 +51,6 @@ class SearchServiceTest {
         given(userRepository.findByNameNameContaining("nam", PageRequest.of(0, 2))).willReturn(users);
         Set<UserResponseDto> expected = new HashSet<>(semiUsers);
         Set<UserResponseDto> actual = searchService.search("nam", PageRequest.of(0, 2));
-        assertEquals(expected, actual);
-    }
-
-    @Test
-    @DisplayName("틀린 검색어로 이름 목록을 찾지 못한다")
-    void test2() {
-        List<User> users = Arrays.asList(
-                new User("name1", "name1@email.com", "123qweasd"),
-                new User("name2", "name2@email.com", "123qweasd")
-        );
-
-        given(userRepository.findByNameNameContaining("nam", PageRequest.of(0, 2)))
-                .willReturn(emptyList());
-        Set<UserResponseDto> expected = new HashSet<>();
-        Set<UserResponseDto> actual = searchService.search("not", PageRequest.of(0, 2));
         assertEquals(expected, actual);
     }
 }

@@ -11,7 +11,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
@@ -26,7 +25,6 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-@AutoConfigureMockMvc
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 class FriendServiceTest extends UserBaseTest {
 
@@ -113,7 +111,7 @@ class FriendServiceTest extends UserBaseTest {
         User friend = userSampleOf(SAMPLE_TWO);
         given(userService.findLoggedInUser(LOGIN_USER_DTO)).willReturn(owner);
         given(userService.findUserById(2L)).willReturn(friend);
-        
+
         friendService.deleteFriends(LOGIN_USER_DTO, 2L);
 
         verify(friendRepository).deleteByOwnerAndSlave(owner, friend);
