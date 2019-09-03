@@ -3,6 +3,8 @@ package com.woowacourse.zzinbros.notification.domain;
 import com.woowacourse.zzinbros.common.domain.BaseEntity;
 import com.woowacourse.zzinbros.post.domain.Post;
 import com.woowacourse.zzinbros.user.domain.User;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 
@@ -13,19 +15,26 @@ public class PostNotification extends BaseEntity {
     private NotificationType type;
 
     @ManyToOne(cascade = CascadeType.ALL)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "publisher_id", nullable = false)
     private User publisher;
 
     @ManyToOne(cascade = CascadeType.ALL)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "notified_user_id", nullable = false)
     private User notifiedUser;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "post_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JoinColumn(name = "post_id", nullable = false,
+            foreignKey = @ForeignKey(name = "fk_notification_to_post"))
     private Post post;
 
     @Column(name = "checked", nullable = false)
     private Boolean checked;
+
+    public PostNotification() {
+    }
 
     public PostNotification(NotificationType type, User publisher, User notifiedUser, Post post) {
         this.type = type;

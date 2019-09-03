@@ -3,6 +3,7 @@ package com.woowacourse.zzinbros.notification.domain.repository;
 import com.woowacourse.zzinbros.BaseTest;
 import com.woowacourse.zzinbros.notification.domain.PostNotification;
 import com.woowacourse.zzinbros.post.domain.Post;
+import com.woowacourse.zzinbros.post.domain.repository.PostRepository;
 import com.woowacourse.zzinbros.user.domain.User;
 import com.woowacourse.zzinbros.user.domain.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,6 +11,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -27,6 +29,9 @@ class NotificationRepositoryTest extends BaseTest {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private PostRepository postRepository;
 
     private User notifiedUser;
     private User publisher;
@@ -77,7 +82,8 @@ class NotificationRepositoryTest extends BaseTest {
 
     private void saveNotifications(int numberOfNotifications) {
         for (int i = 0; i < numberOfNotifications; i++) {
-            notificationRepository.save(new PostNotification(CREATED, publisher, notifiedUser, new Post()));
+            Post post = postRepository.save(new Post());
+            notificationRepository.save(new PostNotification(CREATED, publisher, notifiedUser, post));
         }
     }
 

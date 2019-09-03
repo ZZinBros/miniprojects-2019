@@ -12,3 +12,8 @@ insert into Post(id, contents, count_of_like, author_id) values (888, 'deleted',
 
 insert into Friend(id, owner_id, slave_id) values (444, 444, 445);
 insert into Friend(id, owner_id, slave_id) values (445, 445, 444);
+
+insert into post_notification(id, checked, type, notified_user_id, post_id, publisher_id) values (999, false, 'CREATED', 777, 999, 1000);
+insert into post_notification(id, checked, type, notified_user_id, post_id, publisher_id) values (1000, false, 'CREATED', 777, 1000, 1000);
+insert into post_notification(id, checked, type, notified_user_id, post_id, publisher_id) values (1001, false, 'CREATED', 777, 777, 1000);
+insert into post_notification(id, checked, type, notified_user_id, post_id, publisher_id) values (1002, false, 'CREATED', 777, 888, 1000);

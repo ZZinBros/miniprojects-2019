@@ -6,7 +6,9 @@ import com.woowacourse.zzinbros.notification.domain.PostNotification;
 import com.woowacourse.zzinbros.notification.domain.repository.NotificationRepository;
 import com.woowacourse.zzinbros.post.domain.Post;
 import com.woowacourse.zzinbros.user.domain.User;
+import com.woowacourse.zzinbros.user.dto.UserResponseDto;
 import com.woowacourse.zzinbros.user.service.FriendService;
+import com.woowacourse.zzinbros.user.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -33,6 +35,7 @@ import static org.springframework.data.domain.Sort.by;
 @ExtendWith(SpringExtension.class)
 public class NotificationServiceTest extends BaseTest {
     private static final long PUBLISHER_ID = 999L;
+    private static final long NOTIFIED_ID = 1000L;
     private static final String PUBLISHER_NAME = "publisher";
     private static final String NOTIFIED_USER_NAME = "notified";
     private static final String PUBLISHER_EMAIL = "publisher@test.com";
@@ -44,6 +47,9 @@ public class NotificationServiceTest extends BaseTest {
 
     @Mock
     private FriendService friendService;
+
+    @Mock
+    private UserService userService;
 
     @InjectMocks
     private NotificationService notificationService;
@@ -101,13 +107,14 @@ public class NotificationServiceTest extends BaseTest {
         int pageSize = 10;
 
         PageRequest pageRequest = getPageRequest(pageSize);
+        UserResponseDto loggedInUserDto = new UserResponseDto(NOTIFIED_ID, NOTIFIED_USER_NAME, NOTIFIED_EMAIL);
         Page<PostNotification> expectedPage = getPostNotifications(pageSize);
         given(notificationRepository.findAllByNotifiedUser(notifiedUser, pageRequest))
                 .willReturn(expectedPage);
+        given(userService.findLoggedInUser(loggedInUserDto)).willReturn(notifiedUser);
 
         // When
-        Page<PostNotification> actualPage = notificationService.fetchNotifications(
-                notifiedUser, pageRequest);
+        Page<PostNotification> actualPage = notificationService.fetchNotifications(loggedInUserDto, pageRequest);
 
         // Then
         assertThat(actualPage.getContent().size()).isEqualTo(pageSize);

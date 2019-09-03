@@ -7,8 +7,9 @@ import com.woowacourse.zzinbros.post.domain.Post;
 import com.woowacourse.zzinbros.user.domain.User;
 import com.woowacourse.zzinbros.user.dto.UserResponseDto;
 import com.woowacourse.zzinbros.user.service.FriendService;
+import com.woowacourse.zzinbros.user.service.UserService;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,12 +21,15 @@ import java.util.Set;
 @Transactional
 public class NotificationService {
     private NotificationRepository notificationRepository;
+    private UserService userService;
     private FriendService friendService;
 
     public NotificationService(
             NotificationRepository notificationRepository,
+            UserService userService,
             FriendService friendService) {
         this.notificationRepository = notificationRepository;
+        this.userService = userService;
         this.friendService = friendService;
     }
 
@@ -41,7 +45,8 @@ public class NotificationService {
         return notifications;
     }
 
-    public Page<PostNotification> fetchNotifications(User notifiedUser, PageRequest pageRequest) {
+    public Page<PostNotification> fetchNotifications(UserResponseDto userResponseDto, Pageable pageRequest) {
+        User notifiedUser = userService.findLoggedInUser(userResponseDto);
         return notificationRepository.findAllByNotifiedUser(notifiedUser, pageRequest);
     }
 }
