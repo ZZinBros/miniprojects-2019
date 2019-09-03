@@ -10,10 +10,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.ActiveProfiles;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
-
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -27,28 +23,6 @@ class UserAndFriendRepositoryTest extends UserBaseTest {
 
     @Autowired
     FriendRequestRepository friendRequestRepository;
-
-    @Test
-    @DisplayName("친구 요청 추가 후 Friend 객체에서 확인할 수 있다")
-    void friendAddAndCheckFriend() {
-        User me = userRepository.save(userSampleOf(SAMPLE_ONE));
-        User first = userRepository.save(userSampleOf(SAMPLE_TWO));
-        User second = userRepository.save(userSampleOf(SAMPLE_THREE));
-
-        FriendRequest firstFriend = friendRequestRepository.save(new FriendRequest(me, first));
-        FriendRequest secondFriend = friendRequestRepository.save(new FriendRequest(me, second));
-
-        Set<FriendRequest> expected = new HashSet<>(Arrays.asList(
-                firstFriend,
-                secondFriend
-        ));
-        Set<FriendRequest> actualByMe = friendRequestRepository.findAllBySender(me);
-        Set<FriendRequest> actualByFirst = friendRequestRepository.findAllBySender(first);
-
-        assertEquals(2, actualByMe.size());
-        assertEquals(expected, actualByMe);
-        assertEquals(0, actualByFirst.size());
-    }
 
     @Test
     @DisplayName("중복된 Friend를 저장했을 때 예외가 발생한다")

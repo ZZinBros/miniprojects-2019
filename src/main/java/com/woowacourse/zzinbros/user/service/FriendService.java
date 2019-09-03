@@ -16,7 +16,6 @@ import java.util.stream.Collectors;
 @Service
 @Transactional
 public class FriendService {
-
     private final FriendRequestRepository friendRequestRepository;
     private final FriendRepository friendRepository;
     private final UserService userService;
@@ -55,16 +54,21 @@ public class FriendService {
 
     public Set<UserResponseDto> findFriendsByUserId(final long id) {
         User owner = userService.findUserById(id);
-        return this.friendToUserResponseDto(friendRepository.findAllByOwner(owner));
+        return this.friendToUserResponseDto(friendRepository.findSlavesByOwner(owner));
     }
-
+  
     public Set<User> findFriendEntitiesByUser(final long id) {
         User owner = userService.findUserById(id);
-        return friendToUser(friendRepository.findAllByOwner(owner));
+        return friendRepository.findSlavesByOwner(owner);
     }
 
     public Set<UserResponseDto> findFriendsByUser(UserResponseDto loginUserDto) {
         return findFriendsByUserId(loginUserDto.getId());
+    }
+
+    public Set<UserResponseDto> findFriendsByUserId(final long id) {
+        User owner = userService.findUserById(id);
+        return this.friendToUserResponseDto(friendRepository.findAllByOwner(owner));
     }
 
     public Set<UserResponseDto> findFriendRequestsByUser(final UserResponseDto loginUserDto) {
@@ -73,8 +77,19 @@ public class FriendService {
 
     public Set<UserResponseDto> findFriendRequestsByUserId(final long id) {
         User owner = userService.findUserById(id);
-        return friendRequestToUserResponseDto(friendRequestRepository.findAllByReceiver(owner));
+        return friendRequestToUserResponseDto(friendRequestRepository.findSendersByReceiver(owner));
+    }
 
+    public Set<UserResponseDto> friendToUserResponseDto(Set<User> users) {
+        return users.stream()
+                .map(UserResponseDto::new)
+                .collect(Collectors.toSet());
+    }
+
+    public Set<UserResponseDto> friendRequestToUserResponseDto(Set<User> friends) {
+        return friends.stream()
+                .map(UserResponseDto::new)
+                .collect(Collectors.toSet());
     }
 
     public boolean isMyFriend(final long ownerId, final long slaveId) {
@@ -87,26 +102,6 @@ public class FriendService {
         User sender = userService.findUserById(senderId);
         User receiver = userService.findUserById(receiverId);
         return friendRequestRepository.existsBySenderAndReceiver(sender, receiver);
-    }
-
-    public Set<UserResponseDto> friendToUserResponseDto(Set<Friend> friends) {
-        return friends.stream()
-                .map(friend -> friend.getSlave())
-                .map(user -> new UserResponseDto(user.getId(), user.getName(), user.getEmail()))
-                .collect(Collectors.toSet());
-    }
-
-    public Set<User> friendToUser(Set<Friend> friends) {
-        return friends.stream()
-                .map(friend -> friend.getSlave())
-                .collect(Collectors.toSet());
-    }
-
-    public Set<UserResponseDto> friendRequestToUserResponseDto(Set<FriendRequest> friends) {
-        return friends.stream()
-                .map(friend -> friend.getSender())
-                .map(user -> new UserResponseDto(user.getId(), user.getName(), user.getEmail()))
-                .collect(Collectors.toSet());
     }
 
     public void deleteFriends(UserResponseDto loginUserDto, long friendId) {

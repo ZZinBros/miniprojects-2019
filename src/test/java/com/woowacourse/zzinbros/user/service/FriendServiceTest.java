@@ -1,6 +1,5 @@
 package com.woowacourse.zzinbros.user.service;
 
-import com.woowacourse.zzinbros.user.domain.Friend;
 import com.woowacourse.zzinbros.user.domain.FriendRequest;
 import com.woowacourse.zzinbros.user.domain.User;
 import com.woowacourse.zzinbros.user.domain.UserBaseTest;
@@ -48,8 +47,8 @@ class FriendServiceTest extends UserBaseTest {
     @Test
     @DisplayName("친구 요청을 제대로 반환하는지")
     void findFriendRequestsByUserId() {
-        Set<FriendRequest> expected = new HashSet<>(Arrays.asList(new FriendRequest(userSampleOf(SAMPLE_TWO), userSampleOf(SAMPLE_ONE))));
-        given(friendRequestRepository.findAllByReceiver(userSampleOf(SAMPLE_ONE))).willReturn(expected);
+        Set<User> expected = new HashSet<>(Arrays.asList(userSampleOf(SAMPLE_TWO), userSampleOf(SAMPLE_ONE)));
+        given(friendRequestRepository.findSendersByReceiver(userSampleOf(SAMPLE_ONE))).willReturn(expected);
 
         Set<UserResponseDto> actual = friendService.findFriendRequestsByUserId(1L);
 
@@ -67,40 +66,42 @@ class FriendServiceTest extends UserBaseTest {
     @Test
     @DisplayName("친구 목록을 제대로 반환")
     void findFriendsByUser() {
-        Set<Friend> friends = new HashSet<>(Arrays.asList(new Friend(userSampleOf(1), userSampleOf(2))));
-        given(friendRepository.findAllByOwner(userSampleOf(1))).willReturn(friends);
+        Set<User> users = new HashSet<>(Arrays.asList(userSampleOf(SAMPLE_TWO)));
+        given(friendRepository.findSlavesByOwner(userSampleOf(SAMPLE_ONE))).willReturn(users);
 
-        assertThat(friendService.findFriendsByUserId(1L)).isEqualTo(friendService.friendToUserResponseDto(friends));
+        assertThat(friendService.findFriendsByUserId(1L)).isEqualTo(friendService.friendToUserResponseDto(users));
     }
 
     @Test
     @DisplayName("친구를 제대로 변환하는지")
     void friendToUserResponseDto() {
-        Set<Friend> friends = new HashSet<>();
+        User user1 = mockingId(userSampleOf(SAMPLE_ONE), 99L);
+        User user2 = mockingId(userSampleOf(SAMPLE_ONE), 100L);
+        Set<User> users = new HashSet<>();
 
-        friends.add(mockingId(new Friend(userSampleOf(1), userSampleOf(2)), 99L));
-        friends.add(mockingId(new Friend(userSampleOf(2), userSampleOf(3)), 100L));
+        users.add(user1);
+        users.add(user2);
 
+        Set<UserResponseDto> actual = friendService.friendToUserResponseDto(friends);
         Set<UserResponseDto> expected = new HashSet<>();
-        expected.add(new UserResponseDto(userSampleOf(2).getId(), userSampleOf(2).getName(), userSampleOf(2).getEmail()));
-        expected.add(new UserResponseDto(userSampleOf(3).getId(), userSampleOf(3).getName(), userSampleOf(3).getEmail()));
+        expected.add(new UserResponseDto(user1));
+        expected.add(new UserResponseDto(user2));
 
-
-        assertThat(friendService.friendToUserResponseDto(friends)).isEqualTo(expected);
+        assertThat(friendService.friendToUserResponseDto(users)).isEqualTo(expected);
     }
 
     @Test
     @DisplayName("친구 요청을 제대로 변환하는지")
     void friendRequestToUserResponseDto() {
-        Set<FriendRequest> friends = new HashSet<>();
+        Set<User> friends = new HashSet<>();
 
-        friends.add(mockingId(new FriendRequest(userSampleOf(1), userSampleOf(2)), 99L));
-        friends.add(mockingId(new FriendRequest(userSampleOf(3), userSampleOf(2)), 100L));
+        friends.add(userSampleOf(SAMPLE_TWO));
+        friends.add(userSampleOf(SAMPLE_THREE));
 
         Set<UserResponseDto> expected = new HashSet<>();
-        expected.add(new UserResponseDto(userSampleOf(1).getId(), userSampleOf(1).getName(), userSampleOf(1).getEmail()));
-        expected.add(new UserResponseDto(userSampleOf(3).getId(), userSampleOf(3).getName(), userSampleOf(3).getEmail()));
-
+        expected.add(new UserResponseDto(userSampleOf(SAMPLE_TWO)));
+        expected.add(new UserResponseDto(userSampleOf(SAMPLE_THREE)));
+      
         assertThat(friendService.friendRequestToUserResponseDto(friends)).isEqualTo(expected);
     }
 

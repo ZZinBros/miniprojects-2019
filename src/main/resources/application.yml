@@ -10,3 +10,20 @@ spring:
         multipart:
             max-file-size: 10MB
             max-request-size: 10MB
+
+facebook:
+    client:
+        clientId: 2322293111222716
+        clientSecret: 4530f29c0d106f6894ea781b75a2b92c
+        accessTokenUri: https://graph.facebook.com/oauth/access_token
+        userAuthorizationUri: https://www.facebook.com/dialog/oauth
+        tokenName: oauth_token
+        authenticationScheme: query
+        clientAuthenticationScheme: form
+    resource:
+        userInfoUri: https://graph.facebook.com/me?fields=email,picture,name
+
+server:
+    servlet:
+        session:
+            tracking-mode: cookie

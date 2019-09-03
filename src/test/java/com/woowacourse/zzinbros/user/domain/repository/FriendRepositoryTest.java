@@ -9,7 +9,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 @DataJpaTest
@@ -23,29 +27,11 @@ class FriendRepositoryTest extends BaseTest {
     private User user2;
     private User user3;
 
-    private Friend friend1;
-    private Friend friend2;
-    private Friend friend3;
-
-
     @BeforeEach
     void setUp() {
         user1 = userRepository.save(new User("11", "a@a.com", "12345678"));
         user2 = userRepository.save(new User("22", "b@a.com", "12345678"));
         user3 = userRepository.save(new User("33", "c@a.com", "12345678"));
-
-        friend1 = friendRepository.save(new Friend(user1, user2));
-        friendRepository.save(new Friend(user2, user1));
-        friend2 = friendRepository.save(new Friend(user2, user3));
-        friendRepository.save(new Friend(user3, user2));
-        friend3 = friendRepository.save(new Friend(user3, user1));
-        friendRepository.save(new Friend(user1, user3));
-        friendRepository.flush();
-    }
-
-    @Test
-    void name() {
-        assertThat(friendRepository.findAllByOwner(user1).size()).isEqualTo(2);
     }
 
     @Test
@@ -55,5 +41,16 @@ class FriendRepositoryTest extends BaseTest {
         friendRepository.deleteByOwnerAndSlave(user3, user2);
         assertFalse(friendRepository.existsByOwnerAndSlave(user2, user3));
         assertFalse(friendRepository.existsByOwnerAndSlave(user3, user2));
+    }
+
+    @Test
+    @DisplayName("owner로 친구를 조회한다")
+    void test() {
+        friendRepository.save(new Friend(user2, user1));
+        friendRepository.save(new Friend(user2, user3));
+
+        Set<User> expected = new HashSet<>(Arrays.asList(user1, user3));
+        Set<User> actual = friendRepository.findSlavesByOwner(user2);
+        assertEquals(expected, actual);
     }
 }
