@@ -27,7 +27,7 @@
             })
     };
 
-    const onDisplayStrategyHilight = (event) => {
+    const onDisplayStrategyHighlight = (event) => {
         event.target.closest('ul').querySelector('.ti-check').classList.remove('ti-check');
         event.target.closest('li').querySelectorAll('span')[1].classList.add('ti-check');
         event.target.closest('.composor-tools').querySelector('.display-btn > span').textContent
@@ -83,5 +83,5 @@
 
     const displayDropdowns = document.getElementsByClassName('post-display-dropdown');
     Array.from(displayDropdowns)
-        .map(element => element.addEventListener("click", e => onDisplayStrategyHilight(e)))
+        .map(element => element.addEventListener("click", e => onDisplayStrategyHighlight(e)))
 })();
