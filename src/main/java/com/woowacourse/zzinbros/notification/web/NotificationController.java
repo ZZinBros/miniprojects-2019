@@ -34,6 +34,6 @@ public class NotificationController {
                 .map(NotificationResponseDto::new)
                 .collect(toList());
 
-        return new ResponseEntity<>(notificationResponseDtos, HttpStatus.OK);
+        return ResponseEntity.ok(notificationResponseDtos);
     }
 }
