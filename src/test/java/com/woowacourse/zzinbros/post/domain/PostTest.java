@@ -7,6 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import static com.woowacourse.zzinbros.post.domain.DisplayType.ALL;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
@@ -26,7 +27,7 @@ public class PostTest extends BaseTest {
     @BeforeEach
     void setUp() {
         defaultUser = new User(DEFAULT_NAME, DEFAULT_EMAIL, DEFAULT_PASSWORD);
-        defaultPost = new Post(DEFAULT_CONTENT, defaultUser);
+        defaultPost = new Post(DEFAULT_CONTENT, defaultUser, ALL);
     }
 
     @Test
@@ -37,14 +38,14 @@ public class PostTest extends BaseTest {
     @Test
     void 게시글_작성자가_게시글_수정_테스트() {
 
-        assertThat((defaultPost.update(new Post(NEW_CONTENT, defaultUser))).getContents()).isEqualTo(NEW_CONTENT);
+        assertThat((defaultPost.update(new Post(NEW_CONTENT, defaultUser, ALL))).getContents()).isEqualTo(NEW_CONTENT);
     }
 
     @Test
     void 게시글_작성자가_아닌_회원이_게시글_수정_테스트() {
         User user = new User("paul", "paul@example.com", "123456789");
         assertThatExceptionOfType(UnAuthorizedException.class)
-                .isThrownBy(() -> defaultPost.update(new Post(NEW_CONTENT, user)));
+                .isThrownBy(() -> defaultPost.update(new Post(NEW_CONTENT, user, ALL)));
     }
 
     @Test

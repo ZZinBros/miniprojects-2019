@@ -11,11 +11,12 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 
-import static com.woowacourse.zzinbros.post.domain.DisplayType.ALL;
-
 @Entity
 @DynamicUpdate
 public class Post extends BaseEntity {
+    private static final int INIT_COUNT_OF_LIKE = 0;
+    private static final int INIT_COUNT_OF_SHARED = 0;
+
     @Lob
     private String contents;
 
@@ -45,24 +46,20 @@ public class Post extends BaseEntity {
     public Post() {
     }
 
-    public Post(String contents, User author) {
-        this(contents, author, ALL);
-    }
-
-    public Post(String contents, User author, Post sharedPost) {
+    public Post(String contents, User author, Post sharedPost, DisplayType displayType) {
         this.contents = contents;
         this.author = author;
         this.sharedPost = sharedPost;
-        this.countOfLike = 0;
-        this.countOfShared = 0;
-        this.displayType = ALL;
+        this.countOfLike = INIT_COUNT_OF_LIKE;
+        this.countOfShared = INIT_COUNT_OF_SHARED;
+        this.displayType = displayType;
     }
 
     public Post(String contents, User author, DisplayType displayType) {
         this.contents = contents;
         this.author = author;
-        this.countOfLike = 0;
-        this.countOfShared = 0;
+        this.countOfLike = INIT_COUNT_OF_LIKE;
+        this.countOfShared = INIT_COUNT_OF_SHARED;
         this.displayType = displayType;
     }
 
@@ -112,7 +109,7 @@ public class Post extends BaseEntity {
 
     public int getCountOfLike() {
         if (countOfLike == null) {
-            return 0;
+            return INIT_COUNT_OF_LIKE;
         }
         return countOfLike;
     }

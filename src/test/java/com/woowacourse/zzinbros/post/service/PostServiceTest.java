@@ -90,7 +90,7 @@ class PostServiceTest extends BaseTest {
         defaultFriend = mockingId(new User("friend", "friend@gmail.com", "12345678"), FRIEND_USER_ID);
         outsider = mockingId(new User("outsider", "outsider@gmail.com", "12345678"), OUTSIDER_USER_ID);
 
-        defaultPost = mockingId(new Post(DEFAULT_CONTENT, defaultUser), DEFAULT_POST_ID);
+        defaultPost = mockingId(new Post(DEFAULT_CONTENT, defaultUser, ALL), DEFAULT_POST_ID);
 
         defaultPostToAll = mockingIdAndCreatedDateTime(
                 new Post("defaultToAll", defaultUser, ALL),
@@ -129,7 +129,7 @@ class PostServiceTest extends BaseTest {
 
     @Test
     void 게시글_작성() {
-        given(postRepository.save(new Post(DEFAULT_CONTENT, defaultUser))).willReturn(defaultPost);
+        given(postRepository.save(new Post(DEFAULT_CONTENT, defaultUser, ALL))).willReturn(defaultPost);
         assertThat(postService.add(postRequestDto, DEFAULT_USER_ID)).isEqualTo(defaultPost);
     }
 
@@ -137,7 +137,7 @@ class PostServiceTest extends BaseTest {
     void 게시글_수정() {
         postRequestDto.setContents(NEW_CONTENT);
         assertThat(postService.update(DEFAULT_POST_ID, postRequestDto, DEFAULT_USER_ID)).isEqualTo(
-                mockingId(new Post(NEW_CONTENT, defaultUser), DEFAULT_POST_ID));
+                mockingId(new Post(NEW_CONTENT, defaultUser, ALL), DEFAULT_POST_ID));
     }
 
     @Test
@@ -213,10 +213,10 @@ class PostServiceTest extends BaseTest {
     @Test
     @DisplayName("게시물 공유하는지 검증")
     void sharePost() {
-        Post post = new Post(DEFAULT_CONTENT, defaultUser, defaultPost);
+        Post post = new Post(DEFAULT_CONTENT, defaultUser, defaultPost, ALL);
         given(postRepository.findById(1000L)).willReturn(Optional.of(post));
         given(sharedPostRepository.save(new SharedPost(defaultUser, post))).willReturn(new SharedPost(defaultUser, post));
         given(postRepository.save(post)).willReturn(post);
-        assertThat(postService.add(postRequestDto, DEFAULT_USER_ID, 1000L)).isEqualTo(post);
+        assertThat(postService.share(postRequestDto, DEFAULT_USER_ID, 1000L)).isEqualTo(post);
     }
 }

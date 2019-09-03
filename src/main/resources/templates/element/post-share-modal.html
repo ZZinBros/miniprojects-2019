@@ -46,11 +46,27 @@
                 </ul>
             </div>
             <div class="modal-footer bg-lightgray">
-                <button class="btn btn-facebook btn-rounded text-bold font-size-13 post-share" type="button"> 게시
-                </button>
-                <button class="btn btn-secondary btn-rounded text-bold font-size-13" data-dismiss="modal" type="button">
-                    취소
-                </button>
+                <ul class="composor-tools">
+                    <li aria-expanded="false"
+                        class="bg-lightgray btn-inverse border-radius-round mrg-right-5 border inline-block"
+                        data-toggle="dropdown">
+                        <a class="pdd-vertical-5 pdd-horizon-10 pointer display-btn">
+                            <span class="icon-name font-size-13 text-bold">전체 공개</span>
+                            <span class="ti-angle-down"></span>
+                        </a>
+                    </li>
+                    <th:block th:replace="layout/display-type-dropdown"/>
+                    <li class="inline-block">
+                        <button class="btn btn-facebook btn-rounded text-bold font-size-13 post-share" type="button"> 게시
+                        </button>
+                    </li>
+                    <li class="inline-block">
+                        <button class="btn btn-secondary btn-rounded text-bold font-size-13" data-dismiss="modal"
+                                type="button">
+                            취소
+                        </button>
+                    </li>
+                </ul>
             </div>
         </div>
     </div>

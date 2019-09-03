@@ -6,6 +6,7 @@ import com.woowacourse.zzinbros.user.domain.User;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import static com.woowacourse.zzinbros.post.domain.DisplayType.ALL;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class CommentTest extends BaseTest {
@@ -15,7 +16,7 @@ class CommentTest extends BaseTest {
     void isMatchUser() {
         final User user = new User("name", "email@example.net", "password");
         final User anotherUser = new User("noname", "spam@python.org", "passphrase");
-        final Post post = new Post("post", user);
+        final Post post = new Post("post", user, ALL);
         final Comment comment = new Comment(user, post, "comment");
 
         assertThat(comment.isAuthor(user)).isTrue();

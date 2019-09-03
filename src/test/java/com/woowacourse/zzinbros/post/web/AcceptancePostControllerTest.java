@@ -63,7 +63,7 @@ public class AcceptancePostControllerTest extends AuthedWebTestClient {
         PostRequestDto postRequestDto = new PostRequestDto();
         postRequestDto.setContents("post");
         postRequestDto.setSharedPostId(999L);
-        post("/posts/share", MediaType.APPLICATION_JSON_UTF8)
+        post("/posts/shared", MediaType.APPLICATION_JSON_UTF8)
                 .body(Mono.just(postRequestDto), PostRequestDto.class)
                 .exchange()
                 .expectStatus().isCreated()

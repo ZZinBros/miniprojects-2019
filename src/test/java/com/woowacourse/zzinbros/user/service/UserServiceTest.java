@@ -21,10 +21,14 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
+import static com.woowacourse.zzinbros.common.domain.TestBaseMock.mockingId;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
@@ -179,5 +183,17 @@ class UserServiceTest extends BaseTest {
         User actual = userService.findLoggedInUser(validLoginUserDto);
 
         assertThat(actual).isEqualTo(user);
+    }
+
+    @Test
+    @DisplayName("제한 수에 맞게 User 목록을 가입 순서로 반환한다")
+    void findRecentUsers() {
+        int limit = 5;
+        List<User> expected = Arrays.asList(mockingId(user, 1L), mockingId(user, 2L));
+        given(userRepository.findLatestUsers(PageRequest.of(0, limit)))
+                .willReturn(expected);
+
+        assertThat(userService.findRandomUsers(limit)).isEqualTo(expected);
+        verify(userRepository, times(1)).findLatestUsers(PageRequest.of(0, limit));
     }
 }
