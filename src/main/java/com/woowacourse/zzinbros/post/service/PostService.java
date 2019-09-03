@@ -20,6 +20,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
+import static com.woowacourse.zzinbros.notification.domain.NotificationType.CREATED;
+
 @Service
 public class PostService {
     private final UserService userService;
@@ -46,9 +48,14 @@ public class PostService {
     public Post add(PostRequestDto dto, long userId) {
         User user = userService.findUserById(userId);
         Post post = dto.toEntity(user);
-        Post createdPost = postRepository.save(post);
-        notificationService.notifyPostCreation(createdPost);
-        return createdPost;
+
+        post = postRepository.save(post);
+        try {
+            notificationService.notify(post, CREATED);
+        } catch (RuntimeException e) {
+            e.getStackTrace();
+        }
+        return post;
     }
 
     @Transactional

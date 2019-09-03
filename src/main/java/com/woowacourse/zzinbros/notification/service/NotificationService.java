@@ -1,5 +1,6 @@
 package com.woowacourse.zzinbros.notification.service;
 
+import com.woowacourse.zzinbros.notification.domain.NotificationType;
 import com.woowacourse.zzinbros.notification.domain.PostNotification;
 import com.woowacourse.zzinbros.notification.domain.repository.NotificationRepository;
 import com.woowacourse.zzinbros.post.domain.Post;
@@ -11,9 +12,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
-
-import static com.woowacourse.zzinbros.notification.domain.NotificationType.NEW_POST;
 
 @Service
 @Transactional
@@ -28,17 +29,17 @@ public class NotificationService {
         this.friendService = friendService;
     }
 
-    public void notifyPostCreation(Post post) {
+    public List<PostNotification> notify(Post post, NotificationType notificationType) {
         User publisher = post.getAuthor();
-        Set<UserResponseDto> friendsDtos = friendService.findFriendsByUser(publisher.getId());
+        Set<UserResponseDto> friendsDtos = friendService.findFriendsByUserId(publisher.getId());
+        List<PostNotification> savedNotifications = new ArrayList<>();
 
         for (UserResponseDto friendDto : friendsDtos) {
-            save(new PostNotification(NEW_POST, publisher, friendDto.getId(), post.getId()));
+            PostNotification savedNotification = notificationRepository
+                    .save(new PostNotification(notificationType, publisher, friendDto.getId(), post.getId()));
+            savedNotifications.add(savedNotification);
         }
-    }
-
-    public PostNotification save(PostNotification postNotification) {
-        return notificationRepository.save(postNotification);
+        return savedNotifications;
     }
 
     public Page<PostNotification> fetchNotifications(long notifiedUserId, PageRequest pageRequest) {

@@ -25,7 +25,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static com.woowacourse.zzinbros.notification.domain.NotificationType.NEW_POST;
+import static com.woowacourse.zzinbros.notification.domain.NotificationType.CREATED;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -58,33 +58,36 @@ public class NotificationServiceTest extends BaseTest {
     }
 
     @Test
-    @DisplayName("특정 User에게 알려줄 알림을 저장한다.")
-    void savePostNotification() {
-        // Given
-        PostNotification postNotification = new PostNotification(
-                NEW_POST, publisher, NOTIFIED_USER_ID, TEST_POST_ID);
-        given(notificationRepository.save(postNotification)).willReturn(postNotification);
-
-        // When
-        PostNotification savedNotification = notificationService.save(postNotification);
-
-        // Then
-        assertThat(savedNotification).isEqualTo(postNotification);
-    }
-
-    @Test
-    @DisplayName("새로 생성된 게시글을 넘겨받아 해당 게시글 생성자의 친구들 모두에게 알림을 보낸다.")
+    @DisplayName("게시글과 알림 타입을 넘겨받아 해당 게시글 생성자의 친구들 모두에게 알림을 보낸다.")
     void saveNotificationsOfCreatedPost() {
         // Given
         int numberOfFriends = 5;
         User publisherWithId = TestBaseMock.mockingId(publisher, PUBLISHER_ID);
-        Post createdPost = new Post("contents", publisherWithId);
+        Post post = new Post("contents", publisherWithId);
         Set<UserResponseDto> friendsOfPublisher = getFriendsDtos(numberOfFriends);
 
-        given(friendService.findFriendsByUser(publisherWithId.getId())).willReturn(friendsOfPublisher);
+        given(friendService.findFriendsByUserId(publisherWithId.getId())).willReturn(friendsOfPublisher);
 
         // When
-        notificationService.notifyPostCreation(createdPost);
+        notificationService.notify(post, CREATED);
+
+        // Then
+        verify(notificationRepository, times(numberOfFriends)).save(any());
+    }
+
+    @Test
+    @DisplayName("친구가 한 명도 없는 경우에는 알림이 생기지 않는다.")
+    void notSaveNotificationIfHasNoFriends() {
+        // Given
+        int numberOfFriends = 0;
+        User publisherWithId = TestBaseMock.mockingId(publisher, PUBLISHER_ID);
+        Post post = new Post("contents", publisherWithId);
+        Set<UserResponseDto> friendsOfPublisher = getFriendsDtos(numberOfFriends);
+
+        given(friendService.findFriendsByUserId(publisherWithId.getId())).willReturn(friendsOfPublisher);
+
+        // When
+        notificationService.notify(post, CREATED);
 
         // Then
         verify(notificationRepository, times(numberOfFriends)).save(any());
@@ -154,7 +157,7 @@ public class NotificationServiceTest extends BaseTest {
 
         for (int i = 0; i < pageSize; i++) {
             postNotifications.add(new PostNotification(
-                    NEW_POST, publisher, NOTIFIED_USER_ID, TEST_POST_ID + i
+                    CREATED, publisher, NOTIFIED_USER_ID, TEST_POST_ID + i
             ));
         }
         return new PageImpl<>(postNotifications);

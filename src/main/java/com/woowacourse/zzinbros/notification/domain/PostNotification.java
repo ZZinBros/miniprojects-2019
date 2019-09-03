@@ -8,6 +8,7 @@ import javax.persistence.*;
 @Entity
 public class PostNotification extends BaseEntity {
     @Column(name = "type", nullable = false)
+    @Enumerated(EnumType.STRING)
     private NotificationType type;
 
     @ManyToOne(cascade = CascadeType.ALL)

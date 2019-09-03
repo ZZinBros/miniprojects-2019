@@ -15,7 +15,7 @@ import org.springframework.data.domain.Sort;
 
 import java.util.List;
 
-import static com.woowacourse.zzinbros.notification.domain.NotificationType.NEW_POST;
+import static com.woowacourse.zzinbros.notification.domain.NotificationType.CREATED;
 import static com.woowacourse.zzinbros.notification.service.NotificationServiceTest.TEST_POST_ID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.data.domain.Sort.by;
@@ -48,9 +48,8 @@ class NotificationRepositoryTest extends BaseTest {
         saveNotifications(numberOfNotifications);
 
         // When
-        Page<PostNotification> notificationPage = notificationRepository.findAllByNotifiedUserId(
-                notifiedUser.getId(), pageRequest
-        );
+        Page<PostNotification> notificationPage = notificationRepository
+                .findAllByNotifiedUserId(notifiedUser.getId(), pageRequest);
         List<PostNotification> notifications = notificationPage.getContent();
 
         // Then
@@ -68,9 +67,8 @@ class NotificationRepositoryTest extends BaseTest {
         saveNotifications(numberOfNotification);
 
         // When
-        Page<PostNotification> notificationPage = notificationRepository.findAllByNotifiedUserId(
-                notifiedUser.getId(), pageRequest
-        );
+        Page<PostNotification> notificationPage = notificationRepository
+                .findAllByNotifiedUserId(notifiedUser.getId(), pageRequest);
         List<PostNotification> notifications = notificationPage.getContent();
 
         // Then
@@ -79,8 +77,8 @@ class NotificationRepositoryTest extends BaseTest {
 
     private void saveNotifications(int numberOfNotifications) {
         for (int i = 0; i < numberOfNotifications; i++) {
-            notificationRepository.save(
-                    new PostNotification(NEW_POST, publisher, notifiedUser.getId(), TEST_POST_ID + i)
+            notificationRepository.save(new PostNotification(CREATED,
+                    publisher, notifiedUser.getId(), TEST_POST_ID + i)
             );
         }
     }
